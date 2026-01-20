@@ -1,2 +1,5 @@
 file(GLOB SRCS "*.c")
-idf_component_register(SRCS ${SRCS} INCLUDE_DIRS ".")
+idf_component_register(
+    SRCS ${SRCS} 
+    INCLUDE_DIRS "."
+)
