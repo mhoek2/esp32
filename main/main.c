@@ -4,6 +4,8 @@
 #include "driver/gpio.h"
 #include "sdkconfig.h"
 
+#include "wifi.h"
+
 #define LED_GPIO 8
 #define INTERVAL 500 / portTICK_PERIOD_MS
 
@@ -23,7 +25,8 @@ static void configure_led(void)
 void app_main(void)
 {
     configure_led();
-
+    init_wifi_ap();
+    
     while (1) {
         blink_led();
 
