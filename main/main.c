@@ -9,9 +9,15 @@
 #include "filesystem.h"
 
 #define LED_GPIO 8
-#define INTERVAL 500 / portTICK_PERIOD_MS
+
+static int interval = 500;
 
 static uint8_t s_led_state = 0;
+
+void set_interval( int speed )
+{
+    interval = speed;
+}
 
 static void blink_led( void )
 {
@@ -36,6 +42,6 @@ void app_main( void )
         blink_led();
 
         s_led_state = !s_led_state;
-        vTaskDelay(INTERVAL);
+        vTaskDelay( interval / portTICK_PERIOD_MS );
     } 
 }
