@@ -1,10 +1,8 @@
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "esp_http_server.h"
-
 #include "common.h"
-//#include "cJSON.h"
+#include "config.h"
+
+#include "esp_http_server.h"
+#include "driver/temperature_sensor.h"
 
 // https://github.com/espressif/arduino-esp32/blob/master/tools/partitions/min_spiffs.csv
 // https://github.com/espressif/esp-idf/blob/master/examples/protocols/http_server/simple/main/main.c
@@ -52,7 +50,10 @@ static esp_err_t xhr_test( httpd_req_t *req, char *buffer )
 
     if (httpd_query_key_value(buffer, "SSID", ssid, sizeof(ssid)) == ESP_OK) {}
 
-    sprintf(response, "{\"data\":{\"SSID\":\"%s\"}}", ssid );
+
+    float temperature = get_temp();
+    
+    sprintf(response, "{\"data\":{\"SSID\":\"%s\", \"temp\": %f}}", ssid, temperature );
     
     httpd_resp_set_type(req,"application/json");
     httpd_resp_send(req, response, strlen(response)); 
@@ -119,19 +120,44 @@ static esp_err_t xhr_handler( httpd_req_t *req )
     return esp_state;
 }
 
-static httpd_uri_t root = {
+static esp_err_t get_config_handler( httpd_req_t *req )
+{
+    static const char *false_true[] = {"false", "true"};
+
+    char json_config[256] = { 0 };
+
+    config_t *config = get_config();
+
+    sprintf( json_config, "{\"initialized\": %s, \"SSID\":\"%s\"}", false_true[config->initialized], config->SSID );
+
+    httpd_resp_set_type(req,"application/json");
+    httpd_resp_send(req, json_config, strlen(json_config)); 
+    
+    return ESP_OK;
+}
+
+
+static httpd_uri_t uri_root = {
     .uri       = "/",
     .method    = HTTP_GET,
     .handler   = root_get_handler,
     .user_ctx  = NULL
 };
 
-static httpd_uri_t xhr = {
+static httpd_uri_t uri_xhr = {
     .uri       = "/xhr",
     .method    = HTTP_POST,
     .handler   = xhr_handler,
     .user_ctx  = NULL
 };
+
+static httpd_uri_t uri_get_config = {
+    .uri       = "/get_config",
+    .method    = HTTP_GET,
+    .handler   = get_config_handler,
+    .user_ctx  = NULL
+};
+
 
 httpd_handle_t init_webserver( void )
 {
@@ -140,8 +166,9 @@ httpd_handle_t init_webserver( void )
 
     if (httpd_start(&server, &config) == ESP_OK) 
     {
-        httpd_register_uri_handler( server, &root );
-        httpd_register_uri_handler( server, &xhr );
+        httpd_register_uri_handler( server, &uri_root );
+        httpd_register_uri_handler( server, &uri_xhr );
+        httpd_register_uri_handler( server, &uri_get_config );
     }
 
     return server;

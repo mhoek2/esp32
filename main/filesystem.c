@@ -1,9 +1,10 @@
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "esp_spiffs.h"
+#include "common.h"
 
-void init_filesystem( void )
+#include "esp_spiffs.h"
+#include "cJSON.h"
+#include <sys/stat.h>
+
+static void init_spiffs( void )
 {
     esp_vfs_spiffs_conf_t conf = {
         .base_path              = "/spiffs",
@@ -20,4 +21,9 @@ void init_filesystem( void )
     size_t total = 0, used = 0;
     esp_spiffs_info("spiffs", &total, &used);
     //ESP_LOGI("spiffs infno", "total: %d, used: %d", total, used);
+}
+
+void init_filesystem( void )
+{
+    init_spiffs();
 }

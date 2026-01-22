@@ -1,12 +1,10 @@
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "driver/gpio.h"
-#include "sdkconfig.h"
-
+#include "common.h"
+#include "config.h"
 #include "wifi.h"
 #include "webserver.h"
 #include "filesystem.h"
+
+#include "driver/temperature_sensor.h"
 
 #define LED_GPIO 8
 
@@ -30,12 +28,36 @@ static void configure_led( void )
     gpio_set_direction(LED_GPIO, GPIO_MODE_OUTPUT);
 }
 
+static temperature_sensor_handle_t temp_handle = NULL;
+
+float get_temp( void )
+{
+    float tsens_out;
+    ESP_ERROR_CHECK(temperature_sensor_get_celsius( temp_handle, &tsens_out ));
+
+    return tsens_out;
+}
+
 void app_main( void )
 {
+    
+    temperature_sensor_config_t temp_sensor_config = TEMPERATURE_SENSOR_CONFIG_DEFAULT(20, 50);
+    ESP_ERROR_CHECK(temperature_sensor_install(&temp_sensor_config, &temp_handle));
+    ESP_ERROR_CHECK(temperature_sensor_enable(temp_handle));
+
     configure_led();
     init_wifi_ap();
  
     init_filesystem();
+
+    init_config();
+    
+    if ( read_config() < 0 )
+    {
+        // retry once, as fail-safe
+        read_config();
+    }
+
     init_webserver();
 
     while (1) {
