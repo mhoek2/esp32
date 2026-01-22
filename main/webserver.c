@@ -11,7 +11,15 @@
 
 static esp_err_t root_get_handler( httpd_req_t *req )
 {
-    FILE *file = fopen("/spiffs/web/index.html", "r");
+    config_t *config = get_config();
+
+    const char *path[2] = {
+        "/spiffs/web/setup.html",
+        "/spiffs/web/index.html"
+    };
+
+    FILE *file = fopen( path[config->initialized], "r" );
+
     if (!file) {
         httpd_resp_send_500(req);
         return ESP_FAIL;
@@ -43,21 +51,31 @@ static esp_err_t xhr_invalid_mode( httpd_req_t *req )
     return ESP_FAIL;
 }
 
-static esp_err_t xhr_test( httpd_req_t *req, char *buffer )
+static esp_err_t xhr_set_wifi_AP( httpd_req_t *req, char *buffer )
 {
     char response[256] = {0};
-    char ssid[32] = {0}; 
+    char ap_ssid[32] = {0}; 
+    char ap_passphrase[16] = {0}; 
 
-    if (httpd_query_key_value(buffer, "SSID", ssid, sizeof(ssid)) == ESP_OK) {}
+    if (httpd_query_key_value(buffer, "ap_ssid", ap_ssid, sizeof(ap_ssid)) == ESP_OK) {}
+    if (httpd_query_key_value(buffer, "ap_passphrase", ap_passphrase, sizeof(ap_passphrase)) == ESP_OK) {}
 
+    config_set_ap_ssid( ap_ssid );
+    config_set_ap_passphrase( ap_passphrase );
+    config_set_initialized();
+    write_config();
 
+    // temporary
     float temperature = get_temp();
-    
-    sprintf(response, "{\"data\":{\"SSID\":\"%s\", \"temp\": %f}}", ssid, temperature );
+
+    sprintf(response, "{\"data\":{\"ap_ssid\":\"%s\", \"ap_passphrase\":\"%s\", \"temp\": %f}, \"status\":{\"flag\":\"success\", \"message\":\"Wifi AP SSID changed, device will reboot now\"}}", ap_ssid, ap_passphrase, temperature );
     
     httpd_resp_set_type(req,"application/json");
     httpd_resp_send(req, response, strlen(response)); 
     
+    // reboot the device, so AP changed take affect
+    queue_reboot();
+
     return ESP_OK;
 }
 
@@ -107,9 +125,9 @@ static esp_err_t xhr_handler( httpd_req_t *req )
     }
 
     // operation mode dispatching
-    if (strstr(mode, "set_wifi") != NULL) 
+    if (strstr(mode, "set_wifi_ap") != NULL) 
     {
-        esp_state = xhr_test( req, buffer );
+        esp_state = xhr_set_wifi_AP( req, buffer );
     }
     else if (strstr(mode, "set_led") != NULL) 
     {
@@ -128,7 +146,11 @@ static esp_err_t get_config_handler( httpd_req_t *req )
 
     config_t *config = get_config();
 
-    sprintf( json_config, "{\"initialized\": %s, \"SSID\":\"%s\"}", false_true[config->initialized], config->SSID );
+    sprintf( json_config, "{\"initialized\": %s, \"ap_ssid\":\"%s\", \"ap_passphrase\":\"%s\"}", 
+        false_true[config->initialized], 
+        config->ap_ssid, 
+        config->ap_passphrase 
+    );
 
     httpd_resp_set_type(req,"application/json");
     httpd_resp_send(req, json_config, strlen(json_config)); 

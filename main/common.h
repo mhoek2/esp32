@@ -11,6 +11,9 @@
 // common
 void set_interval( int speed );
 
+// queue
+void queue_reboot( void );
+
 float get_temp( void );
 
 #endif // COMMON_H

@@ -12,6 +12,14 @@ static int interval = 500;
 
 static uint8_t s_led_state = 0;
 
+// simple queue
+static bool _queue_reboot = false;
+
+void queue_reboot( void )
+{
+    _queue_reboot = true;
+}
+
 void set_interval( int speed )
 {
     interval = speed;
@@ -65,5 +73,10 @@ void app_main( void )
 
         s_led_state = !s_led_state;
         vTaskDelay( interval / portTICK_PERIOD_MS );
+
+        // queued restart
+        if ( _queue_reboot ){
+            //esp_restart();
+        }
     } 
 }

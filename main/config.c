@@ -14,12 +14,31 @@ config_t *get_config( void )
     return &config;
 }
 
+// yep, use wrapper functions for those
+// to keep it all in one place
+void config_set_initialized( void )
+{
+    config.initialized = true;
+}
+
+void config_set_ap_ssid( const char *ssid )
+{
+    memcpy( &config.ap_ssid, ssid, sizeof(config.ap_ssid) );
+}
+
+void config_set_ap_passphrase( const char *passphrase )
+{
+    memcpy( &config.ap_passphrase, passphrase, sizeof(config.ap_passphrase) );
+}
+
 esp_err_t set_factory_config( void )
 {
     // fill local config sturct
     memset( &config, 0, sizeof(config) );
+
     config.initialized = false;
-    sprintf( config.SSID, "SuperWIFI" );
+    config_set_ap_ssid("SuperWIFI");
+    config_set_ap_passphrase("12345678");
 
     return ESP_OK;
 }
@@ -28,7 +47,11 @@ esp_err_t write_config( void )
 {
     // create json equivilant
     char json_config[256] = { 0 };
-    sprintf( json_config, "{\"initialized\": %s, \"SSID\":\"%s\"}", false_true[config.initialized], config.SSID );
+    sprintf( json_config, "{\"initialized\": %s, \"ap_ssid\":\"%s\", \"ap_passphrase\":\"%s\"}", 
+        false_true[config.initialized], 
+        config.ap_ssid, 
+        config.ap_passphrase 
+    );
     
     // write to /spiffs/config.json
     FILE *f = fopen("/spiffs/config.json", "w");
@@ -80,9 +103,14 @@ esp_err_t parse_config( cJSON *json_config )
 		config.initialized = cJSON_GetObjectItem( json_config, "initialized" )->valueint;
     }
     
-	if ( cJSON_GetObjectItem( json_config, "SSID" ) ) {
-		char *SSID = cJSON_GetObjectItem( json_config, "SSID" )->valuestring;
-        sprintf( config.SSID, SSID ); 
+	if ( cJSON_GetObjectItem( json_config, "ap_ssid" ) ) {
+		char *ap_ssid = cJSON_GetObjectItem( json_config, "ap_ssid" )->valuestring;
+        sprintf( config.ap_ssid, ap_ssid ); 
+    }
+
+  	if ( cJSON_GetObjectItem( json_config, "ap_passphrase" ) ) {
+		char *ap_passphrase = cJSON_GetObjectItem( json_config, "ap_passphrase" )->valuestring;
+        sprintf( config.ap_passphrase, ap_passphrase ); 
     }
 
     return ESP_OK;
