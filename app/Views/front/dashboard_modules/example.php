@@ -120,7 +120,7 @@
 				$("#memory").html( data.memory.used + " / " + data.memory.total );
 
 				let usage = (data.memory.used / data.memory.total) * 100;
-				$("#memory .bar-usage").css("width", percent.toFixed(1) + "%");
+				$("#memory .bar-usage").css("width", usage.toFixed(1) + "%");
 			}	
 		}
 
@@ -140,6 +140,12 @@
 					}
 				}
 			});
+			
+			// update every 5 secs
+			setTimeout(function()
+			{
+				get_hw_info();
+			}, 5000 );
 		}
 		
 		get_hw_info();
