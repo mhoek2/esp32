@@ -1,4 +1,0 @@
-:orphan:
-
-SchemaSpy Placeholder
-=====================

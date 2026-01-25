@@ -1,4 +1,0 @@
-:orphan:
-
-PHP Metrics Placeholder
-=======================
