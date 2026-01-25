@@ -32,7 +32,9 @@ jobs:
             npm install
 
       - name: Install Java (Required for SchemaSpy)
-        run: sudo apt-get install -y openjdk-17-jre
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jre
 
       - name: Install Graphviz (Required for SchemaSpy Diagrams)
         run: sudo apt-get install -y graphviz
