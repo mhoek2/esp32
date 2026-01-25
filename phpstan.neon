@@ -1,0 +1,9 @@
+parameters:
+    level: 5  # 0-9 (higher is stricter)
+    paths:
+        - app/
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+    excludePaths:
+        - app/Config/*
+        - app/Views/*
