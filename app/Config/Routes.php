@@ -17,6 +17,8 @@ $routes->get(	'/', 				'LoginController::loginView',			['filter' => \App\Filters
 $routes->get(	'/home',			'Front\Home::application',				['as' => 'home', 'filter' => \App\Filters\AuthFilterSession::class]);
 $routes->get(	'download/(:any)',	'DownloadController::index/$1', 		['as' => 'front.download', 'namespace' => 'App\Controllers\Front', 'filter' => \App\Filters\AuthFilterSession::class]);
 
+$routes->get(	'/hw_info',			'HardwareInfo::index',					['as' => 'hw_info', 'filter' => \App\Filters\AuthFilterSession::class]);
+
 /**
  * admin
  */

@@ -8,7 +8,10 @@ use App\ThirdParty\TextEditor;
 use App\ThirdParty\TextEditorCKEditorCDN as CKEditorCDN;
 use App\ThirdParty\TextEditorCKEditorGPL as CKEditorGPL;
 use App\ThirdParty\TextEditorSummernote as Summernote;
-	
+
+use App\Services\UserMetaService;
+use App\Services\HardwareService;
+
 /**
  * Services Configuration file.
  *
@@ -34,6 +37,24 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+	public static function hardware_info($getShared = true): HardwareService
+	{
+		if ($getShared) {
+			return static::getSharedInstance('hardware_info');
+		}
+
+		return new HardwareService();
+	}
+	
+	public static function user_meta($getShared = true): UserMetaService
+	{
+		if ($getShared) {
+			return static::getSharedInstance('user_meta');
+		}
+
+		return new UserMetaService();
+	}
 	
 	public static function text_editor($getShared = true): TextEditor
 	{
