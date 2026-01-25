@@ -103,7 +103,10 @@
 				$("#cpu_cores").html( data.cpu_cores )
 			}
 			if ( typeof data.cpu_load !== 'undefined') {
-				$("#cpu_load").html( data.cpu_load )
+				$("#cpu_load").html( data.cpu_load );
+				
+				// clear
+				$("#cpu_graphs").html('');
 				
 				for ( let i = 0; i < data.cpu_load.length; i++ )
 				{
@@ -113,7 +116,7 @@
 						)
 					);
 					
-					$("#cpu_graphs").html('').append( dom );
+					$("#cpu_graphs").append( dom );
 				}
 			}
 			if ( typeof data.memory !== 'undefined') {
