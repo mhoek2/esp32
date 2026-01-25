@@ -113,7 +113,7 @@
 						)
 					);
 					
-					$("#cpu_graphs").append( dom );
+					$("#cpu_graphs").html('').append( dom );
 				}
 			}
 			if ( typeof data.memory !== 'undefined') {
