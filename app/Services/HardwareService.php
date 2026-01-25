@@ -148,10 +148,10 @@ class HardwareService
 		$usedPercent = round(($used / $total) * 100, 2);
 
 		return [
-			'total_kb'   => $this->convertKb($total),
-			'free_kb'    => $this->convertKb($free),
-			'used_kb'    => $this->convertKb($used),
-			'used_pct'   => $usedPercent
+			'total'   	=> $this->convertKb($total),
+			'free'	   	=> $this->convertKb($free),
+			'used'    	=> $this->convertKb($used),
+			'used_pct'	=> $usedPercent
 		];
 	}
 	

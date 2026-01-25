@@ -23,6 +23,31 @@
 		text-decoration: none;
 		color: #000;
 	}
+	
+	.hw_info .graph {
+		flex-basis: 100%;
+		width: 100%;
+		margin-top: 5px;
+	}
+		.hw_info .graph .bar-container {
+			border-radius: 0.40em;
+			display: block;
+    		width: 100%;
+			height: 0.75em;
+			background: #fff;
+			overflow: hidden;
+			position: relative;
+		}
+		.hw_info .graph .bar-container .bar-usage {
+			border-radius: inherit;
+			position: absolute;
+			left:0;
+			top:0;
+			width: 50%;
+			background: var(--header-user-dropdown-background);
+			height: inherit;
+			transition: width 0.3s ease;
+		}
 </style>
 
 <div class="hw_info">
@@ -39,16 +64,22 @@
 		<span id="cpu_cores"></span>
 	</div>
 	<div>
+		<span>CPU Load</span>
+		<span id="cpu_load"></span>
+		<div id="cpu_graphs" class="graph"></div>
+	</div>
+	<div>
 		<span>CPU Temp</span>
 		<span id="cpu_temp"></span>
 	</div>
 	<div>
-		<span>CPU Load</span>
-		<span id="cpu_load"></span>
-	</div>
-	<div>
 		<span>RAM Usage</span>
 		<span id="memory"></span>
+		<div class="graph">
+			<div class="bar-container">
+				<div class="bar-usage"></div>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -73,10 +104,24 @@
 			}
 			if ( typeof data.cpu_load !== 'undefined') {
 				$("#cpu_load").html( data.cpu_load )
+				
+				for ( let i = 0; i < data.cpu_load.length; i++ )
+				{
+					let dom = $('<div>', { class: 'graph' }).append(
+						$('<div>', { class: 'bar-container' }).append(
+							$('<div>', { class: 'bar-usage', style: 'width:'+ data.cpu_load[i] +'%' })
+						)
+					);
+					
+					$("#cpu_graphs").append( dom );
+				}
 			}
 			if ( typeof data.memory !== 'undefined') {
-				$("#memory").html( data.memory )
-			}
+				$("#memory").html( data.memory.used + " / " + data.memory.total );
+
+				let usage = (data.memory.used / data.memory.total) * 100;
+				$("#memory .bar-usage").css("width", percent.toFixed(1) + "%");
+			}	
 		}
 
 		function get_hw_info(  )
