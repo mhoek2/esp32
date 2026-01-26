@@ -16,19 +16,29 @@ config_t *get_config( void )
 
 // yep, use wrapper functions for those
 // to keep it all in one place
-void config_set_initialized( void )
+void config_set_sta_initialized( void )
 {
-    config.initialized = true;
+    config.sta_initialized = true;
 }
 
-void config_set_ap_ssid( const char *ssid )
+void config_set_sta_ssid( const char *ssid )
 {
-    memcpy( &config.ap_ssid, ssid, sizeof(config.ap_ssid) );
+    memcpy( &config.sta_ssid, ssid, sizeof(config.sta_ssid) );
 }
 
-void config_set_ap_passphrase( const char *passphrase )
+void config_set_sta_passphrase( const char *passphrase )
 {
-    memcpy( &config.ap_passphrase, passphrase, sizeof(config.ap_passphrase) );
+    memcpy( &config.sta_passphrase, passphrase, sizeof(config.sta_passphrase) );
+}
+
+void config_set_server_initialized( void )
+{
+    config.server_initialized = true;
+}
+
+void config_set_server_adress( const char *adress )
+{
+    memcpy( &config.server_address, adress, sizeof(config.server_address) );
 }
 
 esp_err_t set_factory_config( void )
@@ -36,9 +46,12 @@ esp_err_t set_factory_config( void )
     // fill local config sturct
     memset( &config, 0, sizeof(config) );
 
-    config.initialized = false;
-    config_set_ap_ssid("SuperWIFI");
-    config_set_ap_passphrase("12345678");
+    config.sta_initialized = false;
+    config_set_sta_ssid("ESP32 Wifi");
+    config_set_sta_passphrase("12345678");
+
+    config.server_initialized = false;
+    config_set_server_adress("127.0.0.1");
 
     return ESP_OK;
 }
@@ -47,10 +60,12 @@ esp_err_t write_config( void )
 {
     // create json equivilant
     char json_config[256] = { 0 };
-    sprintf( json_config, "{\"initialized\": %s, \"ap_ssid\":\"%s\", \"ap_passphrase\":\"%s\"}", 
-        false_true[config.initialized], 
-        config.ap_ssid, 
-        config.ap_passphrase 
+    sprintf( json_config, "{\"sta_initialized\": %s, \"sta_ssid\":\"%s\", \"sta_passphrase\":\"%s\", \"server_initialized\":\"%s\", \"server_address\":\"%s\"}", 
+        false_true[config.sta_initialized], 
+        config.sta_ssid, 
+        config.sta_passphrase,
+        false_true[config.server_initialized],
+        config.server_address
     );
     
     // write to /spiffs/config.json
@@ -99,18 +114,24 @@ esp_err_t parse_config( cJSON *json_config )
 {
     memset( &config, 0, sizeof(config) );
 
-	if ( cJSON_GetObjectItem( json_config, "initialized" ) ) {
-		config.initialized = cJSON_GetObjectItem( json_config, "initialized" )->valueint;
+	if ( cJSON_GetObjectItem( json_config, "sta_initialized" ) ) {
+		config.sta_initialized = cJSON_GetObjectItem( json_config, "sta_initialized" )->valueint;
     }
     
-	if ( cJSON_GetObjectItem( json_config, "ap_ssid" ) ) {
-		char *ap_ssid = cJSON_GetObjectItem( json_config, "ap_ssid" )->valuestring;
-        sprintf( config.ap_ssid, ap_ssid ); 
+	if ( cJSON_GetObjectItem( json_config, "sta_ssid" ) ) {
+        sprintf( config.sta_ssid, cJSON_GetObjectItem( json_config, "sta_ssid" )->valuestring ); 
     }
 
-  	if ( cJSON_GetObjectItem( json_config, "ap_passphrase" ) ) {
-		char *ap_passphrase = cJSON_GetObjectItem( json_config, "ap_passphrase" )->valuestring;
-        sprintf( config.ap_passphrase, ap_passphrase ); 
+  	if ( cJSON_GetObjectItem( json_config, "sta_passphrase" ) ) {
+        sprintf( config.sta_passphrase, cJSON_GetObjectItem( json_config, "sta_passphrase" )->valuestring ); 
+    }
+
+  	if ( cJSON_GetObjectItem( json_config, "server_initialized" ) ) {
+        config.server_initialized = cJSON_GetObjectItem( json_config, "server_initialized" )->valueint;
+    }
+
+  	if ( cJSON_GetObjectItem( json_config, "server_address" ) ) {
+        sprintf( config.server_address, cJSON_GetObjectItem( json_config, "server_address" )->valuestring ); 
     }
 
     return ESP_OK;
