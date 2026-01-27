@@ -12,6 +12,8 @@ wifi_ap_list_t *get_scan_ap_data( void );
 void init_wifi( void );
 void destroy_wifi( void );
 
+void wifi_sta_configure( void );
+
 void wifi_ap_configure( void );
 void wifi_ap_enable( void );
 void wifi_ap_disable( void );

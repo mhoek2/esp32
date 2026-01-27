@@ -17,10 +17,11 @@
 
 static const char *TAG = "wifi_ap";
 
-#define AP_LIST_MAX 6
+#define AP_LIST_MAX 32
 
 static uint16_t         scan_ap_count = 0;
 static wifi_ap_list_t   *scan_ap_data;
+static bool             scanning_ap = false;
 
 static bool wifi_ap_enabled = false;
 
@@ -38,6 +39,9 @@ wifi_ap_list_t *get_scan_ap_data( void )
 #define CONFIG_AP_SSID "GeatestWIFI"
 #define CONFIG_AP_PASS "12345678"
 #define CONFIG_AP_CHAN 3
+
+#define CONFIG_STA_SSID "test"
+#define CONFIG_STA_PASS "12345678"
 
 wifi_country_t country = {
     .cc = "EU", 
@@ -75,12 +79,27 @@ static void event_handler(void* arg, esp_event_base_t event_base,
                 break;
             }
             case WIFI_EVENT_SCAN_DONE: {
+
+                // scan alraedy in progress
+                if ( scanning_ap )
+                    break;
+                 
+                scanning_ap = true;
+                
                 ESP_ERROR_CHECK( esp_wifi_scan_get_ap_num( &scan_ap_count ) );
+
+                if ( scan_ap_count <= 0 )
+                {
+                    scanning_ap = false;
+                    break;
+                }
 
                 wifi_ap_record_t *ap_records = malloc(sizeof(wifi_ap_record_t) * scan_ap_count);
                 ESP_ERROR_CHECK( esp_wifi_scan_get_ap_records( &scan_ap_count, ap_records ) );
 
                 wifi_ap_list_t *data;
+
+                ESP_LOGI(TAG, "Num AP found: %d", scan_ap_count);
 
                 for ( uint32_t i = 0; i < scan_ap_count; i++ ) 
                 {
@@ -89,10 +108,13 @@ static void event_handler(void* arg, esp_event_base_t event_base,
 
                     data = &scan_ap_data[i];
 
+                    ESP_LOGI(TAG, "%s", data->ssid);
                     memcpy( data->ssid, ap_records[i].ssid, sizeof(ap_records[i].ssid) );
                 }
 
-                free(ap_records);
+                free( ap_records );
+
+                scanning_ap = false;
                 break;
             }
             case WIFI_EVENT_AP_START: {
@@ -127,56 +149,45 @@ static void event_handler(void* arg, esp_event_base_t event_base,
 // using a physical button on the device, that actives the AP for 5-10 minutes
 void ap_scan_dispatch_async( void )
 {
+    // scan alraedy in progress
+    if ( scanning_ap )
+        return;
+
     wifi_scan_config_t scan_config = {
         .ssid = NULL,
         .bssid = NULL,
         .channel = 0,
-        .show_hidden = true
+        .show_hidden = false,
+        .scan_type   = WIFI_SCAN_TYPE_ACTIVE,
+        .scan_time = {
+            .active.min = 100,
+            .active.max = 1500,
+        }
     };
 
     ESP_ERROR_CHECK( esp_wifi_scan_start( &scan_config, false ) );
 }
 
-void destroy_wifi( void )
+void wifi_sta_configure( void )
 {
-    free( scan_ap_data );
-}
+    wifi_config_t wifi_sta_config = {
+        .sta = {
+            .ssid = CONFIG_STA_SSID,
+            .password = CONFIG_STA_PASS,
+            .threshold.authmode = WIFI_AUTH_WPA2_PSK,
+            .pmf_cfg = {
+                .capable = true,
+                .required = false
+            }
+        }
+    };
 
-void init_wifi( void )
-{
-    // https://github.com/HankB/ESP32-ESP-IDF-PlatformIO-start/blob/C%2B%2B/src/wifi.cpp
+    ESP_ERROR_CHECK( esp_wifi_set_config( WIFI_IF_STA, &wifi_sta_config ) ) ;
 
-    nvs_init();
-
-
-    scan_ap_data = malloc( sizeof(wifi_ap_list_t) * AP_LIST_MAX );
-
-
-    ESP_ERROR_CHECK( esp_netif_init() );
-
-    ESP_ERROR_CHECK( esp_event_loop_create_default() );
-    
-    //esp_netif_create_default_wifi_sta();
-    esp_netif_create_default_wifi_ap();
-
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK( esp_wifi_init( &cfg ) );
-
-    // event handler
-    ESP_ERROR_CHECK( esp_event_handler_instance_register( WIFI_EVENT,
-                                                        ESP_EVENT_ANY_ID,
-                                                        &event_handler,
-                                                        NULL,
-                                                        NULL ) );
-
-    //ESP_ERROR_CHECK( esp_wifi_set_mode( WIFI_MODE_STA ) );
-
-    wifi_ap_enable();
-    wifi_ap_configure();
-    
-    ESP_ERROR_CHECK( esp_wifi_set_country( &country ) );
-    ESP_ERROR_CHECK( esp_wifi_start() );
-    ESP_ERROR_CHECK( esp_wifi_set_ps( WIFI_PS_NONE ) );                                               
+    ESP_LOGI( TAG, "Wi-Fi STA. SSID:%s Password:%s",
+             wifi_sta_config.ap.ssid, 
+             wifi_sta_config.ap.password 
+    );    
 }
 
 void wifi_ap_configure( void )
@@ -202,15 +213,17 @@ void wifi_ap_configure( void )
     ESP_ERROR_CHECK( esp_wifi_set_config( WIFI_IF_AP, &wifi_ap_config ) ) ;
 
     ESP_LOGI( TAG, "Wi-Fi AP started. SSID:%s Password:%s",
-             wifi_ap_config.ap.ssid, wifi_ap_config.ap.password );    
+             wifi_ap_config.ap.ssid, 
+             wifi_ap_config.ap.password
+    );    
 }
 
 void wifi_ap_enable( void )
 {
     ESP_LOGI(TAG, "Enable AP");
 
-    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
-    //ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
+    //ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
+    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
 }
 
 void wifi_ap_disable( void )
@@ -224,7 +237,6 @@ void update_wifi_mode( bool use_ap )
 {
     if ( use_ap && !wifi_ap_enabled ) 
     {
-        wifi_ap_configure();
         wifi_ap_enable();
         wifi_ap_enabled = true;
     } 
@@ -234,4 +246,47 @@ void update_wifi_mode( bool use_ap )
         wifi_ap_disable();
         wifi_ap_enabled = false;
     }
+}
+
+void init_wifi( void )
+{
+    // https://github.com/HankB/ESP32-ESP-IDF-PlatformIO-start/blob/C%2B%2B/src/wifi.cpp
+
+    nvs_init();
+
+
+    scan_ap_data = malloc( sizeof(wifi_ap_list_t) * AP_LIST_MAX );
+
+
+    ESP_ERROR_CHECK( esp_netif_init() );
+
+    ESP_ERROR_CHECK( esp_event_loop_create_default() );
+    
+    esp_netif_create_default_wifi_sta();
+    esp_netif_create_default_wifi_ap();
+
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    ESP_ERROR_CHECK( esp_wifi_init( &cfg ) );
+
+    // event handler
+    ESP_ERROR_CHECK( esp_event_handler_instance_register( WIFI_EVENT,
+                                                        ESP_EVENT_ANY_ID,
+                                                        &event_handler,
+                                                        NULL,
+                                                        NULL ) );
+
+    //ESP_ERROR_CHECK( esp_wifi_set_mode( WIFI_MODE_STA ) );
+
+    wifi_ap_enable();
+    wifi_ap_configure();
+    wifi_sta_configure();
+    
+    ESP_ERROR_CHECK( esp_wifi_set_country( &country ) );
+    ESP_ERROR_CHECK( esp_wifi_start() );
+    ESP_ERROR_CHECK( esp_wifi_set_ps( WIFI_PS_NONE ) );                                               
+}
+
+void destroy_wifi( void )
+{
+    free( scan_ap_data );
 }

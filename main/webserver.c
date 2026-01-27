@@ -190,11 +190,42 @@ static esp_err_t get_reset_handler( httpd_req_t *req )
 static esp_err_t find_ap_handler( httpd_req_t *req )
 {
 
+    // async: fist request will not return a list
+    ap_scan_dispatch_async();
+
     uint16_t *scan_ap_count = get_scan_ap_count();
 
-    char response[256] = {0};
-    sprintf(response, "{\"data\":{\"num_ap\": %d}, \"status\":{\"flag\":\"success\", \"message\":\"List of APs\"}}",
-        *scan_ap_count
+    char ap_name[128] = { 0 };
+    char aps[1024] = { 0 };
+    char *aps_ptr = aps;
+
+    uint16_t i = 0;
+    uint16_t *ap_count = get_scan_ap_count();
+    wifi_ap_list_t *ap_data = get_scan_ap_data();
+
+    size_t total_ssid_len = 0;
+
+    for ( i = 0; i < *ap_count; i++ )
+    {
+        sprintf( ap_name, "\"%s\",", ap_data[i].ssid);
+        size_t ssid_len = strlen(ap_name);
+
+        memcpy(  aps_ptr, ap_name, ssid_len );
+        
+        ESP_LOGI(TAG, "%s", ap_data[i].ssid);
+
+        aps_ptr += ssid_len;
+
+        total_ssid_len += ssid_len;
+    }
+
+    aps_ptr = "\0";
+
+    char *response = malloc(sizeof(char) * (total_ssid_len + 256));
+
+    sprintf(response, "{\"data\":{\"num_ap\": %d, \"aps\": {%s}}, \"status\":{\"flag\":\"success\", \"message\":\"List of APs\"}}",
+        *scan_ap_count,
+        aps
     );
     
     httpd_resp_set_type(req,"application/json");
