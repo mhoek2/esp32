@@ -4,9 +4,12 @@
 #include "webserver.h"
 #include "filesystem.h"
 
+#include <esp_log.h>
+
 #define LED_GPIO 8
 
-static int interval = 500;
+static const char *TAG = "main";
+static int interval = 1500;
 
 static uint8_t s_led_state = 0;
 
@@ -35,8 +38,8 @@ static void configure_led( void )
 
 void app_main( void )
 {
-    configure_led();
-    init_wifi();
+    //configure_led();
+    
  
     // enable AP by default for now
     //update_wifi_mode( true );
@@ -50,10 +53,12 @@ void app_main( void )
         read_config();  // retry once, as fail-safe
     }
 
+    init_wifi();
     init_webserver();
 
     while (1) {
-        blink_led();
+        //blink_led();
+        ESP_LOGI(TAG, "blink state");
 
         s_led_state = !s_led_state;
         vTaskDelay( interval / portTICK_PERIOD_MS );

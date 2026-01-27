@@ -17,7 +17,7 @@
 
 static const char *TAG = "wifi_ap";
 
-#define AP_LIST_MAX 32
+#define AP_LIST_MAX 6
 
 static uint16_t         scan_ap_count = 0;
 static wifi_ap_list_t   *scan_ap_data;
@@ -34,16 +34,10 @@ wifi_ap_list_t *get_scan_ap_data( void )
     return scan_ap_data;
 }
 
-static wifi_config_t wifi_ap_config = {
-    .ap = {
-        .ssid = "GreatestWIFI",
-        .ssid_len = 14,
-        .password = "12345678",
-        .channel = 0,
-        .max_connection = 4,
-        .authmode = WIFI_AUTH_WPA2_PSK
-    }
-};
+// https://esp32.com/viewtopic.php?t=10619#p45808
+#define CONFIG_AP_SSID "GeatestWIFI"
+#define CONFIG_AP_PASS "12345678"
+#define CONFIG_AP_CHAN 3
 
 wifi_country_t country = {
     .cc = "EU", 
@@ -67,6 +61,8 @@ static void event_handler(void* arg, esp_event_base_t event_base,
                                int32_t event_id, void* event_data)
 {
     if (event_base == WIFI_EVENT) {
+        ESP_LOGI(TAG, "event triggerd: %d", event_id );
+
         switch(event_id) {
             case WIFI_EVENT_AP_STACONNECTED: {
                 wifi_event_ap_staconnected_t* event = (wifi_event_ap_staconnected_t*) event_data;
@@ -160,7 +156,7 @@ void init_wifi( void )
 
     ESP_ERROR_CHECK( esp_event_loop_create_default() );
     
-    esp_netif_create_default_wifi_sta();
+    //esp_netif_create_default_wifi_sta();
     esp_netif_create_default_wifi_ap();
 
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
@@ -173,16 +169,14 @@ void init_wifi( void )
                                                         NULL,
                                                         NULL ) );
 
-    ESP_ERROR_CHECK( esp_wifi_set_mode( WIFI_MODE_STA ) );
+    //ESP_ERROR_CHECK( esp_wifi_set_mode( WIFI_MODE_STA ) );
 
     wifi_ap_enable();
     wifi_ap_configure();
     
     ESP_ERROR_CHECK( esp_wifi_set_country( &country ) );
     ESP_ERROR_CHECK( esp_wifi_start() );
-    
-    ESP_LOGI( TAG, "Wi-Fi AP started. SSID:%s Password:%s",
-             wifi_ap_config.ap.ssid, wifi_ap_config.ap.password );                                                   
+    ESP_ERROR_CHECK( esp_wifi_set_ps( WIFI_PS_NONE ) );                                               
 }
 
 void wifi_ap_configure( void )
@@ -191,7 +185,24 @@ void wifi_ap_configure( void )
     //    wifi_ap_config.ap.authmode = WIFI_AUTH_OPEN;
     //}
 
+    wifi_config_t wifi_ap_config = {
+        .ap = {
+            .ssid = CONFIG_AP_SSID,
+            .ssid_len = strlen(CONFIG_AP_SSID),
+            .password = CONFIG_AP_PASS,
+            .channel = CONFIG_AP_CHAN,
+            .max_connection = 4,
+            .authmode = WIFI_AUTH_WPA_WPA2_PSK
+        }
+    };
+    if (strlen(CONFIG_AP_PASS) == 0) {
+        wifi_ap_config.ap.authmode = WIFI_AUTH_OPEN;
+    }
+
     ESP_ERROR_CHECK( esp_wifi_set_config( WIFI_IF_AP, &wifi_ap_config ) ) ;
+
+    ESP_LOGI( TAG, "Wi-Fi AP started. SSID:%s Password:%s",
+             wifi_ap_config.ap.ssid, wifi_ap_config.ap.password );    
 }
 
 void wifi_ap_enable( void )
