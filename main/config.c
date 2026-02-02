@@ -5,6 +5,10 @@
 #include "cJSON.h"
 #include <sys/stat.h>
 
+#include <esp_log.h>
+
+static const char *TAG = "config";
+
 // https://github.com/nopnop2002/esp-idf-json/blob/master/json-basic-object/main/main.c
 static config_t config = { 0 };
 static const char *false_true[] = {"false", "true"};
@@ -84,6 +88,8 @@ esp_err_t write_factory_config( void )
 {
     set_factory_config();
 
+    ESP_LOGI(TAG, "set factory config");
+
     return write_config();
 }
 
@@ -102,7 +108,10 @@ esp_err_t init_config( void )
     }
     
     FILE *f = fopen( "/spiffs/config.json", "r" );
-    if ( f == NULL ){
+    if ( f != NULL ) {
+        ESP_LOGI(TAG, "load config");
+    }
+    else {
         return write_factory_config();
     }
         
@@ -170,14 +179,16 @@ esp_err_t read_config( void )
 
     // parse
     json_config = cJSON_Parse( json_buf );
+    ESP_LOGI( TAG, "json: %s", json_buf );
     free(json_buf);  
 
     if ( json_config == NULL ) 
     {
         write_factory_config();
+        ESP_LOGI(TAG, "invalid JSON config");
         return ESP_FAIL;
     }
-
+ 
     // set config from JSON
     parse_config( json_config );
 

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "config.h"
 #include "wifi.h"
 
 #include <freertos/event_groups.h>
@@ -40,26 +41,12 @@ wifi_ap_list_t *get_scan_ap_data( void )
 #define CONFIG_AP_PASS "12345678"
 #define CONFIG_AP_CHAN 3
 
-#define CONFIG_STA_SSID "test"
-#define CONFIG_STA_PASS "12345678"
-
 wifi_country_t country = {
     .cc = "EU", 
     .schan = 1,
     .nchan = 11,
     .policy = WIFI_COUNTRY_POLICY_AUTO
 };
-
-static void nvs_init( void )
-{
-    esp_err_t ret = nvs_flash_init();
-    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
-    {
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        ret = nvs_flash_init();
-    }
-    ESP_ERROR_CHECK(ret);
-}
 
 static void event_handler(void* arg, esp_event_base_t event_base,
                                int32_t event_id, void* event_data)
@@ -170,10 +157,10 @@ void ap_scan_dispatch_async( void )
 
 void wifi_sta_configure( void )
 {
+    config_t *config = get_config();
+
     wifi_config_t wifi_sta_config = {
         .sta = {
-            .ssid = CONFIG_STA_SSID,
-            .password = CONFIG_STA_PASS,
             .threshold.authmode = WIFI_AUTH_WPA2_PSK,
             .pmf_cfg = {
                 .capable = true,
@@ -182,11 +169,14 @@ void wifi_sta_configure( void )
         }
     };
 
+    memcpy( wifi_sta_config.sta.ssid, config->sta_ssid, sizeof(config->sta_ssid) );
+    memcpy( wifi_sta_config.sta.password, config->sta_passphrase, sizeof(config->sta_passphrase) );
+
     ESP_ERROR_CHECK( esp_wifi_set_config( WIFI_IF_STA, &wifi_sta_config ) ) ;
 
     ESP_LOGI( TAG, "Wi-Fi STA. SSID:%s Password:%s",
-             wifi_sta_config.ap.ssid, 
-             wifi_sta_config.ap.password 
+             wifi_sta_config.sta.ssid, 
+             wifi_sta_config.sta.password 
     );    
 }
 
@@ -252,9 +242,6 @@ void init_wifi( void )
 {
     // https://github.com/HankB/ESP32-ESP-IDF-PlatformIO-start/blob/C%2B%2B/src/wifi.cpp
 
-    nvs_init();
-
-
     scan_ap_data = malloc( sizeof(wifi_ap_list_t) * AP_LIST_MAX );
 
 
@@ -281,7 +268,7 @@ void init_wifi( void )
     wifi_ap_configure();
     wifi_sta_configure();
     
-    ESP_ERROR_CHECK( esp_wifi_set_country( &country ) );
+    //ESP_ERROR_CHECK( esp_wifi_set_country( &country ) );
     ESP_ERROR_CHECK( esp_wifi_start() );
     ESP_ERROR_CHECK( esp_wifi_set_ps( WIFI_PS_NONE ) );                                               
 }

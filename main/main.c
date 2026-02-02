@@ -3,13 +3,14 @@
 #include "wifi.h"
 #include "webserver.h"
 #include "filesystem.h"
+#include <nvs_flash.h>
 
 #include <esp_log.h>
 
 #define LED_GPIO 8
 
 static const char *TAG = "main";
-static int interval = 1500;
+static int interval = 5000;
 
 static uint8_t s_led_state = 0;
 
@@ -36,8 +37,20 @@ static void configure_led( void )
     gpio_set_direction(LED_GPIO, GPIO_MODE_OUTPUT);
 }
 
+static void nvs_init( void )
+{
+    esp_err_t ret = nvs_flash_init();
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
+    {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        ret = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK(ret);
+}
+
 void app_main( void )
 {
+    nvs_init();
     //configure_led();
     
  
@@ -48,7 +61,7 @@ void app_main( void )
 
     init_config();
     
-    if ( read_config() < 0 )
+    if ( read_config() == ESP_FAIL )
     {
         read_config();  // retry once, as fail-safe
     }
@@ -58,15 +71,15 @@ void app_main( void )
 
     while (1) {
         //blink_led();
-        ESP_LOGI(TAG, "blink state");
+        //ESP_LOGI(TAG, "update");
 
         s_led_state = !s_led_state;
         vTaskDelay( interval / portTICK_PERIOD_MS );
 
         // queued restart
-        //if ( _queue_reboot ){
-            //esp_restart();
-        //}
+        if ( _queue_reboot ){
+            esp_restart();
+        }
     } 
 
     //destroy_wifi();

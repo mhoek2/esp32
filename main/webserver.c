@@ -12,35 +12,61 @@
 
 static const char *TAG = "webserver";
 
+#define PAGE_STA_SETUP      0
+#define PAGE_SERVER_SETUP   1
+#define PAGE_OVERVIEW       2
+
+static const char *webpages[3] = {
+    "/spiffs/web/sta_setup.html",
+    "/spiffs/web/server_setup.html",
+    "/spiffs/web/overview.html",
+};
+
+static const char *get_root_html_path( config_t *config )
+{
+    // get the html path based on current configuration
+    // first-boot:      sta setup
+    // sta-set:         server setup
+    // server-set:      overview page
+
+    uint16_t page_index = PAGE_STA_SETUP;
+
+    if ( config->sta_initialized )
+        page_index = PAGE_SERVER_SETUP;
+
+    if ( config->server_initialized )
+        page_index = PAGE_OVERVIEW;
+    
+    return webpages[page_index];
+}
+
 static esp_err_t root_get_handler( httpd_req_t *req )
 {
+    FILE *html_file;
+    
+    char buffer[1024];
+    size_t read_bytes;
     config_t *config = get_config();
 
-    const char *path[2] = {
-        "/spiffs/web/sta_setup.html",
-        "/spiffs/web/server_setup.html"
-    };
+    const char *html_path = get_root_html_path( config );
 
-    FILE *file = fopen( path[config->sta_initialized], "r" );
+    html_file = fopen( html_path, "r" );
 
-    if (!file) {
+    if ( !html_file ) 
+    {
         httpd_resp_send_500(req);
         return ESP_FAIL;
     }
 
-    //{{%cpu_temp%}}  replace 
-
-    char buffer[1024];
-    size_t read_bytes;
-    while ((read_bytes = fread(buffer, 1, sizeof(buffer), file)) > 0) {
-        httpd_resp_send_chunk(req, buffer, read_bytes);
+    while ( ( read_bytes = fread( buffer, 1, sizeof(buffer), html_file ) ) > 0 ) 
+    {
+        httpd_resp_send_chunk( req, buffer, read_bytes );
     }
 
-    fclose(file);
-    httpd_resp_send_chunk(req, NULL, 0);
+    fclose(html_file);
+    httpd_resp_send_chunk( req, NULL, 0 );
 
-
-    ESP_LOGI(TAG, "Request html");
+    ESP_LOGI( TAG, "Request html %s", html_path );
 
     return ESP_OK;
 }
@@ -49,17 +75,17 @@ static esp_err_t xhr_invalid_mode( httpd_req_t *req )
 {
     char response[256] = {0};
     
-    sprintf(response, "{\"status\":\"invalid mode!\"}" );
+    sprintf( response, "{\"status\":\"invalid mode!\"}" );
     
-    httpd_resp_set_type(req,"application/json");
-    httpd_resp_send(req, response, strlen(response)); 
+    httpd_resp_set_type( req,"application/json" );
+    httpd_resp_send( req, response, strlen(response) ); 
     
-    ESP_LOGI(TAG, "Request invalid");
+    ESP_LOGI( TAG, "Request invalid" );
 
     return ESP_FAIL;
 }
 
-static esp_err_t xhr_set_wifi_AP( httpd_req_t *req, char *buffer )
+static esp_err_t xhr_set_wifi_sta( httpd_req_t *req, char *buffer )
 {
     char response[256] = {0};
     char sta_ssid[32] = {0}; 
@@ -86,21 +112,22 @@ static esp_err_t xhr_set_wifi_AP( httpd_req_t *req, char *buffer )
     return ESP_OK;
 }
 
-static esp_err_t xhr_led( httpd_req_t *req, char *buffer )
+static esp_err_t xhr_set_server_ip( httpd_req_t *req, char *buffer )
 {
     char response[256] = {0};
-    char speed[32] = {0}; 
+    char server_ip[32] = {0}; 
 
-    if (httpd_query_key_value(buffer, "speed", speed, sizeof(speed)) == ESP_OK) {}
+    if (httpd_query_key_value(buffer, "server_ip", server_ip, sizeof(server_ip)) == ESP_OK) {}
 
-    sprintf(response, "{\"data\":{\"speed\":\"%s\"}}", speed );
+    config_set_server_adress( server_ip );
+    config_set_server_initialized();
+    write_config();
     
-    set_interval( atoi(speed) );
-    
+    ESP_LOGI(TAG, "Set server ip: %s", server_ip);
+
+    sprintf(response, "{\"data\":{\"server_ip\":\"%s\"}, \"status\":{\"flag\":\"success\", \"message\":\"Set the server IP\"}}", server_ip );
     httpd_resp_set_type(req,"application/json");
     httpd_resp_send(req, response, strlen(response)); 
-    
-    ESP_LOGI(TAG, "Set led speed");
 
     return ESP_OK;
 }
@@ -136,11 +163,14 @@ static esp_err_t xhr_handler( httpd_req_t *req )
     // operation mode dispatching
     if (strstr(mode, "set_wifi_ap") != NULL) 
     {
-        esp_state = xhr_set_wifi_AP( req, buffer );
+        esp_state = xhr_set_wifi_sta( req, buffer );
     }
-    else if (strstr(mode, "set_led") != NULL) 
+    else if (strstr(mode, "set_server_ip") != NULL) 
     {
-        esp_state = xhr_led( req, buffer );
+        esp_state = xhr_set_server_ip( req, buffer );
+    }
+    else{
+        esp_state = xhr_invalid_mode( req );
     }
 
     free(buffer);
@@ -171,7 +201,7 @@ static esp_err_t get_config_handler( httpd_req_t *req )
     return ESP_OK;
 }
 
-static esp_err_t get_reset_handler( httpd_req_t *req )
+static esp_err_t get_factory_reset_handler( httpd_req_t *req )
 {
     set_factory_config();
     write_config();
@@ -183,6 +213,9 @@ static esp_err_t get_reset_handler( httpd_req_t *req )
     httpd_resp_send(req, response, strlen(response)); 
 
     ESP_LOGI(TAG, "Request Factory Reset");
+
+    // reboot the device
+    queue_reboot();
 
     return ESP_OK;    
 }
@@ -207,7 +240,7 @@ static esp_err_t find_ap_handler( httpd_req_t *req )
 
     for ( i = 0; i < *ap_count; i++ )
     {
-        sprintf( ap_name, "\"%s\",", ap_data[i].ssid);
+        sprintf( ap_name, "\"%s\"", ap_data[i].ssid);
         size_t ssid_len = strlen(ap_name);
 
         memcpy(  aps_ptr, ap_name, ssid_len );
@@ -216,14 +249,19 @@ static esp_err_t find_ap_handler( httpd_req_t *req )
 
         aps_ptr += ssid_len;
 
+        if ( i < (*ap_count-1) )
+        {
+            memcpy(  aps_ptr, ",", ssid_len );
+            aps_ptr += 1; // todo: add too ssid_len
+        }
+
         total_ssid_len += ssid_len;
     }
-
     aps_ptr = "\0";
 
     char *response = malloc(sizeof(char) * (total_ssid_len + 256));
 
-    sprintf(response, "{\"data\":{\"num_ap\": %d, \"aps\": {%s}}, \"status\":{\"flag\":\"success\", \"message\":\"List of APs\"}}",
+    sprintf(response, "{\"data\":{\"num_ap\": %d, \"aps\": [%s]}, \"status\":{\"flag\":\"success\", \"message\":\"List of APs\"}}",
         *scan_ap_count,
         aps
     );
@@ -258,9 +296,9 @@ static httpd_uri_t uri_get_config = {
 };
 
 static httpd_uri_t uri_factory_reset = {
-    .uri       = "/reset",
+    .uri       = "/factory_reset",
     .method    = HTTP_GET,
-    .handler   = get_reset_handler,
+    .handler   = get_factory_reset_handler,
     .user_ctx  = NULL
 };
 
@@ -270,7 +308,6 @@ static httpd_uri_t uri_find_ap = {
     .handler   = find_ap_handler,
     .user_ctx  = NULL
 };
-
 
 httpd_handle_t init_webserver( void )
 {
