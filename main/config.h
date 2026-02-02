@@ -24,5 +24,6 @@ void config_set_sta_passphrase( const char *passphrase );
 
 void config_set_server_initialized( void );
 void config_set_server_adress( const char *adress );
+bool device_initialized( void );
 
 #endif // CONFIG_H

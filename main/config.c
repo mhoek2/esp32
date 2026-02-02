@@ -45,6 +45,11 @@ void config_set_server_adress( const char *adress )
     memcpy( &config.server_address, adress, sizeof(config.server_address) );
 }
 
+bool device_initialized( void )
+{
+    return (bool)(config.sta_initialized && config.server_initialized);
+}
+
 esp_err_t set_factory_config( void )
 {
     // fill local config sturct
@@ -62,9 +67,9 @@ esp_err_t set_factory_config( void )
 
 esp_err_t write_config( void )
 {
-    // create json equivilant
-    char json_config[256] = { 0 };
-    sprintf( json_config, "{\"sta_initialized\": %s, \"sta_ssid\":\"%s\", \"sta_passphrase\":\"%s\", \"server_initialized\":\"%s\", \"server_address\":\"%s\"}", 
+    char *json_config = heap_caps_malloc( 1024, MALLOC_CAP_8BIT );
+
+    snprintf( json_config, 1024, "{\"sta_initialized\": %s, \"sta_ssid\":\"%s\", \"sta_passphrase\":\"%s\", \"server_initialized\":%s, \"server_address\":\"%s\"}", 
         false_true[config.sta_initialized], 
         config.sta_ssid, 
         config.sta_passphrase,
@@ -80,7 +85,8 @@ esp_err_t write_config( void )
 
     fputs(json_config, f);
     fclose(f);
-
+    heap_caps_free(json_config);
+    
     return ESP_OK;   
 }
 

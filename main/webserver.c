@@ -25,7 +25,7 @@ static const char *webpages[3] = {
 static const char *get_root_html_path( config_t *config )
 {
     // get the html path based on current configuration
-    // first-boot:      sta setup
+    // initial-state:   sta setup
     // sta-set:         server setup
     // server-set:      overview page
 
@@ -125,9 +125,12 @@ static esp_err_t xhr_set_server_ip( httpd_req_t *req, char *buffer )
     
     ESP_LOGI(TAG, "Set server ip: %s", server_ip);
 
-    sprintf(response, "{\"data\":{\"server_ip\":\"%s\"}, \"status\":{\"flag\":\"success\", \"message\":\"Set the server IP\"}}", server_ip );
+    snprintf(response, sizeof(response), "{\"data\":{\"server_ip\":\"%s\"}, \"status\":{\"flag\":\"success\", \"message\":\"Set the server IP\"}}", server_ip );
     httpd_resp_set_type(req,"application/json");
     httpd_resp_send(req, response, strlen(response)); 
+
+    // reboot the device, so AP changed take affect
+    queue_reboot();
 
     return ESP_OK;
 }
@@ -181,11 +184,11 @@ static esp_err_t get_config_handler( httpd_req_t *req )
 {
     static const char *false_true[] = {"false", "true"};
 
-    char json_config[256] = { 0 };
+    char *json_config = heap_caps_malloc( 1024, MALLOC_CAP_8BIT );
 
     config_t *config = get_config();
 
-    sprintf( json_config, "{\"sta_initialized\": %s, \"sta_ssid\":\"%s\", \"sta_passphrase\":\"%s\", \"server_initialized\": %s, \"server_address\":\"%s\"}", 
+    snprintf( json_config, 1024, "{\"sta_initialized\": %s, \"sta_ssid\":\"%s\", \"sta_passphrase\":\"%s\", \"server_initialized\": %s, \"server_address\":\"%s\"}", 
         false_true[config->sta_initialized], 
         config->sta_ssid, 
         config->sta_passphrase,
@@ -195,7 +198,8 @@ static esp_err_t get_config_handler( httpd_req_t *req )
 
     httpd_resp_set_type(req,"application/json");
     httpd_resp_send(req, json_config, strlen(json_config)); 
-    
+    heap_caps_free(json_config);
+        
     ESP_LOGI(TAG, "Request config");
 
     return ESP_OK;
@@ -207,12 +211,28 @@ static esp_err_t get_factory_reset_handler( httpd_req_t *req )
     write_config();
 
     char response[256] = {0};
-    sprintf(response, "{\"data\":{}, \"status\":{\"flag\":\"success\", \"message\":\"Device is reset\"}}" );
+    snprintf(response, sizeof(response), "{\"data\":{}, \"status\":{\"flag\":\"success\", \"message\":\"Device is reset\"}}" );
     
     httpd_resp_set_type(req,"application/json");
     httpd_resp_send(req, response, strlen(response)); 
 
     ESP_LOGI(TAG, "Request Factory Reset");
+
+    // reboot the device
+    queue_reboot();
+
+    return ESP_OK;    
+}
+
+static esp_err_t reboot_device_handler( httpd_req_t *req )
+{
+    char response[256] = {0};
+    snprintf(response, sizeof(response), "{\"data\":{}, \"status\":{\"flag\":\"success\", \"message\":\"Device is rebooting\"}}" );
+    
+    httpd_resp_set_type(req,"application/json");
+    httpd_resp_send(req, response, strlen(response)); 
+
+    ESP_LOGI(TAG, "Reboot device");
 
     // reboot the device
     queue_reboot();
@@ -309,6 +329,13 @@ static httpd_uri_t uri_find_ap = {
     .user_ctx  = NULL
 };
 
+static httpd_uri_t uri_reboot_device = {
+    .uri       = "/reboot_device",
+    .method    = HTTP_GET,
+    .handler   = reboot_device_handler,
+    .user_ctx  = NULL
+};
+
 httpd_handle_t init_webserver( void )
 {
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
@@ -321,6 +348,7 @@ httpd_handle_t init_webserver( void )
         httpd_register_uri_handler( server, &uri_get_config );
         httpd_register_uri_handler( server, &uri_factory_reset );
         httpd_register_uri_handler( server, &uri_find_ap );
+        httpd_register_uri_handler( server, &uri_reboot_device );
     }
 
     return server;

@@ -66,6 +66,7 @@
 
 
 		<div id="factory_reset">Factory reset</div>
+		<div id="reboot_device">Reboot device</div>
 	</div>
 </div>
 
@@ -73,6 +74,28 @@
 	document.getElementById("factory_reset").addEventListener("click", async (e) => {
 		try {
 			const response = await fetch( "factory_reset", {
+				method: "GET"
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error ${response.status}`);
+			}
+
+			const result = await response.json();
+			console.log(result);
+
+			if ( result.status.flag == 'success'){
+				alert("Wait for the device to finish reboothing")
+			}
+		}
+		catch (error) {
+			console.error("Error:", error);
+		}
+	});
+
+	document.getElementById("reboot_device").addEventListener("click", async (e) => {
+		try {
+			const response = await fetch( "reboot_device", {
 				method: "GET"
 			});
 

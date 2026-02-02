@@ -20,6 +20,7 @@ void wifi_ap_disable( void );
 
 void ap_scan_dispatch_async( void );
 
-void update_wifi_mode( bool use_ap );
+bool get_wifi_ap_mode( void );
+void update_wifi_ap_mode( bool use_ap );
 
 #endif // WIFI_H

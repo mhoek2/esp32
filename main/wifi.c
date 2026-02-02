@@ -105,11 +105,13 @@ static void event_handler(void* arg, esp_event_base_t event_base,
                 break;
             }
             case WIFI_EVENT_AP_START: {
-                ESP_LOGI(TAG, "Start AP");
+                wifi_ap_enabled = true;
+                ESP_LOGI( TAG, "enabled AP" );
                 break;
             }
             case WIFI_EVENT_AP_STOP: {
-                ESP_LOGI(TAG, "Stop AP");
+                wifi_ap_enabled = false;
+                ESP_LOGI( TAG, "Disabled AP" );
                 break;
             }
             case WIFI_EVENT_STA_START: {
@@ -202,7 +204,7 @@ void wifi_ap_configure( void )
 
     ESP_ERROR_CHECK( esp_wifi_set_config( WIFI_IF_AP, &wifi_ap_config ) ) ;
 
-    ESP_LOGI( TAG, "Wi-Fi AP started. SSID:%s Password:%s",
+    ESP_LOGI( TAG, "Wi-Fi AP Configured. SSID:%s Password:%s",
              wifi_ap_config.ap.ssid, 
              wifi_ap_config.ap.password
     );    
@@ -210,7 +212,8 @@ void wifi_ap_configure( void )
 
 void wifi_ap_enable( void )
 {
-    ESP_LOGI(TAG, "Enable AP");
+    ESP_LOGI( TAG, "Enabling AP" );
+    ESP_LOGI( TAG, "wifimode: APSTA" );
 
     //ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
@@ -218,23 +221,27 @@ void wifi_ap_enable( void )
 
 void wifi_ap_disable( void )
 {
-    ESP_LOGI(TAG, "Disabe AP");
+    ESP_LOGI( TAG, "Disabling AP" );
+    ESP_LOGI( TAG, "wifimode: STA" );
 
     ESP_ERROR_CHECK( esp_wifi_set_mode ( WIFI_MODE_STA ) );
 }
 
-void update_wifi_mode( bool use_ap )
+bool get_wifi_ap_mode( void )
 {
-    if ( use_ap && !wifi_ap_enabled ) 
+    return wifi_ap_enabled;
+}
+
+void update_wifi_ap_mode( bool use_ap )
+{
+    if ( use_ap ) 
     {
         wifi_ap_enable();
-        wifi_ap_enabled = true;
     } 
 
-    else if ( !use_ap && wifi_ap_enabled ) 
+    else
     {
         wifi_ap_disable();
-        wifi_ap_enabled = false;
     }
 }
 
@@ -264,7 +271,16 @@ void init_wifi( void )
 
     //ESP_ERROR_CHECK( esp_wifi_set_mode( WIFI_MODE_STA ) );
 
-    wifi_ap_enable();
+    // enable AP when in initial-state
+    if (!device_initialized())
+    {
+        config_t *config = get_config();
+
+        ESP_LOGW( TAG, "Device not initialized %d %d", config->sta_initialized, config->server_initialized );
+    }
+
+    update_wifi_ap_mode( true );
+
     wifi_ap_configure();
     wifi_sta_configure();
     
