@@ -19,6 +19,8 @@ $routes->get(	'download/(:any)',	'DownloadController::index/$1', 		['as' => 'fro
 
 $routes->get(	'/hw_info',			'HardwareInfo::index',					['as' => 'hw_info', 'filter' => \App\Filters\AuthFilterSession::class]);
 
+$routes->post(	'/register_device',	'DeviceControler::register',			['as' => 'register_device']);
+
 /**
  * admin
  */
