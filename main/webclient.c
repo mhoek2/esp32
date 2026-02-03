@@ -15,7 +15,7 @@
 #define URL_FORMAT "http://%s/windowstate/public/%s"
 
 static const char *TAG = "webclient";
-static char mac_str[18];
+static char mac_address[18];
 
 // register device
 static esp_timer_handle_t register_device_timer;
@@ -27,9 +27,21 @@ typedef enum {
 
 typedef struct {
     request_id_t    request_id;
+    char            url[128];
+    char            payload[128];
     esp_err_t       (*on_response)(esp_http_client_event_t *e);
-    void            (*retry)(void);
+    void            (*do_retry)(void);
 } http_request_ctx_t;
+
+static void set_mac_address( void )
+{
+    uint8_t mac[6];
+
+    esp_read_mac( mac, ESP_MAC_WIFI_STA );
+ 
+    snprintf( mac_address, sizeof(mac_address), "%02X:%02X:%02X:%02X:%02X:%02X",
+             mac[0], mac[1], mac[2], mac[3], mac[4], mac[5] );
+}
 
 static esp_err_t http_event_handler( esp_http_client_event_t *event )
 {
@@ -44,36 +56,38 @@ static esp_err_t http_event_handler( esp_http_client_event_t *event )
     return ESP_OK;
 }
 
-static esp_err_t http_send_post( const char *url, const char *payload, http_request_ctx_t *ctx )
+static esp_err_t http_send_post( http_request_ctx_t *ctx )
 {
     esp_http_client_config_t http_cfg = {
-        .url = url,
-        .method = HTTP_METHOD_POST,
-        .event_handler = http_event_handler,
-        .user_data = (void*)ctx,
+        .url            = ctx->url,
+        .method         = HTTP_METHOD_POST,
+        .event_handler  = http_event_handler,
+        .user_data      = (void*)ctx,
     };
 
-    ESP_LOGW( TAG, "POST %s", url );
-    ESP_LOGW( TAG, "Payload: %s", payload );
+    ESP_LOGW( TAG, "POST %s", ctx->url );
+    ESP_LOGW( TAG, "Payload: %s", ctx->payload );
 
     esp_http_client_handle_t client = esp_http_client_init(&http_cfg);
 
     esp_http_client_set_header(client, "Content-Type", "application/json");
-    esp_http_client_set_post_field(client, payload, strlen(payload));
+    esp_http_client_set_post_field(client, ctx->payload, strlen(ctx->payload));
 
     esp_err_t err = esp_http_client_perform(client);
-    if (err == ESP_OK) {
+    if ( err == ESP_OK ) {
         ESP_LOGI(TAG, "HTTP POST Status = %d, content_length = %lld",
                  esp_http_client_get_status_code(client),
                  esp_http_client_get_content_length(client));
     } 
+
     else {
         ESP_LOGE(TAG, "HTTP POST request failed: %s", esp_err_to_name(err));
 
-        if ( ctx && ctx->retry )
+        // retry if ptr is set
+        if ( ctx && ctx->do_retry )
         {
             ESP_LOGE( TAG, "Retry .." );
-            ctx->retry();
+            ctx->do_retry();
         }
     }
 
@@ -83,6 +97,11 @@ static esp_err_t http_send_post( const char *url, const char *payload, http_requ
 }
 
 // register device
+bool webclient_is_device_registered( void )
+{
+    return device_registered;
+}
+
 static esp_err_t register_device_response( esp_http_client_event_t *event )
 {
     cJSON *json_config;
@@ -100,9 +119,9 @@ static esp_err_t register_device_response( esp_http_client_event_t *event )
     }
 
     ESP_LOGW( TAG, "Registered: %.*s", event->data_len, (char *)event->data );
-    ESP_LOGW( TAG, "is_registered: %d", (int)device_registered );
+    ESP_LOGW( TAG, "is_registered: %d", (int)webclient_is_device_registered() );
 
-    if ( !device_registered )
+    if ( !webclient_is_device_registered() )
     {
         // retry
         webclient_register_device();
@@ -115,24 +134,27 @@ static void register_device( void *arg )
 {
     config_t *config = get_config();
 
-    char url[256];
-    char payload[128];
-
-    snprintf( url, sizeof(url), URL_FORMAT, config->server_address, "register_device" );
-    snprintf( payload, sizeof(payload), "{\"mac\":\"%s\",\"protocol\":%d}", mac_str, DV_PROTOCOL );
-   
     static http_request_ctx_t ctx = {
         .request_id     = REQUEST_REGISTER,
         .on_response    = register_device_response,
-        .retry          = webclient_register_device
+        .do_retry       = webclient_register_device
     };
- 
-    http_send_post( url, payload, &ctx );
+
+    snprintf( ctx.url, sizeof(ctx.url), URL_FORMAT, config->server_address, "register_device" );
+    snprintf( ctx.payload, sizeof(ctx.payload), "{\"mac\":\"%s\",\"protocol\":%d}", mac_address, DV_PROTOCOL );
+
+    http_send_post( &ctx );
 }
 
 void webclient_register_device( void )
 {
-    esp_timer_start_once( register_device_timer, 5000 * 1000 );
+    // dispatch a delayed web-request, calling register_device.
+    // if the request fails, retry.
+
+    if ( !device_initialized() )
+        return;
+
+    esp_timer_start_once( register_device_timer, REGISTER_DEVICE_AFTER );
 }
 
 static void init_register_device_timer( void )
@@ -145,20 +167,9 @@ static void init_register_device_timer( void )
     ESP_ERROR_CHECK( esp_timer_create( &args, &register_device_timer ) );
 }
 
-void validate_server( void )
-{
-    // not implemented
-}
-
 void init_webclient( void )
 {
-    uint8_t mac[6];
-
-    esp_read_mac( mac, ESP_MAC_WIFI_STA );
-    snprintf( mac_str, sizeof(mac_str),
-             "%02X:%02X:%02X:%02X:%02X:%02X",
-             mac[0], mac[1], mac[2], mac[3], mac[4], mac[5] );
-
+    set_mac_address();
 
     init_register_device_timer();
 }

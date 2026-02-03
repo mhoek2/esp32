@@ -3,6 +3,7 @@
 
 void init_webclient( void );
 
+bool webclient_is_device_registered( void );
 void webclient_register_device( void );
 
 #endif // WEBCLIENT_H

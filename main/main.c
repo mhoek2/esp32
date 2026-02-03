@@ -9,10 +9,6 @@
 #include <esp_log.h>
 #include "esp_timer.h"
 
-// 60 * 5 = 5 minutes
-#define FACTORY_RESET_AFTER to_ms( 10 )
-#define DISABLE_AP_AFTER to_ms( 60 * 5 )
-
 static const char *TAG = "main";
 static int interval = 3000;
 
@@ -78,7 +74,7 @@ void init_buttons(void)
     gpio_isr_handler_add( BUTTON_GPIO, button_isr_handler, NULL );
 }
 
-static uint64_t to_ms( int32_t seconds ) 
+uint64_t to_ms( int32_t seconds ) 
 {
     return seconds * 1000000.0;
 }
@@ -126,7 +122,7 @@ void app_main( void )
         if ( button_6_event )
         {
             webclient_register_device();
-            
+
             ESP_LOGW( TAG, "pressed button 6" );
             button_6_event = false; 
         }
