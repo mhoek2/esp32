@@ -67,10 +67,33 @@
 
 		<div id="factory_reset">Factory reset</div>
 		<div id="reboot_device">Reboot device</div>
+		<div id="disable_ap">Disable AP</div>
 	</div>
 </div>
 
 <script>
+	document.getElementById("disable_ap").addEventListener("click", async (e) => {
+		try {
+			const response = await fetch( "disable_ap", {
+				method: "GET"
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error ${response.status}`);
+			}
+
+			const result = await response.json();
+			console.log(result);
+
+			if ( result.status.flag == 'success'){
+				alert("Access point disabled")
+			}
+		}
+		catch (error) {
+			console.error("Error:", error);
+		}
+	});
+
 	document.getElementById("factory_reset").addEventListener("click", async (e) => {
 		try {
 			const response = await fetch( "factory_reset", {

@@ -23,4 +23,6 @@ void ap_scan_dispatch_async( void );
 bool get_wifi_ap_mode( void );
 void update_wifi_ap_mode( bool use_ap );
 
+void queue_wifi_connect( void );
+
 #endif // WIFI_H

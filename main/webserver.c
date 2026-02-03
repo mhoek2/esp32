@@ -240,6 +240,21 @@ static esp_err_t reboot_device_handler( httpd_req_t *req )
     return ESP_OK;    
 }
 
+static esp_err_t disable_ap_handler( httpd_req_t *req )
+{
+    update_wifi_ap_mode( false );
+    
+    char response[256] = {0};
+    snprintf(response, sizeof(response), "{\"data\":{}, \"status\":{\"flag\":\"success\", \"message\":\"AP is disabling\"}}" );
+    
+    httpd_resp_set_type(req,"application/json");
+    httpd_resp_send(req, response, strlen(response)); 
+
+    ESP_LOGI(TAG, "Manually disabling AP");
+
+    return ESP_OK;    
+}
+
 static esp_err_t find_ap_handler( httpd_req_t *req )
 {
 
@@ -336,6 +351,13 @@ static httpd_uri_t uri_reboot_device = {
     .user_ctx  = NULL
 };
 
+static httpd_uri_t uri_disable_ap = {
+    .uri       = "/disable_ap",
+    .method    = HTTP_GET,
+    .handler   = disable_ap_handler,
+    .user_ctx  = NULL
+};
+
 httpd_handle_t init_webserver( void )
 {
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
@@ -349,6 +371,7 @@ httpd_handle_t init_webserver( void )
         httpd_register_uri_handler( server, &uri_factory_reset );
         httpd_register_uri_handler( server, &uri_find_ap );
         httpd_register_uri_handler( server, &uri_reboot_device );
+        httpd_register_uri_handler( server, &uri_disable_ap );
     }
 
     return server;

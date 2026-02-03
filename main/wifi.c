@@ -6,6 +6,7 @@
 #include <esp_wifi.h>
 #include <esp_event.h>
 #include <esp_log.h>
+#include "esp_timer.h"
 
 #include <nvs_flash.h>
 
@@ -24,6 +25,7 @@ static uint16_t         scan_ap_count = 0;
 static wifi_ap_list_t   *scan_ap_data;
 static bool             scanning_ap = false;
 
+
 static bool wifi_ap_enabled = false;
 
 uint16_t *get_scan_ap_count( void )
@@ -34,6 +36,34 @@ uint16_t *get_scan_ap_count( void )
 wifi_ap_list_t *get_scan_ap_data( void )
 {
     return scan_ap_data;
+}
+
+// wifi connect
+static esp_timer_handle_t wifi_connect_timer;
+static void wifi_connect( void *arg )
+{
+    config_t *config = get_config();
+
+    ESP_LOGW( TAG, "Wi-Fi STA Connecting to: SSID:%s Password:%s",
+             config->sta_ssid, 
+             config->sta_passphrase 
+    );
+    esp_wifi_connect();
+}
+
+void queue_wifi_connect( void )
+{
+    esp_timer_start_once( wifi_connect_timer, 5000 * 1000 );
+}
+
+void init_wifi_connnect_timer( void )
+{
+    const esp_timer_create_args_t args = {
+        .callback   = &wifi_connect,
+        .name       = "wifi_connect"
+    };
+
+    ESP_ERROR_CHECK( esp_timer_create( &args, &wifi_connect_timer ) );
 }
 
 // https://esp32.com/viewtopic.php?t=10619#p45808
@@ -55,14 +85,26 @@ static void event_handler(void* arg, esp_event_base_t event_base,
         ESP_LOGI(TAG, "event triggerd: %d", event_id );
 
         switch(event_id) {
+            case WIFI_EVENT_STA_CONNECTED: {
+                wifi_event_sta_connected_t* event = (wifi_event_sta_connected_t*) event_data;
+                ESP_LOGI(TAG, "STA connected, AID=%d", event->aid);
+                break;
+            }
+            case WIFI_EVENT_STA_DISCONNECTED: {
+                wifi_event_sta_disconnected_t* event = (wifi_event_sta_disconnected_t*) event_data;
+                ESP_LOGI(TAG, "STA disconnected, reason=%d", event->reason);
+
+                queue_wifi_connect();
+                break;
+            }
             case WIFI_EVENT_AP_STACONNECTED: {
                 wifi_event_ap_staconnected_t* event = (wifi_event_ap_staconnected_t*) event_data;
-                ESP_LOGI(TAG, "Station connected, AID=%d", event->aid);
+                ESP_LOGI(TAG, "AP connected, AID=%d", event->aid);
                 break;
             }
             case WIFI_EVENT_AP_STADISCONNECTED: {
                 wifi_event_ap_stadisconnected_t* event = (wifi_event_ap_stadisconnected_t*) event_data;
-                ESP_LOGI(TAG, "Station disconnected, AID=%d", event->aid);
+                ESP_LOGI(TAG, "AP disconnected, AID=%d", event->aid);
                 break;
             }
             case WIFI_EVENT_SCAN_DONE: {
@@ -179,7 +221,14 @@ void wifi_sta_configure( void )
     ESP_LOGI( TAG, "Wi-Fi STA. SSID:%s Password:%s",
              wifi_sta_config.sta.ssid, 
              wifi_sta_config.sta.password 
-    );    
+    );
+
+    init_wifi_connnect_timer();
+
+    if ( config->sta_initialized )
+    {
+        queue_wifi_connect();
+    }
 }
 
 void wifi_ap_configure( void )
@@ -271,14 +320,7 @@ void init_wifi( void )
 
     //ESP_ERROR_CHECK( esp_wifi_set_mode( WIFI_MODE_STA ) );
 
-    // enable AP when in initial-state
-    if (!device_initialized())
-    {
-        config_t *config = get_config();
-
-        ESP_LOGW( TAG, "Device not initialized %d %d", config->sta_initialized, config->server_initialized );
-    }
-
+    // always start with AP enabled
     update_wifi_ap_mode( true );
 
     wifi_ap_configure();
@@ -286,7 +328,7 @@ void init_wifi( void )
     
     //ESP_ERROR_CHECK( esp_wifi_set_country( &country ) );
     ESP_ERROR_CHECK( esp_wifi_start() );
-    ESP_ERROR_CHECK( esp_wifi_set_ps( WIFI_PS_NONE ) );                                               
+    ESP_ERROR_CHECK( esp_wifi_set_ps( WIFI_PS_NONE ) );                                         
 }
 
 void destroy_wifi( void )
