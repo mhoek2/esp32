@@ -8,12 +8,9 @@
 #include "sdkconfig.h"
 #include <string.h>
 
-// common
-void set_interval( int speed );
+#define DV_PROTOCOL 27
 
 // queue
 void queue_reboot( void );
-
-float get_temp( void );
 
 #endif // COMMON_H

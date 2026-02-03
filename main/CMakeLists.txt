@@ -1,4 +1,4 @@
-file(GLOB SRCS "wifi.c" "config.c" "filesystem.c" "main.c" "webserver.c" "*.c")
+file(GLOB SRCS "webclient.c" "wifi.c" "config.c" "filesystem.c" "main.c" "webserver.c" "*.c")
 idf_component_register(
     SRCS ${SRCS} 
     INCLUDE_DIRS "."

@@ -2,6 +2,7 @@
 #include "config.h"
 #include "wifi.h"
 #include "webserver.h"
+#include "webclient.h"
 #include "filesystem.h"
 #include <nvs_flash.h>
 
@@ -95,6 +96,7 @@ void app_main( void )
 
     init_wifi();
     init_webserver();
+    init_webclient();
 
     init_buttons();
     init_reboot_timer();
@@ -103,6 +105,7 @@ void app_main( void )
 
     while ( 1 ) 
     {
+#if 0
         if ( button_6_event )
         {
             press_time = esp_timer_get_time(); // microseconds
@@ -119,6 +122,15 @@ void app_main( void )
             ESP_LOGW( TAG, "pressed button 6" );
             button_6_event = false;
         }
+#else
+        if ( button_6_event )
+        {
+            webclient_register_device();
+            
+            ESP_LOGW( TAG, "pressed button 6" );
+            button_6_event = false; 
+        }
+#endif
    
         // factory reset?
         if ( gpio_get_level( BUTTON_GPIO ) == 0 ) 

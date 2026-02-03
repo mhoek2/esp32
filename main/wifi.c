@@ -1,6 +1,7 @@
 #include "common.h"
 #include "config.h"
 #include "wifi.h"
+#include "webclient.h"
 
 #include <freertos/event_groups.h>
 #include <esp_wifi.h>
@@ -88,6 +89,8 @@ static void event_handler(void* arg, esp_event_base_t event_base,
             case WIFI_EVENT_STA_CONNECTED: {
                 wifi_event_sta_connected_t* event = (wifi_event_sta_connected_t*) event_data;
                 ESP_LOGI(TAG, "STA connected, AID=%d", event->aid);
+
+                webclient_register_device();
                 break;
             }
             case WIFI_EVENT_STA_DISCONNECTED: {
