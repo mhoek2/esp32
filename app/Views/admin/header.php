@@ -18,20 +18,28 @@
     <link rel="stylesheet" href="<?=base_url('assets/css/backend_entries.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/css/meeting.css')?>">
 	<link rel="stylesheet" href="<?=base_url('assets/css/upload.css')?>">
-	
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    
+
     <?=service('text_editor')->load_style()?>
 
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.js"
-            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-            crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-	
-	<link rel="stylesheet" href="<?=base_url('assets/datetimepicker/jquery.datetimepicker.min.css')?>">
-	<script src="<?=base_url('assets/datetimepicker/jquery.datetimepicker.full.js')?>"></script>
-	
+<?php 
+	$local_assets = true;
+	if ( $local_assets ) {
+?>
+		<link rel="stylesheet" href="<?=base_url('assets/vendor/jquery-ui.css')?>">
+		<link rel="stylesheet" href="<?=base_url('assets/vendor/ckeditor5.css')?>">
+		<link rel="stylesheet" href="<?=base_url('assets/vendor/fontawesome_all.min.css')?>">
+		<script src="<?=base_url('assets/vendor/jquery-3.7.1.js')?>"></script>
+		<script src="<?=base_url('assets/vendor/jquery-ui.min.js')?>"></script>
+<?php } else { ?>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+		<script src="https://code.jquery.com/jquery-3.7.1.js"
+				integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+				crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>	
+<?php } ?>
+		<link rel="stylesheet" href="<?=base_url('assets/datetimepicker/jquery.datetimepicker.min.css')?>">
+		<script src="<?=base_url('assets/datetimepicker/jquery.datetimepicker.full.js')?>"></script>
 </head>
 <body>
 

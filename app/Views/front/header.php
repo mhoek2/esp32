@@ -13,21 +13,31 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="<?=base_url('favicon-16x16.png')?>">
 	<link rel="manifest" href="<?=base_url('site.webmanifest')?>">
 	
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap" rel="stylesheet">
 	
     <link rel="stylesheet" href="<?=base_url('assets/css/header.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/css/frontend.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/css/upload.css')?>">
 
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css">
-    
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<?php 
+	$local_assets = true;
+	if ( $local_assets ) {
+?>
+		<link rel="stylesheet" href="<?=base_url('assets/vendor/ckeditor5.css')?>">
+		<link rel="stylesheet" href="<?=base_url('assets/vendor/fontawesome_all.min.css')?>">
+		<script src="<?=base_url('assets/vendor/jquery-3.7.1.js')?>"></script>
+<?php } else { ?>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap" rel="stylesheet">
 	
-    <script src="https://code.jquery.com/jquery-3.7.1.js"
-            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-            crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+		<script src="https://code.jquery.com/jquery-3.7.1.js"
+				integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+				crossorigin="anonymous"></script>
+<?php } ?>
+	
+
 </head>
 <body>
 

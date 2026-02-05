@@ -5,11 +5,65 @@ use App\Controllers\BaseController;
 
 use App\Models\Devices;
 
+// Protocols
+use App\Models\Protocol27;
+
 class DeviceControler extends BaseController
 {
     public function __construct() {
 		$this->deviceModel = new Devices();
+		$this->protocol_27 = new Protocol27();
     }	
+	
+	public function receive()
+	{
+		// encode the received payload
+		$json = file_get_contents('php://input');
+		$data = json_decode($json, true);
+		$rows = [];
+		
+		if ( json_last_error() === JSON_ERROR_NONE )
+		{
+			$valid_data = false;
+			$keys = array_keys($data);
+			
+			// check if received data is valid
+			if ( in_array("mac", $keys) && in_array("protocol", $keys) )
+			{
+				$valid_data = true;
+
+				$rows = $this->deviceModel->where([
+					'mac' => $data['mac']
+				])->find();
+			}
+			
+			// device is valid
+			if ( $valid_data && !empty($rows) )
+			{
+				// swtich by protocol later..
+				// if protocol == 27
+				// in_array("state", $keys)
+				$state = $data['state'];
+					
+				$rows = $this->protocol_27->replace([ 
+					'mac' 		=> $data['mac'], 
+					'state' 	=> $state
+					]
+				);
+
+				return $this->response->setJSON([
+					"recv_state" 	=> $state,
+					"valid_data" 	=> $valid_data,
+					'status'		=> true,
+				]);
+				// endif
+			}
+		}
+		
+		return $this->response->setJSON([
+			'status'	=> false,
+		]);
+	}
 	
     public function register()
     {
