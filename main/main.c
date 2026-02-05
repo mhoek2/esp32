@@ -15,11 +15,40 @@ static int interval = 3000;
 // simple queue
 static esp_timer_handle_t reboot_timer;
 
-// gpio
+// gpio button
 #define BUTTON_GPIO GPIO_NUM_6
 volatile bool button_6_event = false;
 int64_t press_time = 0;
 int64_t ap_enabled_time = 0;
+
+// gpio mc38 magnetic sensor
+#define MC38_GPIO GPIO_NUM_5
+volatile bool mc38_5_event = false;
+int window_state = -1; // 0 = closed, 1 = open
+int get_window_state( void )
+{
+    return window_state;
+}
+static esp_err_t set_window_state( void )
+{
+    window_state = gpio_get_level( MC38_GPIO );
+
+    if ( window_state == 1 )
+        ESP_LOGW( TAG, "sensor open" );
+
+    else
+        ESP_LOGW( TAG, "sensor closed" );
+
+    return ESP_OK; 
+}
+
+static esp_err_t update_window_state( void )
+{
+    set_window_state();
+
+    webclient_update_windowstate();
+    return ESP_OK;   
+}
 
 static void reboot_device(void *arg)
 {
@@ -74,6 +103,27 @@ void init_buttons(void)
     gpio_isr_handler_add( BUTTON_GPIO, button_isr_handler, NULL );
 }
 
+static void IRAM_ATTR mc38_isr_handler(void *arg)
+{
+    mc38_5_event = true;
+}
+
+void init_mc38_sensor(void)
+{
+    gpio_config_t io_conf = {
+        .pin_bit_mask   = 1ULL << MC38_GPIO,
+        .mode           = GPIO_MODE_INPUT,
+        .pull_up_en     = GPIO_PULLUP_ENABLE,
+        .pull_down_en   = GPIO_PULLDOWN_DISABLE,
+        .intr_type      = GPIO_INTR_POSEDGE   // door opens
+    };
+
+    gpio_config(&io_conf);
+
+    gpio_install_isr_service(0);
+    gpio_isr_handler_add(MC38_GPIO, mc38_isr_handler, NULL);
+}
+
 uint64_t to_ms( int32_t seconds ) 
 {
     return seconds * 1000000.0;
@@ -95,9 +145,11 @@ void app_main( void )
     init_webclient();
 
     init_buttons();
+    init_mc38_sensor();
     init_reboot_timer();
     
-    //config_t *config = get_config();
+    // initial scan for sensor state
+    set_window_state();
 
     while ( 1 ) 
     {
@@ -121,12 +173,20 @@ void app_main( void )
 #else
         if ( button_6_event )
         {
-            webclient_register_device();
+            //webclient_register_device();
+            webclient_update_windowstate();
 
             ESP_LOGW( TAG, "pressed button 6" );
             button_6_event = false; 
         }
 #endif
+
+        if ( mc38_5_event )
+        {
+            update_window_state();
+
+            mc38_5_event = false;
+        }
    
         // factory reset?
         if ( gpio_get_level( BUTTON_GPIO ) == 0 ) 

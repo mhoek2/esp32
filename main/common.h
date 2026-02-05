@@ -19,9 +19,14 @@
 // on fail, retry
 #define REGISTER_DEVICE_AFTER   to_ms( 5 )
 
+// update window state
+#define UPDATE_WINDOWSTATE_AFTER   to_ms( 5 )
+
 uint64_t to_ms( int32_t seconds );
 
 // queue
 void queue_reboot( void );
+
+int get_window_state();
 
 #endif // COMMON_H

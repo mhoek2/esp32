@@ -91,6 +91,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
                 ESP_LOGI(TAG, "STA connected, AID=%d", event->aid);
 
                 webclient_register_device();
+                webclient_update_windowstate();
                 break;
             }
             case WIFI_EVENT_STA_DISCONNECTED: {

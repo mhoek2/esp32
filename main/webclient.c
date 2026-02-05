@@ -21,8 +21,13 @@ static char mac_address[18];
 static esp_timer_handle_t register_device_timer;
 static bool device_registered = false;
 
+
+static esp_timer_handle_t update_window_state_timer;
+
+
 typedef enum {
-    REQUEST_REGISTER = 1,
+    REQUEST_REGISTER            = 1,
+    REQUEST_UPDATE_WINDOWSTATE  = 2,
 } request_id_t;
 
 typedef struct {
@@ -167,9 +172,93 @@ static void init_register_device_timer( void )
     ESP_ERROR_CHECK( esp_timer_create( &args, &register_device_timer ) );
 }
 
+
+
+
+// window state
+static esp_err_t update_window_response( esp_http_client_event_t *event )
+{
+    cJSON *json_config;
+
+    json_config = cJSON_Parse( (char *)event->data );
+
+    if ( json_config == NULL ) 
+    {
+        ESP_LOGI(TAG, "invalid JSON config");
+        return ESP_FAIL;
+    }
+
+    int recv_state = -1;
+
+    ESP_LOGW( TAG, "Update response: %.*s", event->data_len, (char *)event->data );
+	if ( cJSON_GetObjectItem( json_config, "recv_state" ) ) {
+		recv_state = cJSON_GetObjectItem( json_config, "recv_state" )->valueint;
+    }
+
+    // check if recv state matches current state, 
+    // else dispatch new request
+    if ( recv_state != get_window_state() )
+    {
+        webclient_update_windowstate();
+        ESP_LOGW( TAG, "Sent/Recveived state did not match current state, RETRY!" );
+    }
+
+    return ESP_OK;
+}
+
+static void update_window_state( void *arg )
+{
+    config_t *config = get_config();
+
+    static http_request_ctx_t ctx = {
+        .request_id     = REQUEST_UPDATE_WINDOWSTATE,
+        .on_response    = update_window_response,
+        .do_retry       = webclient_update_windowstate
+    };
+
+    int state = get_window_state();
+    if ( state < 0 )
+    {
+        ESP_LOGE( TAG, "Sensor reads -1, this is invalid! Sensor fault. RETRY!" );
+        webclient_update_windowstate();
+    }
+
+    snprintf( ctx.url, sizeof(ctx.url), URL_FORMAT, config->server_address, "receive_device" );
+    snprintf( ctx.payload, sizeof(ctx.payload), "{\"mac\":\"%s\",\"protocol\":%d, \"state\":%d}", 
+        mac_address, 
+        DV_PROTOCOL,
+        state
+    );
+
+    http_send_post( &ctx );   
+}
+
+void webclient_update_windowstate( void )
+{
+    // dispatch a delayed web-request, calling update_windowstate.
+    // if the request fails, retry.
+
+    if ( !device_initialized() )
+        return;
+
+    esp_timer_start_once( update_window_state_timer, UPDATE_WINDOWSTATE_AFTER );
+}
+
+static void init_update_windowstate_timer( void )
+{
+    const esp_timer_create_args_t args = {
+        .callback   = &update_window_state,
+        .name       = "webclient_update_windowstate"
+    };
+
+    ESP_ERROR_CHECK( esp_timer_create( &args, &update_window_state_timer ) );
+}
+
+// global
 void init_webclient( void )
 {
     set_mac_address();
 
     init_register_device_timer();
+    init_update_windowstate_timer();
 }
