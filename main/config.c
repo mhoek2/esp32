@@ -27,12 +27,16 @@ void config_set_sta_initialized( void )
 
 void config_set_sta_ssid( const char *ssid )
 {
-    memcpy( &config.sta_ssid, ssid, sizeof(config.sta_ssid) );
+    //memcpy( &config.sta_ssid, ssid, sizeof(config.sta_ssid) );
+    strlcpy( config.sta_ssid, ssid, sizeof(config.sta_ssid));
+    ESP_LOGI(TAG, "RAW ssid [%d]: '%s'", strlen(ssid), ssid);
 }
 
 void config_set_sta_passphrase( const char *passphrase )
 {
-    memcpy( &config.sta_passphrase, passphrase, sizeof(config.sta_passphrase) );
+    //memcpy( &config.sta_passphrase, passphrase, sizeof(config.sta_passphrase) );
+    strlcpy( config.sta_passphrase, passphrase, sizeof(config.sta_passphrase));
+    ESP_LOGI(TAG, "RAW pass [%d]: '%s'", strlen(passphrase), passphrase);
 }
 
 void config_set_server_initialized( void )
@@ -56,11 +60,11 @@ esp_err_t set_factory_config( void )
     memset( &config, 0, sizeof(config) );
 
     config.sta_initialized = false;
-    config_set_sta_ssid("ESP32 Wifi");
-    config_set_sta_passphrase("12345678");
+    config_set_sta_ssid("ASUS");
+    config_set_sta_passphrase("1357913579");
 
     config.server_initialized = false;
-    config_set_server_adress("127.0.0.1");
+    config_set_server_adress("192.168.1.26");
 
     return ESP_OK;
 }

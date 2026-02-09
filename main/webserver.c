@@ -12,9 +12,163 @@
 
 static const char *TAG = "webserver";
 
+#define MAX_SSID_LENGTH     32
+#define MAX_PASS_LENGTH     64
+
 #define PAGE_STA_SETUP      0
 #define PAGE_SERVER_SETUP   1
 #define PAGE_OVERVIEW       2
+
+/* Type of Escape algorithms to be used */
+#define NGX_ESCAPE_URI            (0)
+#define NGX_ESCAPE_ARGS           (1)
+#define NGX_ESCAPE_URI_COMPONENT  (2)
+#define NGX_ESCAPE_HTML           (3)
+#define NGX_ESCAPE_REFRESH        (4)
+#define NGX_ESCAPE_MEMCACHED      (5)
+#define NGX_ESCAPE_MAIL_AUTH      (6)
+
+/* Type of Unescape algorithms to be used */
+#define NGX_UNESCAPE_URI          (1)
+#define NGX_UNESCAPE_REDIRECT     (2)
+
+void ngx_unescape_uri(u_char **dst, u_char **src, size_t size, unsigned int type)
+{
+    u_char  *d, *s, ch, c, decoded;
+    enum {
+        sw_usual = 0,
+        sw_quoted,
+        sw_quoted_second
+    } state;
+
+    d = *dst;
+    s = *src;
+
+    state = 0;
+    decoded = 0;
+
+    while (size--) {
+
+        ch = *s++;
+
+        switch (state) {
+        case sw_usual:
+            if (ch == '?'
+                    && (type & (NGX_UNESCAPE_URI | NGX_UNESCAPE_REDIRECT))) {
+                *d++ = ch;
+                goto done;
+            }
+
+            if (ch == '%') {
+                state = sw_quoted;
+                break;
+            }
+
+            *d++ = ch;
+            break;
+
+        case sw_quoted:
+
+            if (ch >= '0' && ch <= '9') {
+                decoded = (u_char) (ch - '0');
+                state = sw_quoted_second;
+                break;
+            }
+
+            c = (u_char) (ch | 0x20);
+            if (c >= 'a' && c <= 'f') {
+                decoded = (u_char) (c - 'a' + 10);
+                state = sw_quoted_second;
+                break;
+            }
+
+            /* the invalid quoted character */
+
+            state = sw_usual;
+
+            *d++ = ch;
+
+            break;
+
+        case sw_quoted_second:
+
+            state = sw_usual;
+
+            if (ch >= '0' && ch <= '9') {
+                ch = (u_char) ((decoded << 4) + (ch - '0'));
+
+                if (type & NGX_UNESCAPE_REDIRECT) {
+                    if (ch > '%' && ch < 0x7f) {
+                        *d++ = ch;
+                        break;
+                    }
+
+                    *d++ = '%'; *d++ = *(s - 2); *d++ = *(s - 1);
+
+                    break;
+                }
+
+                *d++ = ch;
+
+                break;
+            }
+
+            c = (u_char) (ch | 0x20);
+            if (c >= 'a' && c <= 'f') {
+                ch = (u_char) ((decoded << 4) + (c - 'a') + 10);
+
+                if (type & NGX_UNESCAPE_URI) {
+                    if (ch == '?') {
+                        *d++ = ch;
+                        goto done;
+                    }
+
+                    *d++ = ch;
+                    break;
+                }
+
+                if (type & NGX_UNESCAPE_REDIRECT) {
+                    if (ch == '?') {
+                        *d++ = ch;
+                        goto done;
+                    }
+
+                    if (ch > '%' && ch < 0x7f) {
+                        *d++ = ch;
+                        break;
+                    }
+
+                    *d++ = '%'; *d++ = *(s - 2); *d++ = *(s - 1);
+                    break;
+                }
+
+                *d++ = ch;
+
+                break;
+            }
+
+            /* the invalid quoted character */
+
+            break;
+        }
+    }
+
+done:
+
+    *dst = d;
+    *src = s;
+}
+
+void example_uri_decode(char *dest, const char *src, size_t len)
+{
+    if (!src || !dest) {
+        return;
+    }
+
+    unsigned char *src_ptr = (unsigned char *)src;
+    unsigned char *dst_ptr = (unsigned char *)dest;
+    ngx_unescape_uri(&dst_ptr, &src_ptr, len, NGX_UNESCAPE_URI);
+}
 
 static const char *webpages[3] = {
     "/spiffs/web/sta_setup.html",
@@ -87,19 +241,24 @@ static esp_err_t xhr_invalid_mode( httpd_req_t *req )
 
 static esp_err_t xhr_set_wifi_sta( httpd_req_t *req, char *buffer )
 {
-    char response[256] = {0};
-    char sta_ssid[32] = {0}; 
-    char sta_passphrase[16] = {0}; 
+    char response[512] = {0};
+    char sta_ssid[MAX_SSID_LENGTH], sta_ssid_decoded[MAX_SSID_LENGTH] = {0}; 
+    char sta_passphrase[MAX_PASS_LENGTH], sta_passphrase_decoded[MAX_PASS_LENGTH] = {0}; 
 
     if (httpd_query_key_value(buffer, "sta_ssid", sta_ssid, sizeof(sta_ssid)) == ESP_OK) {}
-    if (httpd_query_key_value(buffer, "sta_passphrase", sta_passphrase, sizeof(sta_passphrase)) == ESP_OK) {}
+    example_uri_decode(sta_ssid_decoded, sta_ssid, strnlen(sta_ssid, MAX_SSID_LENGTH));
 
-    config_set_sta_ssid( sta_ssid );
-    config_set_sta_passphrase( sta_passphrase );
+    if (httpd_query_key_value(buffer, "sta_passphrase", sta_passphrase, sizeof(sta_passphrase)) == ESP_OK) {}
+    example_uri_decode(sta_passphrase_decoded, sta_passphrase, strnlen(sta_passphrase, MAX_PASS_LENGTH));
+
+    config_set_sta_ssid( sta_ssid_decoded );
+    config_set_sta_passphrase( sta_passphrase_decoded );
     config_set_sta_initialized();
     write_config();
 
-    sprintf(response, "{\"data\":{\"sta_ssid\":\"%s\", \"sta_passphrase\":\"%s\"}, \"status\":{\"flag\":\"success\", \"message\":\"Wifi AP SSID changed, device will reboot now\"}}", sta_ssid, sta_passphrase );
+    sprintf(response, "{\"data\":{\"sta_ssid\":\"%s\", \"sta_passphrase\":\"%s\"}, \"status\":{\"flag\":\"success\", \"message\":\"Wifi AP SSID changed, device will reboot now\"}}", 
+        sta_ssid_decoded, sta_passphrase_decoded 
+    );
     
     httpd_resp_set_type(req,"application/json");
     httpd_resp_send(req, response, strlen(response)); 
@@ -115,17 +274,18 @@ static esp_err_t xhr_set_wifi_sta( httpd_req_t *req, char *buffer )
 static esp_err_t xhr_set_server_ip( httpd_req_t *req, char *buffer )
 {
     char response[256] = {0};
-    char server_ip[32] = {0}; 
+    char server_ip[32], server_ip_decoded[32] = {0}; 
 
     if (httpd_query_key_value(buffer, "server_ip", server_ip, sizeof(server_ip)) == ESP_OK) {}
+    example_uri_decode(server_ip_decoded, server_ip, strnlen(server_ip, 32));
 
-    config_set_server_adress( server_ip );
+    config_set_server_adress( server_ip_decoded );
     config_set_server_initialized();
     write_config();
     
-    ESP_LOGI(TAG, "Set server ip: %s", server_ip);
+    ESP_LOGI(TAG, "Set server ip: %s", server_ip_decoded);
 
-    snprintf(response, sizeof(response), "{\"data\":{\"server_ip\":\"%s\"}, \"status\":{\"flag\":\"success\", \"message\":\"Set the server IP\"}}", server_ip );
+    snprintf(response, sizeof(response), "{\"data\":{\"server_ip\":\"%s\"}, \"status\":{\"flag\":\"success\", \"message\":\"Set the server IP\"}}", server_ip_decoded );
     httpd_resp_set_type(req,"application/json");
     httpd_resp_send(req, response, strlen(response)); 
 
@@ -144,7 +304,7 @@ static esp_err_t xhr_handler( httpd_req_t *req )
     if ( req->content_len <= 0 )
         return esp_state;
 
-    buffer = malloc(req->content_len);
+    buffer = malloc(req->content_len + 32);
     if ( !buffer )
         return esp_state;
 

@@ -17,6 +17,7 @@ esp_err_t read_config( void );
 esp_err_t write_config( void );
 
 esp_err_t set_factory_config( void );
+esp_err_t write_factory_config( void );
 
 void config_set_sta_initialized( void );
 void config_set_sta_ssid( const char *ssid );

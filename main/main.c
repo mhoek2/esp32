@@ -153,7 +153,7 @@ void app_main( void )
 
     while ( 1 ) 
     {
-#if 0
+#if 1
         if ( button_6_event )
         {
             press_time = esp_timer_get_time(); // microseconds
@@ -174,9 +174,9 @@ void app_main( void )
         if ( button_6_event )
         {
             //webclient_register_device();
-            webclient_update_windowstate();
+            //webclient_update_windowstate();
 
-            ESP_LOGW( TAG, "pressed button 6" );
+            ESP_LOGW( TAG, "pressed button 6 (Debug)" );
             button_6_event = false; 
         }
 #endif
@@ -194,6 +194,7 @@ void app_main( void )
             if ( (esp_timer_get_time() - press_time) > FACTORY_RESET_AFTER ) 
             {
                 ESP_LOGW(TAG, "Factory reset (not yet)");
+                write_factory_config();
             }
         }
 

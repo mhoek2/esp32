@@ -11,13 +11,6 @@
 
 #include <nvs_flash.h>
 
-//const char *ap_name = "GreatestWIFI";
-//const char *ap_pass = "12345678";
-//wifi_config_t wifi_ap_config = {0};
-//strncpy((char *)wifi_ap_config.ap.password, ap_pass, sizeof(wifi_ap_config.ap.password));
-//strncpy((char *)wifi_ap_config.ap.ssid, ap_name, sizeof(wifi_ap_config.ap.ssid));
-//wifi_ap_config.ap.ssid_len = strlen(ap_name);
-
 static const char *TAG = "wifi_ap";
 
 #define AP_LIST_MAX 32
@@ -68,8 +61,8 @@ void init_wifi_connnect_timer( void )
 }
 
 // https://esp32.com/viewtopic.php?t=10619#p45808
-#define CONFIG_AP_SSID "GeatestWIFI"
-#define CONFIG_AP_PASS "12345678"
+#define CONFIG_AP_SSID "ESP32-Device"
+#define CONFIG_AP_PASS "1357913579"
 #define CONFIG_AP_CHAN 3
 
 wifi_country_t country = {
