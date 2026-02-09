@@ -12,6 +12,7 @@
         <table>
             <thead>
                 <tr>
+                    <th width="200">Name</th>
                     <th width="150">MAC</th>
                     <th>Protocol</th>
                 </tr>
@@ -19,6 +20,11 @@
             <tbody>
                 <?php foreach( $devices as $id => $item):?>
                     <tr>
+                        <td>
+							<a href="<?=base_url(route_to('admin.device', $item['id']))?>">
+								<?= !empty($item['name']) ? $item['name'] : "undefined" ?>
+							</a>
+						</td>
                         <td><?=$item['mac']?></td>
                         <td><?=$item['protocol']?></td>
                     </tr>

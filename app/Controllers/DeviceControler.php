@@ -93,6 +93,7 @@ class DeviceControler extends BaseController
 			{
 				$rows = $this->deviceModel->insert([ 
 					'mac' 		=> $data['mac'], 
+					'name' 		=> "New Device", 
 					'protocol' 	=> $data['protocol']
 					]
 				);

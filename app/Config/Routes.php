@@ -29,10 +29,13 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => \Ap
 {
 	$routes->get(	'',								'Home::dashboard', 									['as' => 'admin']);
 	
-	// Devices
-	$routes->group('devices/', function ($routes)
+	// Devices	   
+	$routes->get(	'devices',						'DevicesController::index', 						['as' => 'admin.devices']);
+				   
+	$routes->group('devices/(:num)', function ($routes)
 	{
-		$routes->get(	'', 						'DevicesController::index', 							['as' => 'admin.devices']);
+		$routes->get(	'', 						'DeviceController::index/$1', 						['as' => 'admin.device']);
+		$routes->post(	'', 						'DeviceController::update/$1', 						['as' => 'admin.device.update']);
 	});
 	
 	// User

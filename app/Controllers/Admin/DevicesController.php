@@ -16,8 +16,7 @@ class DevicesController extends BaseController
 
     public function index(): string
     {
-		// User
-		$this->data['devices'] = $this->deviceModel->findAll();
+		$this->data['devices'] = $this->deviceModel->getDevices();
 		
 		load_header( $this->data );
 		load_footer( $this->data );

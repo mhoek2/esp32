@@ -27,7 +27,7 @@ class DevicesDashboardModule extends DashboardModule
 		$this->data = $data;
 
 		$this->deviceModel = new Devices();
-		$this->data['devices'] = $this->deviceModel->findAll();
+		$this->data['devices'] = $this->deviceModel->getDevices();
 		
 		for ( $i=0; $i < count($this->data['devices']); $i++ )
 		{
