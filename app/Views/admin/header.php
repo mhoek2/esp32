@@ -49,7 +49,6 @@
             <li class="menu-toggle">
                 <button id="menuToggle">&#9776;</button>
             </li>
-            <li class="menu-item hidden"><a href="<?=base_url(route_to('admin'))?>"><i class="fa-solid fa-house-chimney"></i> Home</a></li>
             <li class="menu-item hidden"><a href="<?=base_url(route_to('admin.devices'))?>"><i class="fa-solid fa-microchip"></i> Devices</a></li>
             <li class="menu-item hidden"><a href="<?=base_url(route_to('admin.users'))?>"><i class="fa-solid fa-user-cog"></i> Gebruikers</a></li>
         </ul>
