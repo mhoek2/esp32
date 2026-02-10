@@ -16,9 +16,6 @@ class Home extends BaseController
 	
     public function application(): string
     {
-        // Meetings
-        $this->data['meetings'] = [];
-		
 		load_header( $this->data );
 		load_footer( $this->data );
 		

@@ -27,7 +27,7 @@ $routes->post(	'/receive_device',	'DeviceControler::receive',				['as' => 'recei
  */
 $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => \App\Filters\AuthFilterAdmin::class], function ($routes) 
 {
-	$routes->get(	'',								'DevicesController::index', 						['as' => 'admin']);
+	$routes->get(	'',								'Home::dashboard', 						['as' => 'admin']);
 	
 	// Devices	   
 	$routes->get(	'devices',						'DevicesController::index', 						['as' => 'admin.devices']);

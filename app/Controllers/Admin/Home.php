@@ -13,6 +13,8 @@ class Home extends BaseController
 		load_header( $this->data );
 		load_footer( $this->data );
 		
+		$this->data['dashboard_modules'] = get_dashboard_modules( $this->data, false/*admin*/ );	// helper
+		
         return view('admin/dashboard', $this->data);
     }
 }

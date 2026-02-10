@@ -11,12 +11,14 @@ if (! function_exists('get_dashboard_modules')) {
 		return $result;
 	}
 	
-	function get_dashboard_modules( &$data )
+	function get_dashboard_modules( &$data, $front=true )
 	{
 		$modules = [];
 		
-		$namespace = "App\\Controllers\\Front\\DashboardModules\\";
-		$dir = APPPATH . 'Controllers/Front/DashboardModules';
+		$type = ["Admin", "Front"];
+
+		$namespace = 'App\\Controllers\\'. $type[(int)$front] .'\\DashboardModules\\';
+		$dir = APPPATH . 'Controllers/'. $type[(int)$front] .'/DashboardModules';
 		$postfix = 'DashboardModule.php';
 		
 		foreach (glob($dir . '/*'. $postfix) as $file) {
