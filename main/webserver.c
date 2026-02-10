@@ -469,69 +469,45 @@ static esp_err_t find_ap_handler( httpd_req_t *req )
     return ESP_OK;    
 }
 
-static httpd_uri_t uri_root = {
-    .uri       = "/",
-    .method    = HTTP_GET,
-    .handler   = root_get_handler,
-    .user_ctx  = NULL
-};
+static uint16_t     num_uri_handlers;
+static httpd_uri_t  uri_handlers[7];
 
-static httpd_uri_t uri_xhr = {
-    .uri       = "/xhr",
-    .method    = HTTP_POST,
-    .handler   = xhr_handler,
-    .user_ctx  = NULL
-};
+#define ADD_URI_HANDLER( _method, _uri, _handler ) \
+    uri_handlers[num_uri_handlers++] = (httpd_uri_t){ \
+        .uri       = _uri, \
+        .method    = _method, \
+        .handler   = _handler, \
+        .user_ctx  = NULL \
+    };
 
-static httpd_uri_t uri_get_config = {
-    .uri       = "/get_config",
-    .method    = HTTP_GET,
-    .handler   = get_config_handler,
-    .user_ctx  = NULL
-};
+static void define_endpoints( void )
+{
+    num_uri_handlers = 0;
 
-static httpd_uri_t uri_factory_reset = {
-    .uri       = "/factory_reset",
-    .method    = HTTP_GET,
-    .handler   = get_factory_reset_handler,
-    .user_ctx  = NULL
-};
-
-static httpd_uri_t uri_find_ap = {
-    .uri       = "/find_ap",
-    .method    = HTTP_GET,
-    .handler   = find_ap_handler,
-    .user_ctx  = NULL
-};
-
-static httpd_uri_t uri_reboot_device = {
-    .uri       = "/reboot_device",
-    .method    = HTTP_GET,
-    .handler   = reboot_device_handler,
-    .user_ctx  = NULL
-};
-
-static httpd_uri_t uri_disable_ap = {
-    .uri       = "/disable_ap",
-    .method    = HTTP_GET,
-    .handler   = disable_ap_handler,
-    .user_ctx  = NULL
-};
+    ADD_URI_HANDLER( HTTP_GET,      "/",                root_get_handler )
+    ADD_URI_HANDLER( HTTP_POST,     "/xhr",             xhr_handler )
+    ADD_URI_HANDLER( HTTP_GET,      "/get_config",      get_config_handler )
+    ADD_URI_HANDLER( HTTP_GET,      "/factory_reset",   get_factory_reset_handler )
+    ADD_URI_HANDLER( HTTP_GET,      "/find_ap",         find_ap_handler )
+    ADD_URI_HANDLER( HTTP_GET,      "/reboot_device",   reboot_device_handler )
+    ADD_URI_HANDLER( HTTP_GET,      "/disable_ap",      disable_ap_handler )
+}
 
 httpd_handle_t init_webserver( void )
 {
+    uint16_t i;
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     httpd_handle_t server = NULL;
 
+    define_endpoints();
+
     if (httpd_start(&server, &config) == ESP_OK) 
     {
-        httpd_register_uri_handler( server, &uri_root );
-        httpd_register_uri_handler( server, &uri_xhr );
-        httpd_register_uri_handler( server, &uri_get_config );
-        httpd_register_uri_handler( server, &uri_factory_reset );
-        httpd_register_uri_handler( server, &uri_find_ap );
-        httpd_register_uri_handler( server, &uri_reboot_device );
-        httpd_register_uri_handler( server, &uri_disable_ap );
+        for ( i = 0; i < num_uri_handlers; i ++ )
+        {
+            httpd_uri_t *handler = &uri_handlers[i];
+            httpd_register_uri_handler( server, handler );
+        }
     }
 
     return server;

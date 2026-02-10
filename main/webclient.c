@@ -12,32 +12,35 @@
 
 #include "cJSON.h"
 
-#define URL_FORMAT "http://%s/windowstate/public/%s"
+#define URL_FORMAT "http://%s/%s"
 
 static const char *TAG = "webclient";
 static char mac_address[18];
 
 // register device
-static esp_timer_handle_t register_device_timer;
 static bool device_registered = false;
 
-
-static esp_timer_handle_t update_window_state_timer;
-
-
+// registered requests
 typedef enum {
-    REQUEST_REGISTER            = 1,
-    REQUEST_UPDATE_WINDOWSTATE  = 2,
+    REQUEST_REGISTER,
+    REQUEST_UPDATE_WINDOWSTATE,
+    NUM_REQUESTS
 } request_id_t;
 
 typedef struct {
+    const char*     name;
     request_id_t    request_id;
+    esp_timer_cb_t  call;
     char            url[128];
     char            payload[128];
     esp_err_t       (*on_response)(esp_http_client_event_t *e);
     void            (*do_retry)(void);
+    uint64_t        delay;
+    esp_timer_handle_t timer_handle;
 } http_request_ctx_t;
+static http_request_ctx_t http_request[NUM_REQUESTS];
 
+// global
 static void set_mac_address( void )
 {
     uint8_t mac[6];
@@ -101,6 +104,21 @@ static esp_err_t http_send_post( http_request_ctx_t *ctx )
     return err;
 }
 
+static esp_err_t http_request_dispatch( int request_id )
+{
+    http_request_ctx_t *ctx = &http_request[request_id];
+
+    if ( !ctx || !ctx->timer_handle )
+    {
+        ESP_LOGE( TAG, "ctx or timer is invalid for request id [%d]!", request_id );
+        return ESP_FAIL;
+    }
+
+    esp_timer_start_once( ctx->timer_handle, ctx->delay );
+
+    return ESP_OK;
+}
+
 // register device
 bool webclient_is_device_registered( void )
 {
@@ -138,42 +156,23 @@ static esp_err_t register_device_response( esp_http_client_event_t *event )
 static void register_device( void *arg )
 {
     config_t *config = get_config();
+    http_request_ctx_t *ctx = &http_request[REQUEST_REGISTER];
 
-    static http_request_ctx_t ctx = {
-        .request_id     = REQUEST_REGISTER,
-        .on_response    = register_device_response,
-        .do_retry       = webclient_register_device
-    };
-
-    snprintf( ctx.url, sizeof(ctx.url), URL_FORMAT, config->server_address, "register_device" );
-    snprintf( ctx.payload, sizeof(ctx.payload), "{\"mac\":\"%s\",\"protocol\":%d}", mac_address, DV_PROTOCOL );
-
-    http_send_post( &ctx );
+    snprintf( ctx->url, sizeof(ctx->url), URL_FORMAT, config->server_address, "register_device" );
+    snprintf( ctx->payload, sizeof(ctx->payload), "{\"mac\":\"%s\",\"protocol\":%d}", 
+        mac_address, 
+        DV_PROTOCOL 
+    );
+    http_send_post( ctx );
 }
 
 void webclient_register_device( void )
 {
-    // dispatch a delayed web-request, calling register_device.
-    // if the request fails, retry.
-
     if ( !device_initialized() )
         return;
 
-    esp_timer_start_once( register_device_timer, REGISTER_DEVICE_AFTER );
+    http_request_dispatch( REQUEST_REGISTER );
 }
-
-static void init_register_device_timer( void )
-{
-    const esp_timer_create_args_t args = {
-        .callback   = &register_device,
-        .name       = "webclient_register_device"
-    };
-
-    ESP_ERROR_CHECK( esp_timer_create( &args, &register_device_timer ) );
-}
-
-
-
 
 // window state
 static esp_err_t update_window_response( esp_http_client_event_t *event )
@@ -209,49 +208,67 @@ static esp_err_t update_window_response( esp_http_client_event_t *event )
 static void update_window_state( void *arg )
 {
     config_t *config = get_config();
-
-    static http_request_ctx_t ctx = {
-        .request_id     = REQUEST_UPDATE_WINDOWSTATE,
-        .on_response    = update_window_response,
-        .do_retry       = webclient_update_windowstate
-    };
-
+    http_request_ctx_t *ctx = &http_request[REQUEST_UPDATE_WINDOWSTATE];
+    
     int state = get_window_state();
     if ( state < 0 )
     {
         ESP_LOGE( TAG, "Sensor reads -1, this is invalid! Sensor fault. RETRY!" );
         webclient_update_windowstate();
     }
-
-    snprintf( ctx.url, sizeof(ctx.url), URL_FORMAT, config->server_address, "receive_device" );
-    snprintf( ctx.payload, sizeof(ctx.payload), "{\"mac\":\"%s\",\"protocol\":%d, \"state\":%d}", 
+    
+    snprintf( ctx->url, sizeof(ctx->url), URL_FORMAT, config->server_address, "receive_device" );
+    snprintf( ctx->payload, sizeof(ctx->payload), "{\"mac\":\"%s\",\"protocol\":%d, \"state\":%d}", 
         mac_address, 
         DV_PROTOCOL,
         state
     );
-
-    http_send_post( &ctx );   
+    http_send_post( ctx );   
 }
 
 void webclient_update_windowstate( void )
 {
-    // dispatch a delayed web-request, calling update_windowstate.
-    // if the request fails, retry.
-
     if ( !device_initialized() )
         return;
 
-    esp_timer_start_once( update_window_state_timer, UPDATE_WINDOWSTATE_AFTER );
+    http_request_dispatch( REQUEST_UPDATE_WINDOWSTATE );
 }
 
-static void init_update_windowstate_timer( void )
+// init
+static void init_http_requests( void )
 {
-    const esp_timer_create_args_t args = {
-        .callback   = &update_window_state,
-        .name       = "webclient_update_windowstate"
+    uint16_t i;
+
+    http_request[REQUEST_REGISTER] = (http_request_ctx_t){
+        .name           = "webclient_register_device",
+        .request_id     = REQUEST_REGISTER,
+        .call           = &register_device,
+        .on_response    = register_device_response,
+        .do_retry       = webclient_register_device,
+        .delay          = REGISTER_DEVICE_AFTER
     };
 
-    ESP_ERROR_CHECK( esp_timer_create( &args, &update_window_state_timer ) );
+    http_request[REQUEST_UPDATE_WINDOWSTATE] = (http_request_ctx_t){
+        .name           = "webclient_update_windowstate",
+        .request_id     = REQUEST_UPDATE_WINDOWSTATE,
+        .call           = &update_window_state, 
+        .on_response    = update_window_response,
+        .do_retry       = webclient_update_windowstate,
+        .delay          = UPDATE_WINDOWSTATE_AFTER
+    };
+
+    // create timers
+    for ( i = 0; i < NUM_REQUESTS; i++ )
+    {
+        http_request_ctx_t *ctx = &http_request[i];
+
+        const esp_timer_create_args_t args = {
+            .callback   = ctx->call,
+            .name       = ctx->name
+        };
+
+        ESP_ERROR_CHECK( esp_timer_create( &args, &ctx->timer_handle ) ); 
+    }
 }
 
 // global
@@ -259,6 +276,5 @@ void init_webclient( void )
 {
     set_mac_address();
 
-    init_register_device_timer();
-    init_update_windowstate_timer();
+    init_http_requests();
 }
