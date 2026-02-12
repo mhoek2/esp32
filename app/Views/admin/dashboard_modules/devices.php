@@ -40,6 +40,7 @@
 		height: 50px;
     	border-radius: 5px;
 		margin: 0 auto;
+		position:relative;
 	}
 		[data-device-protocol="27"] input[data-protocol-state] {
 			display: none;
@@ -51,6 +52,16 @@
 		[data-device-protocol="27"] input[data-protocol-state]:checked ~ #state {
 			background: #ffafaf;
 			border: 1px solid #d37e7e;
+		}
+		[data-device-protocol="27"] #state::after {
+			content: attr(data-state-text);
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			font-weight: bold;
+			text-align: center;
+			font-size:0.7em;
+			width: 100%;
 		}
 		[data-device-protocol="27"] #state > span {
 			display: block;
@@ -71,10 +82,9 @@
 		
 		<?php if( (int)$device['protocol'] === 27 ){ ?>
 			<input type="checkbox" data-protocol-state <?=$device['data']['state'] ? 'checked="checked"' : '';?>">
-			<div id="state">
-				<?php $states = ["Closed", "Open"]; ?>
-				<span><?=$states[$device['data']['state']];?></span>
-			</div>
+			
+			<?php $states = ["Closed", "Open"]; ?>
+			<div id="state" data-state-text="<?=$states[$device['data']['state']];?>"></div>
 		<?php } ?>
 	</div>
 <?php } ?>

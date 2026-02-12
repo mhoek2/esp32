@@ -12,6 +12,10 @@ if (! function_exists('deviceUpdateHandlerJS')) {
 				if ( 'state' in data ) {
 					const state = parseInt(data['state']);
 					$(element).find('[data-protocol-state]').prop("checked", state );
+
+					const states = ["Closed", "Open"];
+					console.log(states[state]);
+					$(element).find('[data-state-text]').attr( 'data-state-text', states[state] );
 				}
 			}
 

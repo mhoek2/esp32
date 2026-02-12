@@ -5,6 +5,10 @@
     --pink-color: #075d3a;
     --pink-light-color: #a2c3b5;
 	
+	--header-background: var(--secondary-color);
+	--header-link-color: #f1f1f1;
+	--header-link-color-hover: #fff;
+
     --max-width: 1600px;
 	
     --button-background-color: rgb(236 238 253);
@@ -278,7 +282,7 @@ header {
 	margin-bottom: 2em;
     max-width: initial;
     border-radius: 0;
-	background-color: #fff;
+	background-color: var(--header-background);
 	
     position: fixed;
     width: 100%;
@@ -288,7 +292,7 @@ header {
 }
 	header ul li.menu-item a,
 	header .logo a span {
-		color:#434343;
+		color: var(--header-link-color);
 	}
 	header ul li.menu-item a {
 		font-size:16px;
@@ -298,7 +302,7 @@ header {
 	}
 	header ul li.menu-item a:hover,
 	header ul li.menu-item a:focus {
-		color:#0D0D0D;
+		color: var(--header-link-color);
 	}
 
 section {

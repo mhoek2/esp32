@@ -26,7 +26,7 @@
 
 <div class="breadcrumbs">
    	<ul>
-		<li><span>Gebruikers</span></li>
+		<li><span>Users</span></li>
     </ul>
 </div>
 
@@ -35,15 +35,15 @@
 		
 		<div class="actions left" style="margin-bottom:25px;">
             <a class="button-primary" href="<?=base_url(route_to('admin.user.new'))?>">
-                <i class="fa-solid fa-circle-plus"></i> Gebruiker Aanmaken
+                <i class="fa-solid fa-circle-plus"></i> Create User
             </a>
 		</div>
 		
         <table class="users-table">
             <thead>
                 <tr>
-                    <th width="150">Gebruikersnaam</th>
-                    <th>Naam</th>
+                    <th width="150">Username</th>
+                    <th>Name</th>
                     <th width="150">Rol</th>
                 </tr>
             </thead>

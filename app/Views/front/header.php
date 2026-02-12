@@ -72,7 +72,7 @@
                 </div>
                 <ul>
                     <?php if($user["is_admin"]): ?>
-                        <li><a href="<?=base_url(route_to('admin'))?>">Open Beheerpaneel</a></li>
+                        <li><a href="<?=base_url(route_to('admin'))?>">Managment Dashboard</a></li>
                     <?php endif ?>
                 </ul>
             </ul>

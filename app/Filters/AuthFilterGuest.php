@@ -15,7 +15,7 @@ class AuthFilterGuest implements FilterInterface
         
 		if($user != NULL)
 		{
-			return redirect()->to('/admin');
+			return redirect()->to('/home');
 		}
 		
 		return null;
