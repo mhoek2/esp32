@@ -34,7 +34,7 @@
 			display: block;
     		width: 100%;
 			height: 0.75em;
-			background: #fff;
+			background: #f1f1f1;
 			overflow: hidden;
 			position: relative;
 		}
