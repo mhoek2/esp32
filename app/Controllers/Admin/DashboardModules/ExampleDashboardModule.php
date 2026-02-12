@@ -22,7 +22,7 @@ class ExampleDashboardModule extends DashboardModule
 		//$hwinfo = service('hardware_info');
 		//$this->data["hw_info"] = $hwinfo->getAll();
 
-		return view('front/dashboard_modules/example', $this->data);
+		return view('admin/dashboard_modules/example', $this->data);
 	}	
 }
 	 

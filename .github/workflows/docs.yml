@@ -11,6 +11,7 @@ on:
 jobs:
   app-and-docs:
     runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -59,7 +60,7 @@ jobs:
 
       - name: Import SQL Dump
         run: |
-          sudo mysql -uroot -proot tempdb < sql/windowstate.sql
+          sudo mysql -uroot -proot tempdb < sql/esp32.sql
 
       - name: Run PHPStan and Generate JSON Report
         run: vendor/bin/phpstan analyse --error-format=json --no-progress --memory-limit=512M > phpstan-report.json || true

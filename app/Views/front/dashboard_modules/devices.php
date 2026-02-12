@@ -35,21 +35,24 @@
 				}
 	
 	/* protocols */
-	.protocol_27 .state {
+	[data-device-protocol="27"] #state {
 		width: 50px;
 		height: 50px;
     	border-radius: 5px;
 		margin: 0 auto;
 	}
-		.protocol_27 .state.window_state_0 {
+		[data-device-protocol="27"] input[data-protocol-state] {
+			display: none;
+		}
+		[data-device-protocol="27"] input[data-protocol-state]:not(:checked) ~ #state {
 			background: #afffd3;
 			border: 1px solid #7ed3a8;
 		}
-		.protocol_27 .state.window_state_1 {
+		[data-device-protocol="27"] input[data-protocol-state]:checked ~ #state {
 			background: #ffafaf;
 			border: 1px solid #d37e7e;
 		}
-		.protocol_27 .state > span {
+		[data-device-protocol="27"] #state > span {
 			display: block;
 			font-weight: bold;
 			line-height: 50px;
@@ -60,14 +63,15 @@
 </style>
 <div class="devices grid">
 <?php foreach( $devices as $idx => $device ){ ?>
-	<div class="device protocol_<?=$device['protocol']?>" data-mac-address="<?=$device['mac']?>">
+	<div class="device" data-device-protocol="<?=$device['protocol']?>" data-device-id="<?=$device['id']?>">
 		<div class="title">
 			<span><?=$device['name']?></span>
-			<span>MAC: <?=$device['mac']?></span>
+			<span></span>
 		</div>
 		
 		<?php if( (int)$device['protocol'] === 27 ){ ?>
-			<div class="state window_state_<?=$device['data']['state']?>">
+			<input type="checkbox" data-protocol-state <?=$device['data']['state'] ? 'checked="checked"' : '';?>">
+			<div id="state">
 				<?php $states = ["Closed", "Open"]; ?>
 				<span><?=$states[$device['data']['state']];?></span>
 			</div>

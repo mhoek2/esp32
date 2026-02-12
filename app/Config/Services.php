@@ -11,6 +11,7 @@ use App\ThirdParty\TextEditorSummernote as Summernote;
 
 use App\Services\UserMetaService;
 use App\Services\HardwareService;
+use App\Services\DeviceService;
 
 /**
  * Services Configuration file.
@@ -37,6 +38,15 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+	public static function device_info($getShared = true): DeviceService
+	{
+		if ($getShared) {
+			return static::getSharedInstance('device_info');
+		}
+
+		return new DeviceService();
+	}
 
 	public static function hardware_info($getShared = true): HardwareService
 	{

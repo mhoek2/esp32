@@ -16,6 +16,9 @@
 		.dashboard-modules article.wide {
 			grid-column: span 2;
 		}
+		.dashboard-modules article.full {
+			grid-column: span 4;
+		}
 </style>
 
 <section class="main">

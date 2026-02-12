@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="<?=base_url('assets/css/upload.css')?>">
 
 <?php 
-	$local_assets = true;
+	$local_assets = false;
 	if ( $local_assets ) {
 ?>
 		<link rel="stylesheet" href="<?=base_url('assets/vendor/ckeditor5.css')?>">

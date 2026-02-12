@@ -62,5 +62,8 @@
 	}
 </script>
 
+<!-- device update handler -->
+<?= deviceUpdateHandlerJS() ?>
+
 </body>
 </html>

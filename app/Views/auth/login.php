@@ -5,6 +5,9 @@
 <?= $this->section('main') ?>
 
 	<style>
+		.bg-light {
+			background-color: transparent !important;
+		}
 		.login-logo {
 			background: url(assets/images/logo.svg) no-repeat;
 			background-size: contain;
@@ -13,9 +16,19 @@
 			margin:0 auto;
 		}
 		
+		.login-left-side {
+			background: url( assets/images/login.jpg);
+			background-size: cover;
+			border-radius: 10px 0 0 10px;
+			color:#f1f1f1;
+		}
+		
+		.login-right-side {
+			border-radius: 0 10px 10px 0;
+		}
+		
 		.card {
 			border: 0px;
-			border-radius: 10px;
 		}
 		
 		.btn-container {
@@ -74,9 +87,22 @@
 		.btn.btn-bg-gradient::after {
 			background-color: #f8f4fd;
 		}
+		@media only screen and (max-width: 768px) {
+			.login-left-side {
+				display:none !important;
+			}
+			.login-right-side {
+				border-radius: 10px;
+				width:100%; !important;
+			}
+		}
 	</style>
     <div class="container d-flex justify-content-center p-5">
-        <div class="card col-12 col-md-5 shadow-sm">
+		<div class="card col-6 col-md-6 shadow-sm login-left-side d-flex flex-column justify-content-start align-items-center text-center pt-5">
+			<h1 class="card-title mb-4">ESP32 Management</h1>
+			<p>Manage IoT devices that are connected to this network</p>
+		</div>
+        <div class="card col-6 col-md-4 shadow-sm login-right-side">
             <div class="card-body">
 				<div class="login-logo"></div>
                 <h5 class="card-title mb-5"><?= lang('Auth.login') ?></h5>

@@ -13,21 +13,23 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get(	'login', 		'LoginController::loginView');
 $routes->post(	'login', 		'LoginController::loginAction');
 
-$routes->get(	'/', 				'LoginController::loginView',			['filter' => \App\Filters\AuthFilterGuest::class]);
-$routes->get(	'/home',			'Front\Home::application',				['as' => 'home', 'filter' => \App\Filters\AuthFilterSession::class]);
-$routes->get(	'download/(:any)',	'DownloadController::index/$1', 		['as' => 'front.download', 'namespace' => 'App\Controllers\Front', 'filter' => \App\Filters\AuthFilterSession::class]);
+$routes->get(	'/', 					'LoginController::loginView',			['filter' => \App\Filters\AuthFilterGuest::class]);
+$routes->get(	'/home',				'Front\Home::application',				['as' => 'home', 'filter' => \App\Filters\AuthFilterSession::class]);
+$routes->get(	'download/(:any)',		'DownloadController::index/$1', 		['as' => 'front.download', 'namespace' => 'App\Controllers\Front', 'filter' => \App\Filters\AuthFilterSession::class]);
 
-$routes->get(	'/hw_info',			'HardwareInfo::index',					['as' => 'hw_info', 'filter' => \App\Filters\AuthFilterSession::class]);
+$routes->get(	'/hw_info',				'HardwareInfo::index',					['as' => 'hw_info', 'filter' => \App\Filters\AuthFilterSession::class]);
 
-$routes->post(	'/register_device',	'DeviceControler::register',			['as' => 'register_device']);
-$routes->post(	'/receive_device',	'DeviceControler::receive',				['as' => 'receive_device']);
+$routes->get(	'/get_device_stats',	'DeviceControler::get_stats',			['as' => 'get_device_stats', 'filter' => \App\Filters\AuthFilterSession::class]);
+
+$routes->post(	'/register_device',		'DeviceControler::register',			['as' => 'register_device']);
+$routes->post(	'/receive_device',		'DeviceControler::receive',				['as' => 'receive_device']);
 
 /**
  * admin
  */
 $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => \App\Filters\AuthFilterAdmin::class], function ($routes) 
 {
-	$routes->get(	'',								'Home::dashboard', 						['as' => 'admin']);
+	$routes->get(	'',								'Home::dashboard', 									['as' => 'admin']);
 	
 	// Devices	   
 	$routes->get(	'devices',						'DevicesController::index', 						['as' => 'admin.devices']);

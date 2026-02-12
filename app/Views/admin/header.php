@@ -22,7 +22,7 @@
     <?=service('text_editor')->load_style()?>
 
 <?php 
-	$local_assets = true;
+	$local_assets = false;
 	if ( $local_assets ) {
 ?>
 		<link rel="stylesheet" href="<?=base_url('assets/vendor/jquery-ui.css')?>">
