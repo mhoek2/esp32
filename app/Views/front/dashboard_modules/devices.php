@@ -10,15 +10,16 @@
 		.devices .device {
 			grid-column: span 1;
 			word-break: break-all;
-			background: #fff;
+			background: #e7e7e7;
 			border-radius: 5px;
-			border: 1px solid #dadada;
+			border: 0px solid #292929;
 			padding: 0 0 1em 0;
 			overflow: hidden;
 		}
 			.devices .device .title {
-				background:#f1f1f1;
+				background: #292929;
 				margin-bottom: 1em;
+				color: #fff;
 			}
 				.devices .device .title span:nth-child(1){
 					display: block;
@@ -36,8 +37,8 @@
 	
 	/* protocols */
 	[data-device-protocol="27"] #state {
-		width: 50px;
-		height: 50px;
+		width: 150px;
+		height: 30px;
     	border-radius: 5px;
 		margin: 0 auto;
 		position:relative;

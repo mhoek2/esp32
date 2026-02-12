@@ -8,21 +8,28 @@
 		  gap: 16px;
 	}
 		.dashboard-modules article {
-			background:#f1f1f1;
+			background:#fff;
 			border-radius: 10px;
 			overflow: hidden;
 			word-wrap: break-word;
 			padding: 10px;
 		}
-		.dashboard-modules article.wide {
+		.dashboard-modules article.small {
+			grid-column: span 1;
+		}
+		.dashboard-modules article.medium {
 			grid-column: span 2;
+		}
+		.dashboard-modules article.large {
+			grid-column: span 3;
+		}
+		.dashboard-modules article.full {
+			grid-column: span 4;
 		}
 </style>
 
 <section class="main">
 	<div class="content">
-		Admin dashboards
-		
 		<div class="dashboard-modules">
 			<?php foreach( $dashboard_modules as $module ): ?>
 				<?php if(!$module['visible']) continue ?>

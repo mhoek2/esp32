@@ -426,8 +426,8 @@ footer {
 		flex: 1;
 
 		border-radius: var(--primary-border-radius);
-		background: #f7f8f9;
-		padding:2em;
+		/*background: #f7f8f9;
+		padding:2em;*/
 	}
 		.main .content .actions,
 		.main .content .alert-actions {

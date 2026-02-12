@@ -13,7 +13,7 @@ use App\Controllers\Admin\DashboardModules\DashboardModule;
 class DevicesDashboardModule extends DashboardModule
 {
 	protected int $sort = 5;
-	protected string $css_class = 'wide';
+	protected string $css_class = 'large';
 	
     public function __construct() {
 		$this->devices = service('device_info');

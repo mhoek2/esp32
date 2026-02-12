@@ -13,7 +13,7 @@ use App\Controllers\Admin\DashboardModules\DashboardModule;
 class ExampleDashboardModule extends DashboardModule
 {
 	protected int $sort = 5;
-	protected string $css_class = 'wide';
+	protected string $css_class = 'small';
 
     public function index( &$data ) : string
     {
