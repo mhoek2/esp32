@@ -1,0 +1,14 @@
+auth_groups_users
+auth_identities
+auth_logins
+auth_permissions_users
+auth_remember_tokens
+auth_token_logins
+device_meta
+devices
+migrations
+protocol_27
+settings
+uploads
+user_meta
+users

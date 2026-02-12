@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+            <title>ESP32 Platform Documentation</title>
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../../../">
+    <link rel="icon" href="images/favicon.ico"/>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/base.css">
+            <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/template.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/themes/prism-okaidia.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
+                <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
+        <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
+        <script src="js/search.js"></script>
+        <script defer src="js/searchIndex.js"></script>
+    </head>
+<body id="top">
+    <header class="phpdocumentor-header phpdocumentor-section">
+    <h1 class="phpdocumentor-title"><a href="" class="phpdocumentor-title__link">ESP32 Platform Documentation</a></h1>
+    <input class="phpdocumentor-header__menu-button" type="checkbox" id="menu-button" name="menu-button" />
+    <label class="phpdocumentor-header__menu-icon" for="menu-button">
+        <i class="fas fa-bars"></i>
+    </label>
+    <section data-search-form class="phpdocumentor-search">
+    <label>
+        <span class="visually-hidden">Search for</span>
+        <svg class="phpdocumentor-search__icon" width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor" stroke-width="2"/>
+            <line x1="12.4892" y1="12.2727" x2="19.1559" y2="18.9393" stroke="currentColor" stroke-width="3"/>
+        </svg>
+        <input type="search" class="phpdocumentor-field phpdocumentor-search__field" placeholder="Loading .." disabled />
+    </label>
+</section>
+
+    <nav class="phpdocumentor-topnav">
+    <ul class="phpdocumentor-topnav__menu">
+        </ul>
+</nav>
+</header>
+
+    <main class="phpdocumentor">
+        <div class="phpdocumentor-section">
+            <input class="phpdocumentor-sidebar__menu-button" type="checkbox" id="sidebar-button" name="sidebar-button" />
+<label class="phpdocumentor-sidebar__menu-icon" for="sidebar-button">
+    Menu
+</label>
+<aside class="phpdocumentor-column -three phpdocumentor-sidebar">
+                    <section class="phpdocumentor-sidebar__category -documentation">
+            <h2 class="phpdocumentor-sidebar__category-header">Documentation</h2>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/getting-started/index.html#getting-started" class="">Getting started</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="guide/getting-started/installing.html#installation" class="">Installation</a>
+                
+            </li>
+                    <li>
+                <a href="guide/getting-started/deploy.html#deploy-backup" class="">Deploy backup</a>
+                
+            </li>
+                    <li>
+                <a href="guide/getting-started/configure.html#configure" class="">Configure</a>
+                
+            </li>
+                    <li>
+                <a href="guide/getting-started/cloning.html#cloning" class="">Cloning</a>
+                
+            </li>
+                    <li>
+                <a href="guide/getting-started/updating.html#updating" class="">Updating</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/guides/index.html#quick-guides" class="">Quick-Guides</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="guide/guides/general.html#general" class="">General</a>
+                
+            </li>
+                    <li>
+                <a href="guide/guides/dashboard-modules.html#dashboard-modules" class="">Dashboard Modules</a>
+                
+            </li>
+                    <li>
+                <a href="guide/guides/user-meta-service.html#user-meta-service" class="">User Meta Service</a>
+                
+            </li>
+                    <li>
+                <a href="guide/guides/docs-report/index.html#docs-reports" class="">Docs &amp; Reports</a>
+                
+            </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/report/index.html#reports" class="">Reports</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="guide/report/phpstan.html#phpstan-report" class="">PHPStan Report</a>
+                
+            </li>
+                    <li>
+                <a href="guide/report/eslint.html#eslint-report" class="">ESLint Report</a>
+                
+            </li>
+                    <li>
+                <a href="guide/report/stylelint.html#stylelint-report" class="">Stylelint Report</a>
+                
+            </li>
+                    <li>
+                <a href="guide/report/schemaspy.html#schemaspy-report" class="">SchemaSpy Report</a>
+                
+            </li>
+                    <li>
+                <a href="guide/report/phpmetrics.html#php-metrics-report" class="">PHP Metrics Report</a>
+                
+            </li>
+            </ul>
+
+                        </section>
+                <section class="phpdocumentor-sidebar__category -namespaces">
+            <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="namespaces/app.html" class="">App</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="namespaces/app-controllers.html" class="">Controllers</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/app-filters.html" class="">Filters</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/app-models.html" class="">Models</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/app-services.html" class="">Services</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/app-thirdparty.html" class="">ThirdPArty</a>
+                
+            </li>
+            </ul>
+
+                        </section>
+                <section class="phpdocumentor-sidebar__category -packages">
+            <h2 class="phpdocumentor-sidebar__category-header">Packages</h2>
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/Application.html" class="">Application</a>
+</h4>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="packages/App.html" class="">App</a>
+</h4>
+    <ul class="phpdocumentor-list">
+                    <li>
+                <a href="packages/App-Controllers.html" class="">Controllers</a>
+                
+            </li>
+                    <li>
+                <a href="packages/App-Services.html" class="">Services</a>
+                
+            </li>
+                    <li>
+                <a href="packages/App-ThirdParty.html" class="">ThirdParty</a>
+                
+            </li>
+            </ul>
+
+                        </section>
+            
+    <section class="phpdocumentor-sidebar__category -reports">
+        <h2 class="phpdocumentor-sidebar__category-header">Reports</h2>
+                <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/deprecated.html">Deprecated</a></h3>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/errors.html">Errors</a></h3>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="reports/markers.html">Markers</a></h3>
+    </section>
+
+    <section class="phpdocumentor-sidebar__category -indices">
+        <h2 class="phpdocumentor-sidebar__category-header">Indices</h2>
+        <h3 class="phpdocumentor-sidebar__root-package"><a href="indices/files.html">Files</a></h3>
+    </section>
+</aside>
+
+            <div class="phpdocumentor-column -nine phpdocumentor-content">
+                                        <section class="section " id="documentation">
+            <h1>Documentation</h1>
+
+            
+    <p>This platform integrates <a href="https://phpdoc.org/">phpDocumentator</a>.</p>
+
+            
+    <p>This will automaticly generate codebase documenation based on (docstings, namespaces, classes and inheritance)</p>
+
+            <section class="section " id="configuration">
+            <h2>Configuration</h2>
+
+            
+    <p>File <code>`phpdoc.xml`</code>
+ in the root folder contains global settings for output documentation</p>
+
+    </section>
+
+            <section class="section " id="ci-cd">
+            <h2>CI-CD</h2>
+
+            
+    <p>There is a CI-CD workflow <code>`path/to/my/project/github/workflows/docs.yml`</code>
+ in place to automaticly re-generate the documentation
+when a push or pull request event triggers and is uploaded to the <code>`gh-pages`</code>
+ branch.</p>
+
+    </section>
+
+            <section class="section " id="run-locally">
+            <h2>Run locally</h2>
+
+            <div class="phpdocumentor-admonition important">
+        <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <article>
+        
+    <p>Continue assuming you to have a local development environment active. A web server such as  <a href="https://www.apachefriends.org/">XAMPP</a>, or just apache with php if you prefer custom installation.</p>
+
+    </article>
+</div>
+
+            
+    
+<ol type="1">
+    <li>Make sure <code>`path/to/my/project/vendor/bin`</code>
+ contains phpdoc.</li>
+
+    <li><dl>
+                        <dt>If it is missing</dt>
+        
+        <dd><pre><code class="language-bash"># cd to the root directory of the project folder
+
+# This will install the dependencies set in composer.json
+composer install</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li>Open a terminal of choice and change current directory to the root directory.</li>
+
+    <li><dl>
+                        <dt>Run the following command</dt>
+        
+        <dd><pre><code class="language-bash"># linux
+vendor/bin/phpdoc -c phpdoc.xml
+
+# windows
+php vendor/bin/phpdoc -c phpdoc.xml
+
+# -c phpdoc.xml is optional</code></pre>
+
+    <p>The output should be similar to:</p>
+<pre><code class="language-bash">phpDocumentor 3.7.1
+
+Parsing source files
+ 111/111 [============================] 100%
+Applying transformations (can take a while)
+ 44/44 [============================] 100%
+All done in 5 seconds!</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li>All done, you can proceed to open the index.html in <code>`path/to/my/project/docs/build`</code>
+ folder</li>
+
+</ol>
+
+    </section>
+
+            <section class="section " id="conclusion">
+            <h2>Conclusion</h2>
+
+            
+    <p>Integrating <a href="https://phpdoc.org/">phpDocumentor</a> into a CI/CD workflow simplifies documentation and encourages developers to write meaningful docstrings and comments. This not only improves code maintainability but also stimulates better collaboration and best practices.</p>
+
+    </section>
+
+            <section class="section " id="troubleshooting">
+            <h2>Troubleshooting</h2>
+
+            
+    <p>If you see this error (Windows):</p>
+
+            <pre><code class="language-bash">&#039;phpdoc&#039; is not recognized as an internal or external command,
+operable program or batch file.</code></pre>
+
+            
+    
+<ol type="1">
+    <li>Create a new file: <code>`path/to/my/project/vendor/bin/phpdoc.bat`</code>
+</li>
+
+    <li>
+    <p>Open the file and paste the following batch intructions:</p>
+<blockquote><pre><code class="language-batch">@ECHO OFF
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::
+:: Batch file to start phpDocumentor with PHP&#039;s CLI
+::
+:: This SW was contributed by BlueShoes www.blueshoes.org &quot;The PHP Framework&quot;
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::----------------------------------------------------------------------------------
+:: Please set following to PHP&#039;s CLI
+:: NOTE: In PHP 4.2.x the PHP-CLI used to be named php-cli.exe. 
+::       PHP 4.3.x names it php.exe but stores it in a subdir called /cli/php.exe
+::       E.g. for PHP 4.2 C:\phpdev\php-4.2-Win32\php-cli.exe
+::            for PHP 4.3 C:\phpdev\php-4.3-Win32\cli\php.exe
+
+  SET phpCli=D:\Platforms\Xampp\php\php.exe
+
+
+
+::---------------------------------------------------------------------------------
+::---------------------------------------------------------------------------------
+:: Do not modify below this line!! (Unless you know what your doing :)
+::---------------------------------------------------------------------------------
+::---------------------------------------------------------------------------------
+
+:: Only show this intro when no options are passed
+IF &#039;%1&#039;==&#039;&#039; (
+  ECHO ******************************************************************************
+  ECHO * PhpDocument Command-Line  Starter 
+  ECHO * 
+  ECHO * phpDocumentor is a JavaDoc-like automatic documentation generator for PHP
+  ECHO * written in PHP. It is the most versatile tool for documenting PHP.
+  ECHO *
+  ECHO * This batch-file will try to run the phpDocumentor using the command-line
+  ECHO * version of PHP4. NOTE: It will not run with the PHP ISAPI module! 
+  ECHO * Please update the path in this batch-file to your PHP-CLI.
+  ECHO *
+  ECHO * Tip: o Grab a copy of one of the ini-files in the user/ dir of the 
+  ECHO *        phpDocumentor and modify the settings there. 
+  ECHO *      o To see the command line options type  phpdoc -h
+  ECHO * 
+  ECHO * @version 1.3  2003-06-28
+  ECHO * @author Sam Blum sam@blueshoes.org
+  ECHO * @Copyright Free Software released under the GNU/GPL license
+  ECHO * 
+  ECHO * This SW was contributed by BlueShoes www.blueshoes.org &quot;The PHP Framework&quot;
+  ECHO ******************************************************************************
+)
+
+:: Check existence of php.exe
+IF EXIST &quot;%phpCli%&quot; (
+  SET doNothing=
+) ELSE GOTO :NoPhpCli
+
+:: If called using options, just call phpdoc and end after without pausing.
+:: This will allow use where pausing is not wanted.
+IF &#039;%1&#039;==&#039;&#039; (
+  SET doNothing=
+) ELSE (
+  &quot;%phpCli%&quot; phpdoc %*
+  GOTO :EOF
+)
+
+
+SET iniFile=
+
+ECHO ------------------------------------------------------------------------------
+ECHO Select Ini-File [default is phpDocumentor.ini]
+ECHO ------------------------------------------------------------------------------
+ECHO # 0: phpDocumentor.ini
+SET count=0
+FOR /R user %%I IN (*.ini) DO (
+  SET /a count+=1
+  CALL :exec ECHO # %%count%%: %%~nI%%~xI
+)
+
+:LOOP_1
+:: SET /P prompts for input and sets the variable
+:: to whatever the user types
+SET iniNr=
+SET /P iniNr=Type a number and press Enter[0]:
+
+::  Use default
+IF &#039;%iniNr%&#039;==&#039;&#039; (
+  SET iniNr=0
+)
+
+:: Check for default selection
+SET iniFile=phpDocumentor.ini
+IF %iniNr%==0 (
+  CALL :exec GOTO :run
+  GOTO :PAUSE_END
+)
+
+:: Check selected
+SET count=0
+SET found=
+FOR /R user %%I IN (*.ini) DO (
+  SET /a count+=1
+  SET iniFile=%%~nI%%~xI
+  CALL :exec IF &#039;%%iniNr%%&#039;==&#039;%%count%%&#039; GOTO :run 
+)
+
+:: Check if selected # was found
+IF &#039;%found%&#039;==&#039;&#039; (
+  ECHO Invalid input [%iniNr%]... try again
+  ECHO.
+  GOTO :LOOP_1
+)
+
+::
+:: php.exe not found error  
+GOTO :PAUSE_END
+:NoPhpCli
+ECHO ** ERROR *****************************************************************
+ECHO * Sorry, can&#039;t find the php.exe file.
+ECHO * You must edit this file to point to your php.exe (CLI version!)
+ECHO *    [Currently set to %phpCli%]
+ECHO * 
+ECHO * NOTE: In PHP 4.2.x the PHP-CLI used to be named php-cli.exe. 
+ECHO *       PHP 4.3.x renamed it php.exe but stores it in a subdir 
+ECHO *       called /cli/php.exe
+ECHO *       E.g. for PHP 4.2 C:\phpdev\php-4.2-Win32\php-cli.exe
+ECHO *            for PHP 4.3 C:\phpdev\php-4.3-Win32\cli\php.exe
+ECHO **************************************************************************
+
+::
+:: Stupid MS-batch: Can&#039;t evaluate environment variable inside a FOR loop!!! :((  
+GOTO :PAUSE_END
+:exec 
+%*
+GOTO :EOF
+
+::
+:: Start the phpDocumentor 
+GOTO :PAUSE_END
+:run
+SET found=1
+ECHO Starting: &quot;%phpCli%&quot; phpdoc -c &quot;%iniFile%&quot;
+ECHO.
+&quot;%phpCli%&quot; phpdoc -c &quot;%iniFile%&quot;
+GOTO :EOF
+
+:PAUSE_END
+PAUSE</code></pre>
+</blockquote>
+</li>
+
+    <li>Open a terminal of choice and change current directory to <code>`path/to/my/project/vendor/bin`</code>
+</li>
+
+    <li><dl>
+                        <dt>Run the following command</dt>
+        
+        <dd><pre><code class="language-bash">phpdoc -c ../../phpdoc.xml</code></pre>
+</dd>
+            </dl>
+</li>
+
+</ol>
+
+    </section>
+
+    </section>
+
+                            </div>
+            <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
+    <section class="phpdocumentor-search-results__dialog">
+        <header class="phpdocumentor-search-results__header">
+            <h2 class="phpdocumentor-search-results__title">Search results</h2>
+            <button class="phpdocumentor-search-results__close"><i class="fas fa-times"></i></button>
+        </header>
+        <section class="phpdocumentor-search-results__body">
+            <ul class="phpdocumentor-search-results__entries"></ul>
+        </section>
+    </section>
+</section>
+        </div>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+
+    </main>
+
+    <script>
+        cssVars({});
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+</body>
+</html>
