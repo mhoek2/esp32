@@ -14,6 +14,7 @@
 
 // 60 * 5 = 5 minutes
 #define DISABLE_AP_AFTER        to_ms( 60 * 5 )
+#define DISABLE_STA_AFTER        to_ms( 60 * 5 )
 
 // register device to server after wifi sta connected
 // on fail, retry

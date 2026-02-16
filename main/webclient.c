@@ -106,6 +106,14 @@ static esp_err_t http_send_post( http_request_ctx_t *ctx )
 
 static esp_err_t http_request_dispatch( int request_id )
 {
+    // if STA is disabled, enable it
+    // retry handlers will keep sending the request until connected
+    if ( !get_wifi_enabled( WIFI_TYPE_STA) )
+        update_wifi_sta_mode( true );
+
+    // keep-alive: reset timer for wifi STA
+    reset_wifi_enabled_time(WIFI_TYPE_STA);
+
     http_request_ctx_t *ctx = &http_request[request_id];
 
     if ( !ctx || !ctx->timer_handle )

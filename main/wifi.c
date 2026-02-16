@@ -18,10 +18,49 @@ static const char *TAG = "wifi_ap";
 static uint16_t         scan_ap_count = 0;
 static wifi_ap_list_t   *scan_ap_data;
 static bool             scanning_ap = false;
+static const char       *wifi_type_str[WIFI_TYPES_MAX] = {
+    "STA",
+    "AP",
+};
 
+wifi_state_t wifi_state[WIFI_TYPES_MAX] = { 0 };
 
-static bool wifi_ap_enabled = false;
+// global
+int64_t get_wifi_enabled_time( wifi_mode_type_t type )
+{
+    if ( type >= WIFI_TYPES_MAX )
+        return 0;
+ 
+    return wifi_state[type].enabled_time;
+}
 
+void reset_wifi_enabled_time( wifi_mode_type_t type )
+{
+    if ( type >= WIFI_TYPES_MAX )
+        return;
+
+    wifi_state[type].enabled_time = esp_timer_get_time();
+
+    ESP_LOGW( TAG, "Reset timer for WiFi type [%s]", wifi_type_str[type] );
+}
+
+bool get_wifi_enabled( wifi_mode_type_t type )
+{
+    if ( type >= WIFI_TYPES_MAX )
+        return false;
+
+    return wifi_state[type].enabled;
+}
+
+bool wifi_timer_hit( wifi_mode_type_t type )
+{
+    if ( type >= WIFI_TYPES_MAX )
+        return false;
+
+    return (esp_timer_get_time() - wifi_state[type].enabled_time) > wifi_state[type].time_limit;
+}
+
+// AP
 uint16_t *get_scan_ap_count( void )
 {
     return &scan_ap_count;
@@ -83,15 +122,21 @@ static void event_handler(void* arg, esp_event_base_t event_base,
                 wifi_event_sta_connected_t* event = (wifi_event_sta_connected_t*) event_data;
                 ESP_LOGI(TAG, "STA connected, AID=%d", event->aid);
 
+                // synchronize all device sensors and states
                 webclient_register_device();
                 webclient_update_windowstate();
+                //webclient_update_sleep();
+
                 break;
             }
             case WIFI_EVENT_STA_DISCONNECTED: {
                 wifi_event_sta_disconnected_t* event = (wifi_event_sta_disconnected_t*) event_data;
                 ESP_LOGI(TAG, "STA disconnected, reason=%d", event->reason);
 
-                queue_wifi_connect();
+                // reconnect when STA is not in sleep mode
+                if ( !wifi_timer_hit( WIFI_TYPE_STA ) )
+                    queue_wifi_connect();
+
                 break;
             }
             case WIFI_EVENT_AP_STACONNECTED: {
@@ -144,20 +189,31 @@ static void event_handler(void* arg, esp_event_base_t event_base,
                 break;
             }
             case WIFI_EVENT_AP_START: {
-                wifi_ap_enabled = true;
+                wifi_state[WIFI_TYPE_AP].enabled = true;
+                reset_wifi_enabled_time( WIFI_TYPE_AP );
                 ESP_LOGI( TAG, "enabled AP" );
                 break;
             }
             case WIFI_EVENT_AP_STOP: {
-                wifi_ap_enabled = false;
+                wifi_state[WIFI_TYPE_AP].enabled = false;
                 ESP_LOGI( TAG, "Disabled AP" );
                 break;
             }
             case WIFI_EVENT_STA_START: {
                 ESP_LOGI(TAG, "Start STA");
+                reset_wifi_enabled_time( WIFI_TYPE_STA );
+                wifi_state[WIFI_TYPE_STA].enabled = true;
+ 
+                config_t *config = get_config();
+                if ( config->sta_initialized )
+                {
+                    queue_wifi_connect();
+                }
+
                 break;
             }
             case WIFI_EVENT_STA_STOP: {
+                wifi_state[WIFI_TYPE_STA].enabled = false;
                 ESP_LOGI(TAG, "Stop STA");
                 break;
             }
@@ -256,26 +312,32 @@ void wifi_ap_configure( void )
     );    
 }
 
-void wifi_ap_enable( void )
+static void wifi_ap_enable( void )
 {
-    ESP_LOGI( TAG, "Enabling AP" );
-    ESP_LOGI( TAG, "wifimode: APSTA" );
-
-    //ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
-    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
+    if ( get_wifi_enabled(WIFI_TYPE_STA) )
+    {
+        ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
+        ESP_LOGI( TAG, "Enabling AP keep STA on" );
+    }
+    else
+    {
+        ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
+        ESP_LOGI( TAG, "Enabling AP keep STA off" );
+    }
 }
 
-void wifi_ap_disable( void )
+static void wifi_ap_disable( void )
 {
-    ESP_LOGI( TAG, "Disabling AP" );
-    ESP_LOGI( TAG, "wifimode: STA" );
-
-    ESP_ERROR_CHECK( esp_wifi_set_mode ( WIFI_MODE_STA ) );
-}
-
-bool get_wifi_ap_mode( void )
-{
-    return wifi_ap_enabled;
+    if ( get_wifi_enabled(WIFI_TYPE_STA) )
+    {
+        ESP_ERROR_CHECK( esp_wifi_set_mode ( WIFI_MODE_STA ) );
+        ESP_LOGI( TAG, "Disabling AP keep STA on" );
+    }
+    else
+    {
+        ESP_ERROR_CHECK( esp_wifi_set_mode ( WIFI_MODE_NULL ) );
+        ESP_LOGI( TAG, "Disabling STA (all)" );
+    }
 }
 
 void update_wifi_ap_mode( bool use_ap )
@@ -291,9 +353,65 @@ void update_wifi_ap_mode( bool use_ap )
     }
 }
 
+static void wifi_sta_enable( void )
+{
+    ESP_LOGI( TAG, "Enabling AP" );
+
+    //ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
+
+    if ( get_wifi_enabled(WIFI_TYPE_AP) )
+    {
+        ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
+        ESP_LOGI( TAG, "Enabling STA keep AP on" );
+    }
+    else
+    {
+        ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+        ESP_LOGI( TAG, "Enabling STA keep AP off" );
+    }
+}
+
+static void wifi_sta_disable( void )
+{
+    // first need to make sure 'sleep' member of devices table
+    // is updated (not implemented yet)
+
+    if ( get_wifi_enabled(WIFI_TYPE_AP) )
+    {
+        ESP_ERROR_CHECK( esp_wifi_set_mode ( WIFI_MODE_AP ) );
+        ESP_LOGI( TAG, "Disabling STA keep AP on" );
+    }
+    else
+    {
+        ESP_ERROR_CHECK( esp_wifi_set_mode ( WIFI_MODE_NULL ) );
+        ESP_LOGI( TAG, "Disabling STA (all)" );
+    }
+}
+
+void update_wifi_sta_mode( bool use_sta )
+{
+    if ( use_sta ) 
+    {
+        wifi_sta_enable();
+    } 
+
+    else
+    {
+        wifi_sta_disable();
+    }
+}
+
+static void init_wifi_timers( void )
+{
+    wifi_state[WIFI_TYPE_STA].time_limit = DISABLE_STA_AFTER;
+    wifi_state[WIFI_TYPE_AP].time_limit = DISABLE_AP_AFTER;
+}
+
 void init_wifi( void )
 {
     // https://github.com/HankB/ESP32-ESP-IDF-PlatformIO-start/blob/C%2B%2B/src/wifi.cpp
+
+    init_wifi_timers();
 
     scan_ap_data = malloc( sizeof(wifi_ap_list_t) * AP_LIST_MAX );
 
@@ -318,11 +436,13 @@ void init_wifi( void )
     //ESP_ERROR_CHECK( esp_wifi_set_mode( WIFI_MODE_STA ) );
 
     // always start with AP enabled
+    update_wifi_sta_mode( true );
+    wifi_state[WIFI_TYPE_STA].enabled = true;
     update_wifi_ap_mode( true );
 
-    wifi_ap_configure();
     wifi_sta_configure();
-    
+    wifi_ap_configure();
+
     //ESP_ERROR_CHECK( esp_wifi_set_country( &country ) );
     ESP_ERROR_CHECK( esp_wifi_start() );
     ESP_ERROR_CHECK( esp_wifi_set_ps( WIFI_PS_NONE ) );                                         

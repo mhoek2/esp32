@@ -19,7 +19,7 @@ static esp_timer_handle_t reboot_timer;
 #define BUTTON_GPIO GPIO_NUM_6
 volatile bool button_6_event = false;
 int64_t press_time = 0;
-int64_t ap_enabled_time = 0;
+
 
 // gpio mc38 magnetic sensor
 #define MC38_GPIO GPIO_NUM_5
@@ -46,7 +46,15 @@ static esp_err_t update_window_state( void )
 {
     set_window_state();
 
+    // check if sta is on
+    //if ( get_wifi_enabled( WIFI_TYPE_STA) )
     webclient_update_windowstate();
+
+    // if not, rely on: WIFI_EVENT_STA_CONNECTED handler
+    // this synchronize update ALL device sensor and state 
+    //else
+    //   update_wifi_sta_mode( true );
+
     return ESP_OK;   
 }
 
@@ -160,9 +168,8 @@ void app_main( void )
 
             // enable AP for x minutes
             // only, when device is fully initialized
-            if ( device_initialized() && !get_wifi_ap_mode() )
+            if ( device_initialized() && !get_wifi_enabled( WIFI_TYPE_AP ) )
             {
-                ap_enabled_time = esp_timer_get_time();
                 update_wifi_ap_mode( true );
                 ESP_LOGW( TAG, "Manually enable AP" );
             }
@@ -200,10 +207,16 @@ void app_main( void )
 
         // disable wifi ap after x minutes.
         // only, when device is fully initialized
-        if ( device_initialized() && get_wifi_ap_mode() && (esp_timer_get_time() - ap_enabled_time) > DISABLE_AP_AFTER ) 
+        if ( device_initialized() && get_wifi_enabled( WIFI_TYPE_AP ) && wifi_timer_hit( WIFI_TYPE_AP ) ) 
         {
             ESP_LOGW( TAG, "Disable AP using Timer" );
             update_wifi_ap_mode( false );
+        }
+
+         if ( device_initialized() && get_wifi_enabled( WIFI_TYPE_STA ) && wifi_timer_hit( WIFI_TYPE_STA ) ) 
+        {
+            ESP_LOGW( TAG, "Disable STA using Timer" );
+            update_wifi_sta_mode( false );
         }
 
         vTaskDelay( interval / portTICK_PERIOD_MS );
