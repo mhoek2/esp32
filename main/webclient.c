@@ -17,28 +17,29 @@
 static const char *TAG = "webclient";
 static char mac_address[18];
 
-// register device
-static bool device_registered = false;
-
 // registered requests
 typedef enum {
     REQUEST_REGISTER,
     REQUEST_UPDATE_WINDOWSTATE,
+    REQUEST_SET_STA_SLEEP,
     NUM_REQUESTS
 } request_id_t;
 
 typedef struct {
-    const char*     name;
-    request_id_t    request_id;
-    esp_timer_cb_t  call;
-    char            url[128];
-    char            payload[128];
-    esp_err_t       (*on_response)(esp_http_client_event_t *e);
-    void            (*do_retry)(void);
-    uint64_t        delay;
-    esp_timer_handle_t timer_handle;
+    const char*         name;
+    request_id_t        request_id;
+    esp_timer_cb_t      call;
+    char                url[128];
+    char                payload[128];
+    esp_err_t           (*on_response)(esp_http_client_event_t *e);
+    void                (*do_retry)(void);
+    uint64_t            delay;
+    esp_timer_handle_t  timer_handle;
 } http_request_ctx_t;
 static http_request_ctx_t http_request[NUM_REQUESTS];
+
+// register device
+static bool device_registered = false;
 
 // global
 static void set_mac_address( void )
@@ -112,7 +113,9 @@ static esp_err_t http_request_dispatch( int request_id )
         update_wifi_sta_mode( true );
 
     // keep-alive: reset timer for wifi STA
-    reset_wifi_enabled_time(WIFI_TYPE_STA);
+    // unless device is going into sleep mode
+    if ( request_id != REQUEST_SET_STA_SLEEP )
+        reset_wifi_enabled_time( WIFI_TYPE_STA );
 
     http_request_ctx_t *ctx = &http_request[request_id];
 
@@ -141,7 +144,8 @@ static esp_err_t register_device_response( esp_http_client_event_t *event )
 
     if ( json_config == NULL ) 
     {
-        ESP_LOGI(TAG, "invalid JSON config");
+        webclient_register_device();
+        ESP_LOGI(TAG, "invalid JSON config, retry");
         return ESP_FAIL;
     }
 
@@ -191,7 +195,8 @@ static esp_err_t update_window_response( esp_http_client_event_t *event )
 
     if ( json_config == NULL ) 
     {
-        ESP_LOGI(TAG, "invalid JSON config");
+        webclient_update_windowstate();
+        ESP_LOGI(TAG, "invalid JSON config, retry");
         return ESP_FAIL;
     }
 
@@ -242,6 +247,79 @@ void webclient_update_windowstate( void )
     http_request_dispatch( REQUEST_UPDATE_WINDOWSTATE );
 }
 
+// STA sleep state (full sleep)
+static bool set_sta_sleep_request_in_progress = false; // sent request once
+
+static esp_err_t set_sta_sleep_response( esp_http_client_event_t *event )
+{
+    cJSON *json_config;
+
+    json_config = cJSON_Parse( (char *)event->data );
+
+    if ( json_config == NULL ) 
+    {
+        webclient_set_sta_sleep();
+        ESP_LOGI(TAG, "invalid JSON config, retry");
+        return ESP_FAIL;
+    }
+
+    int recv_state = -1;
+
+    ESP_LOGW( TAG, "Sleep update response: %.*s", event->data_len, (char *)event->data );
+	if ( cJSON_GetObjectItem( json_config, "recv_state" ) ) {
+		recv_state = cJSON_GetObjectItem( json_config, "recv_state" )->valueint;
+    }
+
+    // check if recv state matches current state, 
+    // else dispatch new request
+    const int sleep = 1;
+    if ( recv_state != sleep )
+    {
+        webclient_set_sta_sleep();
+        ESP_LOGW( TAG, "Sleep was not properly updated, RETRY!" );
+    }
+    
+    // member sleep in device table is synchronized now
+    // put wifi STA to sleep
+    else
+        update_wifi_sta_mode( false );
+
+    return ESP_OK;
+}
+
+static void set_sta_sleep( void *arg )
+{
+    config_t *config = get_config();
+    http_request_ctx_t *ctx = &http_request[REQUEST_SET_STA_SLEEP];
+    
+    // reset
+    set_sta_sleep_request_in_progress = false;
+
+    const int sleep = 1;
+    snprintf( ctx->url, sizeof(ctx->url), URL_FORMAT, config->server_address, "set_sta_sleep" );
+    snprintf( ctx->payload, sizeof(ctx->payload), "{\"mac\":\"%s\", \"state\":%d}", 
+        mac_address,
+        sleep
+    );
+    http_send_post( ctx );   
+}
+
+void webclient_set_sta_sleep( void )
+{
+    // sent request once
+    if ( set_sta_sleep_request_in_progress )
+        return;
+
+    ESP_LOGW( TAG, "Disable STA webrequest" );    
+    set_sta_sleep_request_in_progress = true;
+
+    if ( !device_initialized() )
+        return;
+
+    http_request_dispatch( REQUEST_SET_STA_SLEEP );
+}
+
+
 // init
 static void init_http_requests( void )
 {
@@ -263,6 +341,15 @@ static void init_http_requests( void )
         .on_response    = update_window_response,
         .do_retry       = webclient_update_windowstate,
         .delay          = UPDATE_WINDOWSTATE_AFTER
+    };
+
+    http_request[REQUEST_SET_STA_SLEEP] = (http_request_ctx_t){
+        .name           = "webclient_set_sta_sleep",
+        .request_id     = REQUEST_SET_STA_SLEEP,
+        .call           = &set_sta_sleep, 
+        .on_response    = set_sta_sleep_response,
+        .do_retry       = webclient_set_sta_sleep,
+        .delay          = UPDATE_SET_STA_SLEEP_AFTER
     };
 
     // create timers

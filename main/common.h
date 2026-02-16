@@ -23,6 +23,9 @@
 // update window state
 #define UPDATE_WINDOWSTATE_AFTER   to_ms( 5 )
 
+// set sta sleeping 
+#define UPDATE_SET_STA_SLEEP_AFTER   to_ms( 15 )
+
 uint64_t to_ms( int32_t seconds );
 
 // queue

@@ -182,7 +182,8 @@ void app_main( void )
         {
             //webclient_register_device();
             //webclient_update_windowstate();
-
+            //webclient_set_sta_sleep();
+            
             ESP_LOGW( TAG, "pressed button 6 (Debug)" );
             button_6_event = false; 
         }
@@ -213,10 +214,11 @@ void app_main( void )
             update_wifi_ap_mode( false );
         }
 
-         if ( device_initialized() && get_wifi_enabled( WIFI_TYPE_STA ) && wifi_timer_hit( WIFI_TYPE_STA ) ) 
+        if ( device_initialized() && get_wifi_enabled( WIFI_TYPE_STA ) && wifi_timer_hit( WIFI_TYPE_STA ) ) 
         {
-            ESP_LOGW( TAG, "Disable STA using Timer" );
-            update_wifi_sta_mode( false );
+            // first set sleep member of devices table in the dashboard to 1,
+            // call: update_wifi_sta_mode( false ) in the response method
+            webclient_set_sta_sleep();
         }
 
         vTaskDelay( interval / portTICK_PERIOD_MS );
