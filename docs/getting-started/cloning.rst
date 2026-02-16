@@ -58,19 +58,17 @@ When the repository is private, a deployment key is required
         #
 
         # Check if ssh-agent is running
-        if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-            echo "Starting ssh-agent..."
-            eval "$(ssh-agent -s)"
-        else
-            echo "ssh-agent already running."
+        if [ -z "$SSH_AUTH_SOCK" ]; then
+			echo "Starting ssh-agent..."
+			eval "$(ssh-agent -s)"
         fi
 
         # Check if the key is already added
-        if ! ssh-add -l | grep -q "$(ssh-keygen -lf ~/.ssh/esp-deploy | awk '{print $2}')"; then
-            echo "Adding SSH key..."
-            ssh-add ~/.ssh/esp-deploy
+        if ! ssh-add -l | grep -q "esp-deploy"; then
+			echo "Adding SSH key..."
+			ssh-add ~/.ssh/esp-deploy
         else
-            echo "SSH key already added."
+			echo "SSH key already added."
         fi
 
         # Clone the repo
