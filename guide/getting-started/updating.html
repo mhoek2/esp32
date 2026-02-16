@@ -242,25 +242,28 @@ sudo nano update.sh</code></pre>
 #
 
 # Check if ssh-agent is running
-if ! pgrep -u &quot;$USER&quot; ssh-agent &gt; /dev/null; then
-    echo &quot;Starting ssh-agent...&quot;
-    eval &quot;$(ssh-agent -s)&quot;
-else
-    echo &quot;ssh-agent already running.&quot;
-fi
-
-# Check if the key is already added
-if ! ssh-add -l | grep -q &quot;$(ssh-keygen -lf ~/.ssh/esp-deploy | awk &#039;{print $2}&#039;)&quot;; then
-    echo &quot;Adding SSH key...&quot;
-    ssh-add ~/.ssh/esp-deploy
-else
-    echo &quot;SSH key already added.&quot;
-fi
-
-# Update the repo
-git pull git@github.com:repo-user/windowstate.git</code></pre>
+if [ -z &quot;$SSH_AUTH_SOCK&quot; ]; then</code></pre>
 </dd>
             </dl>
+
+    <p>echo &quot;Starting ssh-agent...&quot;
+eval &quot;$(ssh-agent -s)&quot;
+fi</p>
+<blockquote>
+    <p># Check if the key is already added
+if ! ssh-add -l | grep -q &quot;esp-deploy&quot;; then</p>
+</blockquote>
+
+    <p>echo &quot;Adding SSH key...&quot;
+ssh-add &nbsp;
+/.ssh/esp-deploy
+     else
+echo &quot;SSH key already added.&quot;
+fi</p>
+<blockquote>
+    <p># Update the repo
+git pull <a href="mailto:git@github.com">git@github.com</a>:repo-user/windowstate.git</p>
+</blockquote>
 </li>
 
     <li><dl>
