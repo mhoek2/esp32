@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 12, 2026 at 10:34 AM
+-- Generation Time: Feb 16, 2026 at 12:10 PM
 -- Server version: 8.0.45-0ubuntu0.22.04.1
 -- PHP Version: 8.3.30
 
@@ -68,7 +68,7 @@ CREATE TABLE `auth_identities` (
 --
 
 INSERT INTO `auth_identities` (`id`, `user_id`, `type`, `name`, `secret`, `secret2`, `expires`, `extra`, `force_reset`, `last_used_at`, `created_at`, `updated_at`) VALUES
-(2, 2, 'email_password', '', 'admin@esp32.io', '$2y$12$CFeavzQijA.w4yu7.276auOuovnwGJQtKFj59AEVcu3EFllrXs4yG', NULL, NULL, 0, '2026-02-11 08:47:04', '2025-02-05 09:20:35', '2026-02-11 08:47:04'),
+(2, 2, 'email_password', '', 'admin@esp32.io', '$2y$12$CFeavzQijA.w4yu7.276auOuovnwGJQtKFj59AEVcu3EFllrXs4yG', NULL, NULL, 0, '2026-02-16 08:29:51', '2025-02-05 09:20:35', '2026-02-16 08:29:51'),
 (21, 21, 'email_password', NULL, 'user1@esp32.io', '$2y$12$XZfuth7qTumIQnte894NU.wrPKrF9fToYTaVtjdbK.DtADtYPJQ3q', NULL, NULL, 0, '2026-01-24 14:50:29', '2025-09-10 12:27:50', '2026-01-24 14:50:29');
 
 -- --------------------------------------------------------
@@ -144,7 +144,8 @@ CREATE TABLE `devices` (
   `id` int NOT NULL,
   `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `mac` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `protocol` int DEFAULT '0'
+  `protocol` int DEFAULT '0',
+  `sleep` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

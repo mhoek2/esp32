@@ -23,6 +23,7 @@ $routes->get(	'/get_device_stats',	'DeviceControler::get_stats',			['as' => 'get
 
 $routes->post(	'/register_device',		'DeviceControler::register',			['as' => 'register_device']);
 $routes->post(	'/receive_device',		'DeviceControler::receive',				['as' => 'receive_device']);
+$routes->post(	'/set_sta_sleep',		'DeviceControler::set_sta_sleep',		['as' => 'set_sta_sleep']);
 
 /**
  * admin

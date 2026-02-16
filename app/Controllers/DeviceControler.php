@@ -28,6 +28,48 @@ class DeviceControler extends BaseController
 			'devices'	=> $devices
 		]);
 	}
+
+	public function set_sta_sleep()
+	{
+		// encode the received payload
+		$json = file_get_contents('php://input');
+		$data = json_decode($json, true);
+		$rows = [];
+
+		if ( json_last_error() === JSON_ERROR_NONE )
+		{
+			$valid_data = false;
+			$keys = array_keys($data);
+			
+			// check if received data is valid
+			if ( in_array("mac", $keys) )
+			{
+				$valid_data = true;
+
+				$rows = $this->deviceModel->where([
+					'mac' => $data['mac']
+				])->find();
+			}
+
+			// device is valid
+			if ( $valid_data && !empty($rows) )
+			{
+				$this->deviceModel->where('mac', $data['mac'])
+					->set('sleep', $data['state'])
+					->update();
+
+				return $this->response->setJSON([
+					"recv_state" 	=> $state,
+					"valid_data" 	=> $valid_data,
+					'status'		=> true,
+				]);
+			}
+		}
+
+		return $this->response->setJSON([
+			'status'	=> false,
+		]);
+	}
 	
 	public function receive()
 	{
@@ -54,6 +96,11 @@ class DeviceControler extends BaseController
 			// device is valid
 			if ( $valid_data && !empty($rows) )
 			{
+				// device is not sleeping anymore
+				$this->deviceModel->where('mac', $data['mac'])
+					->set('sleep', 0)
+					->update();
+
 				// swtich by protocol later..
 				// if protocol == 27
 				// in_array("state", $keys)
