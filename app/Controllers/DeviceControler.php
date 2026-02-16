@@ -54,8 +54,10 @@ class DeviceControler extends BaseController
 			// device is valid
 			if ( $valid_data && !empty($rows) )
 			{
+				$state = $data['state'];
+
 				$this->deviceModel->where('mac', $data['mac'])
-					->set('sleep', $data['state'])
+					->set('sleep', $state)
 					->update();
 
 				return $this->response->setJSON([
