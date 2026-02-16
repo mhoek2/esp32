@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PhpMetrics report [2026-02-12 13:32:45]</title>
+    <title>PhpMetrics report [2026-02-16 12:18:29]</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico?v=v3.0.0-rc8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/milligram.min.css?v=v3.0.0-rc8">
@@ -50,7 +50,7 @@
 <div class="page">
     <div class="content content-first">
         <div class="report-details">
-            Created at 2026-02-12 13:32:45        , with PHPMetrics v3.0.0-rc8 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
+            Created at 2026-02-16 12:18:29        , with PHPMetrics v3.0.0-rc8 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
         </div>
 
         
@@ -221,73 +221,12 @@
 
     var relations = [
     {
-        "name": "\\App\\Services\\HardwareService",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Services\\DeviceService",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Models\\Devices",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Models\\Protocol27",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Services\\UserMetaService",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Models\\User",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Models\\UserMeta",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\ThirdPArty\\TextEditorCKEditorCDN",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\ThirdParty\\TextEditor",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\ThirdPArty\\TextEditorSummernote",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\ThirdPArty\\TextEditorCKEditorGPL",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Filters\\AuthFilterAdmin",
+        "name": "\\App\\Filters\\AuthFilterGuest",
         "size": 3000,
         "relations": [
-            "\\CodeIgniter\\CodeIgniter\\Filters\\FilterInterface",
             "\\CodeIgniter\\HTTP\\RequestInterface",
             "\\CodeIgniter\\HTTP\\ResponseInterface"
         ]
-    },
-    {
-        "name": "\\CodeIgniter\\CodeIgniter\\Filters\\FilterInterface",
-        "size": 3000,
-        "relations": []
     },
     {
         "name": "\\CodeIgniter\\HTTP\\RequestInterface",
@@ -300,6 +239,14 @@
         "relations": []
     },
     {
+        "name": "\\App\\Filters\\AuthFilterAdmin",
+        "size": 3000,
+        "relations": [
+            "\\CodeIgniter\\HTTP\\RequestInterface",
+            "\\CodeIgniter\\HTTP\\ResponseInterface"
+        ]
+    },
+    {
         "name": "\\App\\Filters\\AuthFilterSession",
         "size": 3000,
         "relations": [
@@ -309,15 +256,305 @@
         ]
     },
     {
-        "name": "\\App\\Filters\\AuthFilterGuest",
+        "name": "\\App\\Models\\User",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\ThirdPArty\\TextEditorCKEditorGPL",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\ThirdParty\\TextEditor",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\ThirdPArty\\TextEditorCKEditorCDN",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\ThirdPArty\\TextEditorSummernote",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\View",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\AuthGroups",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Filters",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Format",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Exceptions",
         "size": 3000,
         "relations": [
-            "\\CodeIgniter\\HTTP\\RequestInterface",
-            "\\CodeIgniter\\HTTP\\ResponseInterface"
+            "\\CodeIgniter\\Debug\\ExceptionHandlerInterface",
+            "\\Throwable",
+            "\\CodeIgniter\\Debug\\ExceptionHandler"
         ]
     },
     {
+        "name": "\\CodeIgniter\\Debug\\ExceptionHandlerInterface",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Throwable",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\CodeIgniter\\Debug\\ExceptionHandler",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\ContentSecurityPolicy",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Cache",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Validation",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\ForeignCharacters",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\DocTypes",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Pager",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Session",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Encryption",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Kint",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Email",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\AuthToken",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Routing",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Cookie",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\UserAgents",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Autoload",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Mimes",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Migrations",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Publisher",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Honeypot",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Feature",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Security",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Logger",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\CURLRequest",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Services",
+        "size": 3000,
+        "relations": [
+            "\\App\\Services\\DeviceService",
+            "\\App\\Services\\HardwareService",
+            "\\App\\Services\\UserMetaService",
+            "\\App\\ThirdParty\\TextEditor",
+            "\\App\\ThirdParty\\TextEditorCKEditorCDN",
+            "\\App\\ThirdParty\\TextEditorCKEditorGPL",
+            "\\App\\ThirdParty\\TextEditorSummernote"
+        ]
+    },
+    {
+        "name": "\\App\\Services\\DeviceService",
+        "size": 3000,
+        "relations": [
+            "\\App\\Models\\Devices",
+            "\\App\\Models\\Protocol27"
+        ]
+    },
+    {
+        "name": "\\App\\Services\\HardwareService",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Services\\UserMetaService",
+        "size": 3000,
+        "relations": [
+            "\\App\\Models\\User",
+            "\\App\\Models\\UserMeta"
+        ]
+    },
+    {
+        "name": "\\App\\ThirdParty\\TextEditorCKEditorCDN",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\ThirdParty\\TextEditorCKEditorGPL",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\ThirdParty\\TextEditorSummernote",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Modules",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Toolbar",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Generators",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\App",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Auth",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Images",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Cors",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Database",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Optimize",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\Config\\Paths",
+        "size": 3000,
+        "relations": []
+    },
+    {
         "name": "\\App\\Models\\Users",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Models\\Protocol27",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Models\\Devices",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Models\\UserMeta",
         "size": 3000,
         "relations": []
     },
@@ -332,17 +569,33 @@
         "relations": []
     },
     {
-        "name": "\\App\\Controllers\\HardwareInfo",
+        "name": "\\App\\Controllers\\Front\\DownloadController",
+        "size": 3000,
+        "relations": [
+            "\\App\\Models\\Uploads",
+            "\\CodeIgniter\\CodeIgniter\\Exceptions\\PageNotFoundException"
+        ]
+    },
+    {
+        "name": "\\CodeIgniter\\CodeIgniter\\Exceptions\\PageNotFoundException",
         "size": 3000,
         "relations": []
     },
     {
-        "name": "\\App\\Controllers\\Front\\DashboardModules\\DashboardModule",
+        "name": "\\App\\Controllers\\Front\\FilesController",
+        "size": 3000,
+        "relations": [
+            "\\App\\Models\\Uploads",
+            "\\CodeIgniter\\Files\\File"
+        ]
+    },
+    {
+        "name": "\\CodeIgniter\\Files\\File",
         "size": 3000,
         "relations": []
     },
     {
-        "name": "\\App\\Controllers\\Front\\DashboardModules\\DevicesDashboardModule",
+        "name": "\\App\\Controllers\\Front\\Home",
         "size": 3000,
         "relations": []
     },
@@ -362,19 +615,24 @@
         "relations": []
     },
     {
-        "name": "\\App\\Controllers\\Front\\Home",
+        "name": "\\App\\Controllers\\Front\\DashboardModules\\DashboardModule",
         "size": 3000,
         "relations": []
     },
     {
-        "name": "\\App\\Controllers\\Front\\DownloadController",
+        "name": "\\App\\Controllers\\Front\\DashboardModules\\DevicesDashboardModule",
+        "size": 3000,
+        "relations": []
+    },
+    {
+        "name": "\\App\\Controllers\\Admin\\DeviceController",
         "size": 3000,
         "relations": [
-            "\\App\\Models\\Uploads"
+            "\\App\\Models\\Devices"
         ]
     },
     {
-        "name": "\\App\\Controllers\\Front\\FilesController",
+        "name": "\\App\\Controllers\\Admin\\FilesController",
         "size": 3000,
         "relations": [
             "\\App\\Models\\Uploads",
@@ -382,9 +640,26 @@
         ]
     },
     {
-        "name": "\\CodeIgniter\\Files\\File",
+        "name": "\\App\\Controllers\\Admin\\Home",
         "size": 3000,
         "relations": []
+    },
+    {
+        "name": "\\App\\Controllers\\Admin\\UsersController",
+        "size": 3000,
+        "relations": [
+            "\\App\\Models\\Users"
+        ]
+    },
+    {
+        "name": "\\App\\Controllers\\Admin\\BaseController",
+        "size": 3000,
+        "relations": [
+            "\\CodeIgniter\\HTTP\\RequestInterface",
+            "\\CodeIgniter\\HTTP\\ResponseInterface",
+            "\\Psr\\Log\\LoggerInterface",
+            "\\App\\Models\\User"
+        ]
     },
     {
         "name": "\\App\\Controllers\\Admin\\DevicesController",
@@ -418,63 +693,12 @@
         "relations": []
     },
     {
-        "name": "\\App\\Controllers\\Admin\\DashboardModules\\ExampleDashboardModule",
-        "size": 3000,
-        "relations": []
-    },
-    {
         "name": "\\App\\Controllers\\Admin\\DashboardModules\\DevicesDashboardModule",
         "size": 3000,
         "relations": []
     },
     {
-        "name": "\\App\\Controllers\\Admin\\DeviceController",
-        "size": 3000,
-        "relations": [
-            "\\App\\Models\\Devices"
-        ]
-    },
-    {
-        "name": "\\App\\Controllers\\Admin\\UsersController",
-        "size": 3000,
-        "relations": [
-            "\\App\\Models\\Users"
-        ]
-    },
-    {
-        "name": "\\App\\Controllers\\Admin\\BaseController",
-        "size": 3000,
-        "relations": [
-            "\\CodeIgniter\\HTTP\\RequestInterface",
-            "\\CodeIgniter\\HTTP\\ResponseInterface",
-            "\\Psr\\Log\\LoggerInterface",
-            "\\App\\Models\\User"
-        ]
-    },
-    {
-        "name": "\\App\\Controllers\\Admin\\Home",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\Controllers\\Admin\\FilesController",
-        "size": 3000,
-        "relations": [
-            "\\App\\Models\\Uploads",
-            "\\CodeIgniter\\Files\\File"
-        ]
-    },
-    {
-        "name": "\\App\\Controllers\\BaseController",
-        "size": 3000,
-        "relations": [
-            "\\CodeIgniter\\HTTP\\RequestInterface",
-            "\\CodeIgniter\\HTTP\\ResponseInterface",
-            "\\Psr\\Log\\LoggerInterface"
-        ]
-    },
-    {
-        "name": "\\App\\Controllers\\LoginController",
+        "name": "\\App\\Controllers\\Admin\\DashboardModules\\ExampleDashboardModule",
         "size": 3000,
         "relations": []
     },
@@ -487,239 +711,21 @@
         ]
     },
     {
-        "name": "\\Config\\Database",
+        "name": "\\App\\Controllers\\LoginController",
         "size": 3000,
         "relations": []
     },
     {
-        "name": "\\Config\\Session",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Cookie",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\ForeignCharacters",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Logger",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\CURLRequest",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Images",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Migrations",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Feature",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Generators",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\UserAgents",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Format",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Encryption",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Exceptions",
+        "name": "\\App\\Controllers\\BaseController",
         "size": 3000,
         "relations": [
-            "\\CodeIgniter\\Debug\\ExceptionHandlerInterface",
-            "\\Throwable",
-            "\\CodeIgniter\\Debug\\ExceptionHandler"
+            "\\CodeIgniter\\HTTP\\RequestInterface",
+            "\\CodeIgniter\\HTTP\\ResponseInterface",
+            "\\Psr\\Log\\LoggerInterface"
         ]
     },
     {
-        "name": "\\CodeIgniter\\Debug\\ExceptionHandlerInterface",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Throwable",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\CodeIgniter\\Debug\\ExceptionHandler",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Kint",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\AuthToken",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Auth",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\ContentSecurityPolicy",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Security",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Filters",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Toolbar",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\AuthGroups",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Cache",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\View",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Autoload",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Optimize",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Email",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\App",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Validation",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Honeypot",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Routing",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Modules",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Services",
-        "size": 3000,
-        "relations": [
-            "\\App\\Services\\DeviceService",
-            "\\App\\Services\\HardwareService",
-            "\\App\\Services\\UserMetaService",
-            "\\App\\ThirdParty\\TextEditor",
-            "\\App\\ThirdParty\\TextEditorCKEditorCDN",
-            "\\App\\ThirdParty\\TextEditorCKEditorGPL",
-            "\\App\\ThirdParty\\TextEditorSummernote"
-        ]
-    },
-    {
-        "name": "\\App\\ThirdParty\\TextEditorCKEditorCDN",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\ThirdParty\\TextEditorCKEditorGPL",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\App\\ThirdParty\\TextEditorSummernote",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Mimes",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Pager",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Publisher",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\DocTypes",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Paths",
-        "size": 3000,
-        "relations": []
-    },
-    {
-        "name": "\\Config\\Cors",
+        "name": "\\App\\Controllers\\HardwareInfo",
         "size": 3000,
         "relations": []
     }

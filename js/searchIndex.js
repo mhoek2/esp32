@@ -336,6 +336,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/App-Controllers-DeviceControler.html#method_get_stats"
         },                {
+            "fqsen": "\\App\\Controllers\\DeviceControler\u003A\u003Aset_sta_sleep\u0028\u0029",
+            "name": "set_sta_sleep",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceControler.html#method_set_sta_sleep"
+        },                {
             "fqsen": "\\App\\Controllers\\DeviceControler\u003A\u003Areceive\u0028\u0029",
             "name": "receive",
             "summary": "",
