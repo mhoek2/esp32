@@ -20,17 +20,53 @@
 				background: #292929;
 				margin-bottom: 1em;
 				color: #fff;
+				flex: 1;
+				display: flex;
+				flex-direction: row;
 			}
-				.devices .device .title span:nth-child(1){
+				.devices .device .title #heartbeat 
+				{
+					width:50px;
+					position:relative;
+				}
+					.devices .device .title #heartbeat::after
+					{
+						content: "-";
+						font-family: "Font Awesome 6 Free";
+						font-weight: 900;
+						position: absolute;
+						line-height: inherit;
+						text-align: center;
+						top: 50%;
+						left: 50%;
+						transform: translateY(-50%) translateX(-50%);
+					}
+					.devices .device .title #heartbeat.alive::after
+					{
+						content: "\f21e";
+						color: #f97d7d
+					}
+					.devices .device .title #heartbeat.sleep::after
+					{
+						content: "\f186";
+						color: #fca523;
+					}
+
+				.devices .device .title .info 
+				{
+					width: 100%;
+					padding-left: 1em;
+				}
+				.devices .device .title .info span:nth-child(1){
 					display: block;
-					text-align: center;
 					font-weight: bold;
 					font-size: 0.8em;
 					padding: 1em 0 0 0;
+					flex
 				}
-				.devices .device .title span:nth-child(2){
+				.devices .device .title .info span:nth-child(2){
 					display: block;
-					text-align: center;
+
 					font-size: 0.6em;
 					padding: 0em 0 1em 0;
 				}
@@ -75,15 +111,18 @@
 <?php foreach( $devices as $idx => $device ){ ?>
 	<div class="device" data-device-protocol="<?=$device['protocol']?>" data-device-id="<?=$device['id']?>">
 		<div class="title">
-			<span><?=$device['name']?></span>
-			<span></span>
+			<div class="info">
+				<span><?=$device['name']?></span>
+				<span><?=$is_backoffice ? $device['mac'] : ""?></span>
+			</div>
+			<div id="heartbeat"></div>
 		</div>
 		
 		<?php if( (int)$device['protocol'] === 27 ){ ?>
 			<input type="checkbox" data-protocol-state <?=$device['data']['state'] ? 'checked="checked"' : '';?>">
 			
 			<?php $states = ["Closed", "Open"]; ?>
-			<div id="state" data-state-text="<?=$states[$device['data']['state']];?>"></div>
+			<div id="state" data-state-text="-"></div>
 		<?php } ?>
 	</div>
 <?php } ?>

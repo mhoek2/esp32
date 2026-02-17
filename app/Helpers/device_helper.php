@@ -14,7 +14,6 @@ if (! function_exists('deviceUpdateHandlerJS')) {
 					$(element).find('[data-protocol-state]').prop("checked", state );
 
 					const states = ["Closed", "Open"];
-					console.log(states[state]);
 					$(element).find('[data-state-text]').attr( 'data-state-text', states[state] );
 				}
 			}
@@ -36,6 +35,10 @@ if (! function_exists('deviceUpdateHandlerJS')) {
 
 				$('[data-device-id="'+ device['id'] +'"]').each(function( idx )
 				{
+					// heartbeat
+					const sleep = !!parseInt(device['sleep']);
+					$(this).find('#heartbeat').removeClass().addClass( sleep ? 'sleep' : 'alive');
+
 					switch( protocol )
 					{
 						case 27: set_device_protocol_27_stats( $(this), data ); break;

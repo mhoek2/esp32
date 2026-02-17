@@ -69,6 +69,8 @@ abstract class BaseController extends Controller
 		
 		$this->data['header'] = NULL;
 		$this->data['footer'] = NULL;
+
+        $this->data['is_backoffice'] = true;
     }
 	
 	public function get_live_route( string $route, ...$args )

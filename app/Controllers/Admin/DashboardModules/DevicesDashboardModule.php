@@ -25,8 +25,8 @@ class DevicesDashboardModule extends DashboardModule
 
 		$this->data['devices'] = $this->devices->getDevices();		
 		$this->devices->load_devices_stats( $this->data['devices'] );
-		
-		return view('admin/dashboard_modules/devices', $this->data);
+
+		return view('front/dashboard_modules/devices', $this->data);
 	}
 }
 	 
