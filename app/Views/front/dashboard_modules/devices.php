@@ -35,10 +35,13 @@
 						font-family: "Font Awesome 6 Free";
 						font-weight: 900;
 						position: absolute;
-						line-height: inherit;
-						text-align: center;
 						top: 50%;
 						left: 50%;
+						line-height: inherit;
+						text-align: center;
+						padding: 5px;
+						background: #454545;
+						border-radius: 5px;
 						transform: translateY(-50%) translateX(-50%);
 					}
 					.devices .device .title #heartbeat.alive::after
