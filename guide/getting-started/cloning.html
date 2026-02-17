@@ -286,28 +286,23 @@ sudo nano clone.sh</code></pre>
 #
 
 # Check if ssh-agent is running
-if [ -z &quot;$SSH_AUTH_SOCK&quot; ]; then</code></pre>
+if [ -z &quot;$SSH_AUTH_SOCK&quot; ]; then
+    echo &quot;Starting ssh-agent...&quot;
+    eval &quot;$(ssh-agent -s)&quot;
+fi
+
+# Check if the key is already added
+if ! ssh-add -l | grep -q &quot;esp-deploy&quot;; then
+    echo &quot;Adding SSH key...&quot;
+    ssh-add ~/.ssh/esp-deploy
+else
+    echo &quot;SSH key already added.&quot;
+fi
+
+# Clone the repo
+git clone git@github.com:repo-user/windowstate.git</code></pre>
 </dd>
             </dl>
-
-    <p>echo &quot;Starting ssh-agent...&quot;
-eval &quot;$(ssh-agent -s)&quot;
-fi</p>
-<blockquote>
-    <p># Check if the key is already added
-if ! ssh-add -l | grep -q &quot;esp-deploy&quot;; then</p>
-</blockquote>
-
-    <p>echo &quot;Adding SSH key...&quot;
-ssh-add &nbsp;
-/.ssh/esp-deploy
-     else
-echo &quot;SSH key already added.&quot;
-fi</p>
-<blockquote>
-    <p># Clone the repo
-git clone <a href="mailto:git@github.com">git@github.com</a>:repo-user/windowstate.git</p>
-</blockquote>
 </li>
 
     <li><dl>
