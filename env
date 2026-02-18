@@ -31,7 +31,7 @@ CI_ENVIRONMENT = development
 #--------------------------------------------------------------------
 
 # database.default.hostname = db
-# database.default.database = esp32
+# database.default.database = esp32_db
 # database.default.username = esp32_user
 # database.default.password = esp32_pass
 # database.default.DBDriver = MySQLi
