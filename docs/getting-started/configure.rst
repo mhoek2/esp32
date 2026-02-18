@@ -8,7 +8,7 @@ Some composer modules might have changed been updated, so we want to verify a fe
 Setup domain
 ------------
 
-#. Set variable ``$baseURL`` in ``app/Config/App.php`` to the root url of your server. eg: http://windowstate.your-domain.com/
+#. Set variable ``$baseURL`` in ``app/Config/App.php`` to the root url of your server. eg: http://esp32.your-domain.com/
     .. code-block:: php
 
         /**
@@ -21,7 +21,7 @@ Setup domain
         *
         * E.g., http://example.com/
         */
-        public string $baseURL = 'http://windowstate.your-domain.com/';
+        public string $baseURL = 'http://esp32.your-domain.com/';
 
 #. Ensure database connection variables are correctly set in ``app/Config/Database.php``
     .. code-block:: php
@@ -86,25 +86,25 @@ If you run a fresh apache webserver, you might want to set up the following.
     .. code-block:: bash
 
         # When you don't have this set up already, add a vhost.
-        # sudo nano /etc/apache2/sites-available/windowstate.your-domain.com.conf
+        # sudo nano /etc/apache2/sites-available/esp32.your-domain.com.conf
         <VirtualHost *:80>
-            ServerName windowstate.your-domain.com
+            ServerName esp32.your-domain.com
 
             ServerAdmin webmaster@localhost
-            DocumentRoot /var/www/html/windowstate/public
+            DocumentRoot /var/www/html/esp32/public
 
-            <Directory /var/www/html/windowstate/public>
+            <Directory /var/www/html/esp32/public>
                 Options Indexes FollowSymLinks
                 AllowOverride All
                 Require all granted
             </Directory>
 
-            ErrorLog ${APACHE_LOG_DIR}/windowstate_error.log
-            CustomLog ${APACHE_LOG_DIR}/windowstate_access.log combined
+            ErrorLog ${APACHE_LOG_DIR}/esp32_error.log
+            CustomLog ${APACHE_LOG_DIR}/esp32_access.log combined
         </VirtualHost>
 
         # save & exit
-        sudo a2ensite windowstate.your-domain.com.conf
+        sudo a2ensite esp32.your-domain.com.conf
         sudo systemctl reload apache2
 
         # disable default vhost:
@@ -130,5 +130,5 @@ If you run a fresh apache webserver, you might want to set up the following.
         composer update
 
 .. tip::
-	You should now be able to see a correctly setup instance when you navigate to: http://windowstate.your-domain.com/
+	You should now be able to see a correctly setup instance when you navigate to: http://esp32.your-domain.com/
 	

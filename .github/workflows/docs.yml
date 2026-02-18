@@ -86,7 +86,7 @@ jobs:
             echo "" >> docs/report/phpstan.rst
             jq -r '
               .files | to_entries[] |
-              "**" + (.key | gsub("/home/runner/work/windowstate/windowstate/"; "")) + "**\n" +
+              "**" + (.key | gsub("/home/runner/work/esp32/esp32/"; "")) + "**\n" +
               "\n    .. code-block:: bash\n" +
               "\n" +
               (.value.messages | map("        Line " + (.line|tostring) + ": " + .message) | join("\n")) +

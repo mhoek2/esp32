@@ -32,12 +32,12 @@ Manual (Not recommended)
     .. code-block:: bash
 
         # This will not install dev-tools
-        composer create-project codeigniter4/appstarter windowstate
+        composer create-project codeigniter4/appstarter esp32
         composer require phpdocumentor/shim
         composer require codeigniter4/shield:dev-develop
         php spark shield:setup
 
 
-#. Create a Mysql database with PhpMyAdmin and import ``sql/windowstate.sql``
+#. Create a Mysql database with PhpMyAdmin and import ``sql/esp32.sql``
 
 `Proceed to: Configure <configure.rst>`_

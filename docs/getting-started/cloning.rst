@@ -9,7 +9,7 @@ Cloning (private repo only)
 When the repository is private, a deployment key is required
 
 .. tip::
-	Replace 'repo-user' in the following snippets with the repo owner username
+	If you use a fork, replace 'mhoek2' in the following snippets with your username
 
 #. Create a public key using ssh-keygen
     .. code-block:: bash
@@ -72,7 +72,7 @@ When the repository is private, a deployment key is required
         fi
 
         # Clone the repo
-        git clone git@github.com:repo-user/windowstate.git
+        git clone git@github.com:mhoek2/esp32.git
 
 #. Make clone.sh executable
     .. code-block:: bash

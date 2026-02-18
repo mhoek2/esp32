@@ -16,8 +16,7 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://192.168.1.26/windowstate/public/';
-    //public string $baseURL = 'http://localhost/windowstate/public/';
+    public string $baseURL = 'http://localhost/esp32/public/';
 	
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.

@@ -6,13 +6,13 @@ Updating (cloned version only)
 
 .. tip::
 	- Assuming you followed deployment key setup in :ref:`Cloning <cloning-guide>`
-	- Replace 'repo-user' in the following snippets with the repo owner username
+	- If you use a fork, replace 'mhoek2' in the following snippets with your username
 
 #. Create a update.sh file
     .. code-block:: bash
 
         # cd to your root application instance path. (NOT server root like clone.sh)
-        cd /var/www/html/windowstate
+        cd /var/www/html/esp32
         sudo nano update.sh
 
 #. Write to update.sh
@@ -36,7 +36,7 @@ Updating (cloned version only)
         fi
 
         # Update the repo
-        git pull git@github.com:repo-user/windowstate.git
+        git pull git@github.com:mhoek2/esp32.git
 
 #. Make update.sh executable
     .. code-block:: bash
