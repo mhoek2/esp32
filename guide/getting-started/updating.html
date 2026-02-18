@@ -215,7 +215,7 @@
 <ul>
     <li class="dash">Assuming you followed deployment key setup in <a href="guide/getting-started/cloning.html#cloning-guide">Cloning</a></li>
 
-    <li class="dash">Replace &#039;repo-user&#039; in the following snippets with the repo owner username</li>
+    <li class="dash">If you use a fork, replace &#039;mhoek2&#039; in the following snippets with your username</li>
 
 </ul>
 
@@ -229,7 +229,7 @@
                         <dt>Create a update.sh file</dt>
         
         <dd><pre><code class="language-bash"># cd to your root application instance path. (NOT server root like clone.sh)
-cd /var/www/html/windowstate
+cd /var/www/html/esp32
 sudo nano update.sh</code></pre>
 </dd>
             </dl>
@@ -256,7 +256,7 @@ else
 fi
 
 # Update the repo
-git pull git@github.com:repo-user/windowstate.git</code></pre>
+git pull git@github.com:mhoek2/esp32.git</code></pre>
 </dd>
             </dl>
 </li>
