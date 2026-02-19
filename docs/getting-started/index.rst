@@ -8,8 +8,8 @@ Or you want to deploy a existing install, your'e in the right place.
     :maxdepth: 3
 
     installing
-	deploy
-	docker
-	configure
+	install_docker
+	configure_docker
+	configure_dedicated
 	cloning
 	updating
