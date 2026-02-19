@@ -66,11 +66,15 @@
                 
             </li>
                     <li>
-                <a href="guide/getting-started/deploy.html#deploy-backup" class="">Deploy backup</a>
+                <a href="guide/getting-started/install_docker.html#install-docker" class="">Install Docker</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/configure.html#configure" class="">Configure</a>
+                <a href="guide/getting-started/configure_docker.html#configure-docker" class="">Configure Docker</a>
+                
+            </li>
+                    <li>
+                <a href="guide/getting-started/configure_dedicated.html#configure-dedicated-server" class="">Configure Dedicated Server</a>
                 
             </li>
                     <li>
@@ -201,49 +205,181 @@
 </aside>
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
-                                        <section class="section " id="deploy-backup">
-            <h1>Deploy backup</h1>
+                                        <section class="section " id="configure-docker">
+            <h1>Configure Docker</h1>
 
             
-    <p>Assuming you received a copy of a production ready version.</p>
+    <p>A few things need to be set-up and configured.</p>
 
-            <section class="section " id="requirements">
-            <h2>Requirements</h2>
+            
+    <p>Some composer modules might have changed been updated, so we want to verify a few things.</p>
+
+            <div class="phpdocumentor-admonition tip">
+                    <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <article>
+        
+    <p>Requires docker and docker compose to be installed</p>
+
+    </article>
+</div>
+
+            <section class="section " id="setup-containers">
+            <h2>Setup containers</h2>
 
             
     
 <ol type="1">
-    <li>Hosting environemnt with <code>PHP&gt;8.2</code>
- and <code>ext-intl</code>
- extension enabled.</li>
+    <li>Open a terminal and change working directory to the root of the project folder.</li>
 
-    <li>.zip file containing a copy of an existing install</li>
+    <li>If you want to serve on custom ports or database credentials, modify in <code>docker-compose.yml</code>
+</li>
 
-    <li>.sql file containing a copy of the database</li>
+    <li><dl>
+                        <dt>Deploy the docker images and services</dt>
+        
+        <dd><pre><code class="language-bash"># Set up mysql, nginx and app services:
+docker compose up -d --build</code></pre>
+</dd>
+            </dl>
+</li>
 
 </ol>
 
     </section>
 
-            <section class="section " id="setup">
-            <h2>Setup</h2>
+            <section class="section " id="setup-domain">
+            <h2>Setup domain</h2>
 
             
     
-<ol type="1">
-    <li>From the received .zip, unzip all contents in the subfolder which contains composer.json to the project folder in your web environment.</li>
+<ol>
+    <li><dl>
+                        <dt>Uncomment and point <code>app.baseURL</code>
+ in <code>.env</code>
+ to the root url of your server. eg: <a href="http://esp32.your-domain.com/">http://esp32.your-domain.com/</a></dt>
+        
+        <dd><pre><code class="language-php">app.baseURL = &#039;&#039;</code></pre>
+</dd>
+            </dl>
+</li>
 
-    <li>If root folder <code>vendor</code>
- is not included with the .zip. Run composer from step 4 in <a href="guide/getting-started/installing.html">Installation</a></li>
-
-    <li>Create a <code>Mysql</code>
- database with <code>PhpMyAdmin</code>
- and import the recevied .sql</li>
+    <li><dl>
+                        <dt>Ensure database connection variables uncommented and correctly set in <code>.env</code>
+</dt>
+        
+        <dd><pre><code class="language-php">database.default.hostname = db
+database.default.database = esp32_db
+database.default.username = esp32_user
+database.default.password = esp32_pass
+database.default.DBDriver = MySQLi
+database.default.DBPrefix =
+database.default.port = 3306</code></pre>
+</dd>
+            </dl>
+</li>
 
 </ol>
 
+    </section>
+
+            <section class="section " id="access-rights">
+            <h2>Access Rights</h2>
+
             
-    <p><a href="guide/getting-started/configure.html">Proceed to: Configure</a></p>
+    
+<ol>
+    <li><dl>
+                        <dt>Give valid permissions to writable folder and subfolders</dt>
+        
+        <dd><pre><code class="language-bash"># This will add permissions, use valid user, commonly www-data for apache2 servers
+sudo chown -R www-data writable</code></pre>
+</dd>
+            </dl>
+</li>
+
+</ol>
+
+    </section>
+
+            <section class="section " id="done">
+            <h2>Done</h2>
+
+            
+    <p>You should now be able to see a correctly setup instance when you navigate to: <a href="http://esp32.your-domain.com/">http://esp32.your-domain.com/</a></p>
+
+            <div class="phpdocumentor-admonition tip">
+                    <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <article>
+        
+    <p>Additional info:</p>
+
+    </article>
+</div>
+
+    </section>
+
+            <section class="section " id="verify">
+            <h2>Verify</h2>
+
+            
+    
+<ol>
+    <li><dl>
+                        <dt>The Login controller is a clone of Shield&#039;s, this prevents the custom login page from being overwritten.</dt>
+        
+        <dd>Ensure <code>Controllers\LoginController::loginView()</code>
+ matches <code>CodeIgniter\Shield\Controllers\LoginController::loginView()</code>
+.</dd>
+            </dl>
+</li>
+
+    <li><dl>
+                        <dt>Usfull docker commands:</dt>
+        
+        <dd><pre><code class="language-bash">docker compose exec db mysql -uroot -proot -e &quot;SELECT User,Host FROM mysql.user;&quot;
+docker compose exec db mysql -uroot -proot -e &quot;SHOW DATABASES;&quot;
+docker compose exec db mysql -uroot -proot -e &quot;USE esp32_db; SHOW TABLES;&quot;
+
+# Start all services defined in docker-compose.yml in detached mode
+docker compose up -d
+
+# Build (or rebuild) images and start services in detached mode
+docker compose up -d --build
+
+# Stop and remove containers, networks, and default resources
+docker compose down
+
+# Stop and remove containers, networks, AND associated named volumes
+docker compose down -v</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li><dl>
+                        <dt>TIP: Temporary enable error printing:</dt>
+        
+        <dd><pre><code class="language-bash">nano app/Config/Boot/production.php
+# Change:
+ini_set(&#039;display_errors&#039;, &#039;0&#039;);
+# To:
+ini_set(&#039;display_errors&#039;, &#039;1&#039;);</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li><dl>
+                        <dt>ERROR: Call to a member function getErrors() on null</dt>
+        
+        <dd><pre><code class="language-bash"># If you encounter a php error during login, likely reason is a glitch with shield.
+# Try the following commands in the root of the project using the cli:
+
+composer require codeigniter4/shield:^1.1
+composer update</code></pre>
+</dd>
+            </dl>
+</li>
+
+</ol>
 
     </section>
 

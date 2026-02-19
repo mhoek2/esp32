@@ -66,11 +66,15 @@
                 
             </li>
                     <li>
-                <a href="guide/getting-started/deploy.html#deploy-backup" class="">Deploy backup</a>
+                <a href="guide/getting-started/install_docker.html#install-docker" class="">Install Docker</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/configure.html#configure" class="">Configure</a>
+                <a href="guide/getting-started/configure_docker.html#configure-docker" class="">Configure Docker</a>
+                
+            </li>
+                    <li>
+                <a href="guide/getting-started/configure_dedicated.html#configure-dedicated-server" class="">Configure Dedicated Server</a>
                 
             </li>
                     <li>
@@ -201,204 +205,82 @@
 </aside>
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
-                                        <section class="section " id="configure">
-            <h1>Configure</h1>
+                                        <section class="section " id="install-docker">
+            <h1>Install Docker</h1>
 
-            
-    <p>A few things need to be set-up and configured.</p>
-
-            
-    <p>Some composer modules might have changed been updated, so we want to verify a few things.</p>
-
-            <section class="section " id="setup-domain">
-            <h2>Setup domain</h2>
+            <section class="section " id="windows">
+            <h2>Windows</h2>
 
             
     
-<ol>
-    <li><dl>
-                        <dt>Set variable <code>$baseURL</code>
- in <code>app/Config/App.php</code>
- to the root url of your server. eg: <a href="http://esp32.your-domain.com/">http://esp32.your-domain.com/</a></dt>
-        
-        <dd><pre><code class="language-php">/**
-* --------------------------------------------------------------------------
-* Base Site URL
-* --------------------------------------------------------------------------
-*
-* URL to your CodeIgniter root. Typically, this will be your base URL,
-* WITH a trailing slash:
-*
-* E.g., http://example.com/
-*/
-public string $baseURL = &#039;http://esp32.your-domain.com/&#039;;</code></pre>
-</dd>
-            </dl>
-</li>
-
-    <li><dl>
-                        <dt>Ensure database connection variables are correctly set in <code>app/Config/Database.php</code>
-</dt>
-        
-        <dd><pre><code class="language-php">/**
-* The default database connection.
-*
-* @var array&lt;string, mixed&gt;
-*/
-public array $default = [
-    &#039;DSN&#039;          =&gt; &#039;&#039;,
-    &#039;hostname&#039;     =&gt; &#039;localhost&#039;,
-    &#039;username&#039;     =&gt; &#039;your-username&#039;,
-    &#039;password&#039;     =&gt; &#039;your-password&#039;,
-    &#039;database&#039;     =&gt; &#039;your-database-name&#039;,
-    &#039;DBDriver&#039;     =&gt; &#039;MySQLi&#039;,</code></pre>
-</dd>
-            </dl>
-</li>
+<ol type="1">
+    <li>Look for docker desktop using WSL2</li>
 
 </ol>
 
     </section>
 
-            <section class="section " id="verify">
-            <h2>Verify</h2>
+            <section class="section " id="linux">
+            <h2>Linux</h2>
+
+            
+    <p>This is a quick guide, there are higher detailed guides online!</p>
 
             
     
 <ol>
     <li><dl>
-                        <dt>Ensure &#039;csrf&#039; is uncommented in <code>$globals</code>
- <code>app/Config/Filters.php</code>
-</dt>
+                        <dt>Prepare</dt>
         
-        <dd><pre><code class="language-php">public array $globals = [
-    &#039;before&#039; =&gt; [
-        // &#039;honeypot&#039;,
-        &#039;csrf&#039;,
-        // &#039;invalidchars&#039;,
-    ],
-    &#039;after&#039; =&gt; [
-        // &#039;honeypot&#039;,
-        // &#039;secureheaders&#039;,
-    ],
-];</code></pre>
-</dd>
-            </dl>
-</li>
+        <dd><pre><code class="language-bash">sudo apt install -y ca-certificates curl gnupg lsb-release software-properties-common
 
-    <li>Ensure services are in place in <code>app/Config/Services.php</code>
-</li>
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
-    <li><dl>
-                        <dt>The Login controller is a clone of Shield&#039;s, this prevents the custom login page from being overwritten.</dt>
-        
-        <dd>Ensure <code>Controllers\LoginController::loginView()</code>
- matches <code>CodeIgniter\Shield\Controllers\LoginController::loginView()</code>
-.</dd>
-            </dl>
-</li>
-
-</ol>
-
-    </section>
-
-            <section class="section " id="configure-apache-server">
-            <h2>Configure Apache server</h2>
-
-            
-    <p>If you run a fresh apache webserver, you might want to set up the following.</p>
-
-            
-    
-<ol>
-    <li><dl>
-                        <dt>Give valid permissions to writable folder and subfolders</dt>
-        
-        <dd><pre><code class="language-bash"># This will add permissions, use valid user, commonly www-data for apache2 servers
-sudo chown -R www-data writable</code></pre>
+echo \
+    &quot;deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) stable&quot; | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</code></pre>
 </dd>
             </dl>
 </li>
 
     <li><dl>
-                        <dt>Enable modrewrite</dt>
+                        <dt>Install</dt>
         
-        <dd><pre><code class="language-bash"># Check if modrewrite is enabled:
-apache2ctl -M | grep rewrite
-
-# when nothing returns, enable using:
-sudo a2enmod rewrite
-sudo systemctl restart apache2</code></pre>
+        <dd><pre><code class="language-bash">sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</code></pre>
 </dd>
             </dl>
 </li>
 
     <li><dl>
-                        <dt>Create Virtual Host</dt>
+                        <dt>Enable docker</dt>
         
-        <dd><pre><code class="language-bash"># When you don&#039;t have this set up already, add a vhost.
-# sudo nano /etc/apache2/sites-available/esp32.your-domain.com.conf
-&lt;VirtualHost *:80&gt;
-    ServerName esp32.your-domain.com
-
-    ServerAdmin webmaster@localhost
-    DocumentRoot /var/www/html/esp32/public
-
-    &lt;Directory /var/www/html/esp32/public&gt;
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    &lt;/Directory&gt;
-
-    ErrorLog ${APACHE_LOG_DIR}/esp32_error.log
-    CustomLog ${APACHE_LOG_DIR}/esp32_access.log combined
-&lt;/VirtualHost&gt;
-
-# save &amp; exit
-sudo a2ensite esp32.your-domain.com.conf
-sudo systemctl reload apache2
-
-# disable default vhost:
-sudo a2dissite 000-default.conf
-sudo systemctl reload apache2</code></pre>
+        <dd><pre><code class="language-bash">sudo systemctl enable docker
+sudo systemctl start docker
+sudo systemctl status docker</code></pre>
 </dd>
             </dl>
 </li>
 
     <li><dl>
-                        <dt>TIP: Temporary enable error printing:</dt>
+                        <dt>Verify install</dt>
         
-        <dd><pre><code class="language-bash">nano app/Config/Boot/production.php
-# Change:
-ini_set(&#039;display_errors&#039;, &#039;0&#039;);
-# To:
-ini_set(&#039;display_errors&#039;, &#039;1&#039;);</code></pre>
-</dd>
-            </dl>
-</li>
-
-    <li><dl>
-                        <dt>ERROR: Call to a member function getErrors() on null</dt>
-        
-        <dd><pre><code class="language-bash"># If you encounter a php error during login, likely reason is a glitch with shield.
-# Try the following commands in the root of the project using the cli:
-
-composer require codeigniter4/shield:^1.1
-composer update</code></pre>
+        <dd><pre><code class="language-bash">docker version
+docker compose version</code></pre>
 </dd>
             </dl>
 </li>
 
 </ol>
 
-            <div class="phpdocumentor-admonition tip">
-                    <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            <article>
-        
-    <p>You should now be able to see a correctly setup instance when you navigate to: <a href="http://esp32.your-domain.com/">http://esp32.your-domain.com/</a></p>
+            
+    <p>If you have already cloned the repo
+<a href="guide/getting-started/configure_docker.html">Proceed to: Configure Docker</a></p>
 
-    </article>
-</div>
+            
+    <p>Else follow these steps:
+<a href="guide/getting-started/installing.html">Proceed to: Installation</a></p>
 
     </section>
 

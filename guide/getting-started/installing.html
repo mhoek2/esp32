@@ -66,11 +66,15 @@
                 
             </li>
                     <li>
-                <a href="guide/getting-started/deploy.html#deploy-backup" class="">Deploy backup</a>
+                <a href="guide/getting-started/install_docker.html#install-docker" class="">Install Docker</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/configure.html#configure" class="">Configure</a>
+                <a href="guide/getting-started/configure_docker.html#configure-docker" class="">Configure Docker</a>
+                
+            </li>
+                    <li>
+                <a href="guide/getting-started/configure_dedicated.html#configure-dedicated-server" class="">Configure Dedicated Server</a>
                 
             </li>
                     <li>
@@ -207,22 +211,6 @@
             
     <p>Setting up a fresh install</p>
 
-            <section class="section " id="requirements">
-            <h2>Requirements</h2>
-
-            
-    
-<ol start="1" type="1">
-    <li value="1">Hosting environemnt with <code>PHP&gt;8.2</code>
- and <code>ext-intl</code>
- extension enabled.</li>
-
-    <li value="2">A fresh copy containing core files from the github repository.</li>
-
-</ol>
-
-    </section>
-
             <section class="section " id="setup">
             <h2>Setup</h2>
 
@@ -231,9 +219,9 @@
 <ol type="1">
     <li>Install <a href="https://getcomposer.org/">Composer</a></li>
 
-    <li>Clone the repository from GitHub to your web environment. (see <a href="guide/getting-started/cloning.html#cloning-guide">Cloning</a> if repo is private)</li>
+    <li>Clone the repository. see <a href="guide/getting-started/cloning.html#cloning-guide">Cloning</a></li>
 
-    <li>Open a terminal of choice and change current directory to the root directory of the project folder.</li>
+    <li>Open a terminal and change working directory to the root of the project folder.</li>
 
     <li><dl>
                         <dt>Run the following command</dt>
@@ -246,38 +234,24 @@ composer install</code></pre>
 
 </ol>
 
+    </section>
+
+            <section class="section " id="using-docker">
+            <h2>Using Docker</h2>
+
             
-    <p><a href="guide/getting-started/configure.html">Proceed to: Configure</a></p>
+    <p><a href="guide/getting-started/install_docker.html">Proceed to: Installing Docker if you have not</a></p>
+
+            
+    <p><a href="guide/getting-started/configure_docker.html">Proceed to: Configure Docker</a></p>
 
     </section>
 
-            <section class="section " id="manual-not-recommended">
-            <h2>Manual (Not recommended)</h2>
+            <section class="section " id="using-dedicated-server">
+            <h2>Using Dedicated Server</h2>
 
             
-    
-<ol type="1">
-    <li>Download the .zip file containg project files.</li>
-
-    <li><dl>
-                        <dt>Extract to your webserver, then open a terminal in the project folder.</dt>
-        
-        <dd><pre><code class="language-bash"># This will not install dev-tools
-composer create-project codeigniter4/appstarter esp32
-composer require phpdocumentor/shim
-composer require codeigniter4/shield:dev-develop
-php spark shield:setup</code></pre>
-</dd>
-            </dl>
-</li>
-
-    <li>Create a Mysql database with PhpMyAdmin and import <code>sql/esp32.sql</code>
-</li>
-
-</ol>
-
-            
-    <p><a href="guide/getting-started/configure.html">Proceed to: Configure</a></p>
+    <p><a href="guide/getting-started/configure_dedicated.html">Proceed to: Configure Dedicated</a></p>
 
     </section>
 
