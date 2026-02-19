@@ -3,7 +3,20 @@
 Cloning
 =======
 
-Cloning (private repo only)
+Cloning (public repository)
+---------------------
+
+Clone repository using Git CLI
+    .. code-block:: bash
+
+        git clone https://github.com/mhoek2/esp32.git
+
+**OR**
+
+Download project files manually from: https://github.com/mhoek2/esp32
+
+
+Cloning (private repository) - Linux
 ------------------------------
 
 When the repository is private, a deployment key is required

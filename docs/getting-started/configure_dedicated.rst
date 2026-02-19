@@ -1,12 +1,40 @@
-Configure
-=========
+Configure Dedicated Server
+==========================
 
 A few things need to be set-up and configured.
 
 Some composer modules might have changed been updated, so we want to verify a few things.
 
-Setup domain
-------------
+.. tip::
+    Hosting environment requires ``PHP>8.2`` and ``ext-intl`` extension enabled.
+
+Import Database
+---------------
+
+#. Create a Mysql database and import ``sql/esp32.sql`` (Tip: use PhpMyAdmin)
+
+Adjust the .env configuration
+-----------------------------
+
+#. Uncomment and point ``app.baseURL`` in ``.env`` to the root url of your server. eg: http://esp32.your-domain.com/
+    .. code-block:: php
+
+        app.baseURL = ''
+
+#. Ensure database connection variables uncommented and correctly set in ``.env``
+    .. code-block:: php
+
+        database.default.hostname = db
+        database.default.database = esp32_db
+        database.default.username = esp32_user
+        database.default.password = esp32_pass
+        database.default.DBDriver = MySQLi
+        database.default.DBPrefix =
+        database.default.port = 3306
+
+
+When not using the .env file:
+-----------------------------
 
 #. Set variable ``$baseURL`` in ``app/Config/App.php`` to the root url of your server. eg: http://esp32.your-domain.com/
     .. code-block:: php
@@ -42,21 +70,6 @@ Setup domain
 Verify
 ------
 
-#. Ensure 'csrf' is uncommented in ``$globals`` ``app/Config/Filters.php``
-    .. code-block:: php
-
-        public array $globals = [
-            'before' => [
-                // 'honeypot',
-                'csrf',
-                // 'invalidchars',
-            ],
-            'after' => [
-                // 'honeypot',
-                // 'secureheaders',
-            ],
-        ];
-#. Ensure services are in place in ``app/Config/Services.php`` 
 #. The Login controller is a clone of Shield's, this prevents the custom login page from being overwritten. 
         Ensure ``Controllers\LoginController::loginView()`` matches ``CodeIgniter\Shield\Controllers\LoginController::loginView()``.
 		
@@ -129,6 +142,7 @@ If you run a fresh apache webserver, you might want to set up the following.
         composer require codeigniter4/shield:^1.1
         composer update
 
-.. tip::
+Done
+----
 	You should now be able to see a correctly setup instance when you navigate to: http://esp32.your-domain.com/
 	
