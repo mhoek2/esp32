@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PhpMetrics report [2026-02-19 14:10:15]</title>
+    <title>PhpMetrics report [2026-02-23 11:31:57]</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico?v=v3.0.0-rc8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/milligram.min.css?v=v3.0.0-rc8">
@@ -50,7 +50,7 @@
 <div class="page">
     <div class="content content-first">
         <div class="report-details">
-            Created at 2026-02-19 14:10:15        , with PHPMetrics v3.0.0-rc8 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
+            Created at 2026-02-23 11:31:57        , with PHPMetrics v3.0.0-rc8 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
         </div>
 
         
@@ -76,15 +76,15 @@
                     </tr>
                     </thead>
                                             <tr>
-                            <td><span class="path">App\Filters</span></td>
+                            <td><span class="path">App\Services</span></td>
                             <td>3</td>
                             <td>0</td>
+                            <td>0.8</td>
+                            <td>0.2</td>
+                            <td>4</td>
                             <td>1</td>
-                            <td>0</td>
-                            <td>3</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td>0</td>
+                            <td>1</td>
+                            <td>1</td>
                         </tr>
                                             <tr>
                             <td><span class="path">App\ThirdParty</span></td>
@@ -98,13 +98,13 @@
                             <td>1</td>
                         </tr>
                                             <tr>
-                            <td><span class="path">Config</span></td>
-                            <td>39</td>
+                            <td><span class="path">App\Filters</span></td>
+                            <td>3</td>
                             <td>0</td>
                             <td>1</td>
                             <td>0</td>
-                            <td>10</td>
                             <td>4</td>
+                            <td>3</td>
                             <td>0</td>
                             <td>0</td>
                         </tr>
@@ -120,13 +120,13 @@
                             <td>5</td>
                         </tr>
                                             <tr>
-                            <td><span class="path">App\Controllers\Front</span></td>
+                            <td><span class="path">App\Controllers</span></td>
                             <td>4</td>
                             <td>0.25</td>
                             <td>1</td>
                             <td>0.25</td>
-                            <td>7</td>
                             <td>5</td>
+                            <td>3</td>
                             <td>0</td>
                             <td>0</td>
                         </tr>
@@ -138,6 +138,17 @@
                             <td></td>
                             <td>0</td>
                             <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                                            <tr>
+                            <td><span class="path">App\Controllers\Front</span></td>
+                            <td>4</td>
+                            <td>0.25</td>
+                            <td>1</td>
+                            <td>0.25</td>
+                            <td>6</td>
+                            <td>4</td>
                             <td>0</td>
                             <td>0</td>
                         </tr>
@@ -164,26 +175,15 @@
                             <td>0</td>
                         </tr>
                                             <tr>
-                            <td><span class="path">App\Controllers</span></td>
+                            <td><span class="path">Config</span></td>
+                            <td>39</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td>10</td>
                             <td>4</td>
-                            <td>0.25</td>
-                            <td>1</td>
-                            <td>0.25</td>
-                            <td>5</td>
-                            <td>3</td>
                             <td>0</td>
                             <td>0</td>
-                        </tr>
-                                            <tr>
-                            <td><span class="path">App\Services</span></td>
-                            <td>3</td>
-                            <td>0</td>
-                            <td>0.8</td>
-                            <td>0.2</td>
-                            <td>4</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
                         </tr>
                                     </table>
             </div>
@@ -348,11 +348,11 @@
 
     var spots = [
     {
-        "name": "App\\Filters",
+        "name": "App\\Services",
         "abstraction": 0,
-        "instability": 1,
-        "distance": 0,
-        "normalizedDistance": 0,
+        "instability": 0.8,
+        "distance": 0.1414213562373095,
+        "normalizedDistance": 0.2,
         "classCount": 3
     },
     {
@@ -364,12 +364,12 @@
         "classCount": 4
     },
     {
-        "name": "Config",
+        "name": "App\\Filters",
         "abstraction": 0,
         "instability": 1,
         "distance": 0,
         "normalizedDistance": 0,
-        "classCount": 39
+        "classCount": 3
     },
     {
         "name": "App\\Models",
@@ -378,6 +378,14 @@
         "distance": 0.7071067811865475,
         "normalizedDistance": 1,
         "classCount": 7
+    },
+    {
+        "name": "App\\Controllers",
+        "abstraction": 0.25,
+        "instability": 1,
+        "distance": 0.17677669529663687,
+        "normalizedDistance": 0.25,
+        "classCount": 4
     },
     {
         "name": "App\\Controllers\\Front",
@@ -396,20 +404,12 @@
         "classCount": 7
     },
     {
-        "name": "App\\Controllers",
-        "abstraction": 0.25,
-        "instability": 1,
-        "distance": 0.17677669529663687,
-        "normalizedDistance": 0.25,
-        "classCount": 4
-    },
-    {
-        "name": "App\\Services",
+        "name": "Config",
         "abstraction": 0,
-        "instability": 0.8,
-        "distance": 0.1414213562373095,
-        "normalizedDistance": 0.2,
-        "classCount": 3
+        "instability": 1,
+        "distance": 0,
+        "normalizedDistance": 0,
+        "classCount": 39
     }
 ];
 
