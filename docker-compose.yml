@@ -38,5 +38,20 @@ services:
       - dbdata:/var/lib/mysql
       - ./sql/esp32.sql:/docker-entrypoint-initdb.d/init.sql
 
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: esp32_phpmyadmin
+    restart: always
+    #ports:
+    #  - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      # comment URI and COOKIE when using dedicated ports above
+      PMA_ABSOLUTE_URI: http://localhost/phpmyadmin/
+      PMA_COOKIE_SECURE: 0
+    depends_on:
+      - db
+
 volumes:
   dbdata:
