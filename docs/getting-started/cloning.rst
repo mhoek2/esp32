@@ -9,12 +9,12 @@ Cloning (public repository)
 Clone repository using Git CLI
     .. code-block:: bash
 
+        # Browse to the directory where you want to store the project.
+        # This example uses the root directory (/) and will create an "esp32" folder there.
+        # The cloned repository folder will serve as the root directory of the application
+        # (e.g., /esp32).
+        cd /
         git clone https://github.com/mhoek2/esp32.git
-
-**OR**
-
-Download project files manually from: https://github.com/mhoek2/esp32
-
 
 Cloning (private repository) - Linux
 ------------------------------
@@ -60,8 +60,13 @@ When the repository is private, a deployment key is required
 #. Create a clone.sh file
     .. code-block:: bash
 
-        # cd to your root webserver path.
+        # dedicated server:
+        # cd to the root of the webserver.
         cd /var/www/html
+
+        # or for docker:
+        cd /
+
         sudo nano clone.sh
 
 #. Write to clone.sh

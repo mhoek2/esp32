@@ -1,7 +1,18 @@
 Updating
 ========
 
-Updating (cloned version only)
+Updating (public repository)
+---------------------
+
+Updating repository using Git CLI
+    .. code-block:: bash
+
+        # cd to the root of the application
+        # eg /esp32
+        cd /esp32
+        git pull
+
+Updating (private repository)
 ------------------------------
 
 .. tip::
@@ -11,8 +22,13 @@ Updating (cloned version only)
 #. Create a update.sh file
     .. code-block:: bash
 
-        # cd to your root application instance path. (NOT server root like clone.sh)
+        # dedicated server:
+        # cd to the root of the application.
         cd /var/www/html/esp32
+
+        # or for docker:
+        cd /esp32
+
         sudo nano update.sh
 
 #. Write to update.sh
@@ -47,3 +63,22 @@ Updating (cloned version only)
     .. code-block:: bash
 
         ./update.sh
+
+Notes
+-----
+
+#. If changes were made to .env which prevents pulling: 
+    .. code-block:: bash
+
+        # export changes
+        git diff > changes.log
+
+        # restore to original
+        git restore .env
+
+        # pull
+        git pull
+
+        # restore
+        git restore changes.log
+

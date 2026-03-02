@@ -58,7 +58,10 @@ Verify
 
 #. The Login controller is a clone of Shield's, this prevents the custom login page from being overwritten. 
         Ensure ``Controllers\LoginController::loginView()`` matches ``CodeIgniter\Shield\Controllers\LoginController::loginView()``.
-        
+
+Notes
+-----
+
 #. Usfull docker commands: 
     .. code-block:: bash
 
