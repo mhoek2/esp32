@@ -216,16 +216,14 @@
             <dl>
                         <dt>Clone repository using Git CLI</dt>
         
-        <dd><pre><code class="language-bash">git clone https://github.com/mhoek2/esp32.git</code></pre>
+        <dd><pre><code class="language-bash"># Browse to the directory where you want to store the project.
+# This example uses the root directory (/) and will create an &quot;esp32&quot; folder there.
+# The cloned repository folder will serve as the root directory of the application
+# (e.g., /esp32).
+cd /
+git clone https://github.com/mhoek2/esp32.git</code></pre>
 </dd>
             </dl>
-
-            
-    <p><strong>OR</strong>
-</p>
-
-            
-    <p>Download project files manually from: <a href="https://github.com/mhoek2/esp32">https://github.com/mhoek2/esp32</a></p>
 
     </section>
 
@@ -295,8 +293,13 @@ cat ~/.ssh/esp-deploy.pub</code></pre>
     <li><dl>
                         <dt>Create a clone.sh file</dt>
         
-        <dd><pre><code class="language-bash"># cd to your root webserver path.
+        <dd><pre><code class="language-bash"># dedicated server:
+# cd to the root of the webserver.
 cd /var/www/html
+
+# or for docker:
+cd /
+
 sudo nano clone.sh</code></pre>
 </dd>
             </dl>

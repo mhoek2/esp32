@@ -208,8 +208,23 @@
                                         <section class="section " id="updating">
             <h1>Updating</h1>
 
-            <section class="section " id="updating-cloned-version-only">
-            <h2>Updating (cloned version only)</h2>
+            <section class="section " id="updating-public-repository">
+            <h2>Updating (public repository)</h2>
+
+            <dl>
+                        <dt>Updating repository using Git CLI</dt>
+        
+        <dd><pre><code class="language-bash"># cd to the root of the application
+# eg /esp32
+cd /esp32
+git pull</code></pre>
+</dd>
+            </dl>
+
+    </section>
+
+            <section class="section " id="updating-private-repository">
+            <h2>Updating (private repository)</h2>
 
             <div class="phpdocumentor-admonition tip">
                     <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
@@ -232,8 +247,13 @@
     <li><dl>
                         <dt>Create a update.sh file</dt>
         
-        <dd><pre><code class="language-bash"># cd to your root application instance path. (NOT server root like clone.sh)
+        <dd><pre><code class="language-bash"># dedicated server:
+# cd to the root of the application.
 cd /var/www/html/esp32
+
+# or for docker:
+cd /esp32
+
 sudo nano update.sh</code></pre>
 </dd>
             </dl>
@@ -277,6 +297,34 @@ git pull git@github.com:mhoek2/esp32.git</code></pre>
                         <dt>Run update.sh</dt>
         
         <dd><pre><code class="language-bash">./update.sh</code></pre>
+</dd>
+            </dl>
+</li>
+
+</ol>
+
+    </section>
+
+            <section class="section " id="notes">
+            <h2>Notes</h2>
+
+            
+    
+<ol>
+    <li><dl>
+                        <dt>If changes were made to .env which prevents pulling:</dt>
+        
+        <dd><pre><code class="language-bash"># export changes
+git diff &gt; changes.log
+
+# restore to original
+git restore .env
+
+# pull
+git pull
+
+# restore
+git restore changes.log</code></pre>
 </dd>
             </dl>
 </li>
