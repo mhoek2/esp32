@@ -209,53 +209,82 @@
 </aside>
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
-                                        <section class="section " id="installation">
-            <h1>Installation</h1>
+                                        <section class="section " id="github-packaging">
+            <h1>Github Packaging</h1>
 
             
-    <p>Setting up a fresh install</p>
+    <p>Collection of CLI commands for packaging a docker image manually on Github.</p>
 
-            <section class="section " id="setup">
-            <h2>Setup</h2>
+            
+    <p>This can be integrated in <strong>CICD</strong>
+ for convenience later</p>
+
+            <section class="section " id="personal-access-token-github-pta">
+            <h2>Personal Access Token - GitHub (PTA)</h2>
 
             
     
 <ol type="1">
-    <li>Install <a href="https://getcomposer.org/">Composer</a></li>
+    <li>Go to your account <strong>Settings → Developer Settings → Personal Access Tokens → Tokens (classic)</strong>
+</li>
 
-    <li>Clone the repository. see <a href="guide/getting-started/cloning.html#cloning-guide">Cloning</a></li>
+    <li>Generate new classic token with <strong>read:packages</strong>
+ and <strong>write:packages</strong>
+ enabled.</li>
 
-    <li>Open a terminal and change working directory to the root of the project folder.</li>
+    <li>Store the generated token somewhere safe and treat it as a password.</li>
 
     <li><dl>
-                        <dt>Run the following command</dt>
+                        <dt>Login to GitHub Container Registry (GHCR)</dt>
         
-        <dd><pre><code class="language-bash"># This will install the dependencies set in composer.json
-composer install</code></pre>
+        <dd><pre><code class="language-bash"># cd to the root of the application
+# or use the build-in terminal in your IDE. eg, vscode
+# login with your generated PTA 
+# replace &#039;mhoek2&#039; with your username
+echo ghp_xxxxxxxxxxxxxxxxxxxx | docker login ghcr.io -u mhoek2 --password-stdin</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li><dl>
+                        <dt>Build and push package with version number</dt>
+        
+        <dd><pre><code class="language-bash"># build and push
+docker build -t ghcr.io/mhoek2/esp32:1.0.0 .
+docker push ghcr.io/mhoek2/esp32:1.0.0</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li><dl>
+                        <dt>Tagging with latest</dt>
+        
+        <dd><pre><code class="language-bash"># build and push
+docker build -t ghcr.io/mhoek2/esp32:1.0.0 .
+
+# tag
+docker tag ghcr.io/mhoek2/esp32:1.0.0 ghcr.io/mhoek2/esp32:latest
+
+# push
+docker push ghcr.io/mhoek2/esp32:1.0.0
+docker push ghcr.io/mhoek2/esp32:latest</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li><dl>
+                        <dt>Pull using tag or version number</dt>
+        
+        <dd><pre><code class="language-bash"># pull using version number
+docker pull ghcr.io/mhoek2/esp32:1.0.0
+
+# pull using tag number
+docker pull ghcr.io/mhoek2/esp32:latest</code></pre>
 </dd>
             </dl>
 </li>
 
 </ol>
-
-    </section>
-
-            <section class="section " id="using-docker">
-            <h2>Using Docker</h2>
-
-            
-    <p><a href="guide/getting-started/install_docker.html">Proceed to: Installing Docker if you have not</a></p>
-
-            
-    <p><a href="guide/getting-started/configure_docker.html">Proceed to: Configure Docker</a></p>
-
-    </section>
-
-            <section class="section " id="using-dedicated-server">
-            <h2>Using Dedicated Server</h2>
-
-            
-    <p><a href="guide/getting-started/configure_dedicated.html">Proceed to: Configure Dedicated</a></p>
 
     </section>
 
