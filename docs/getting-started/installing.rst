@@ -3,11 +3,20 @@ Installation
 
 Setting up a fresh install
 
+Deploy Docker Package
+--------------------------
+#. Clone the deploy branch
+    .. code-block:: bash
 
+        git clone --branch deploy https://github.com/mhoek2/esp32.git
+#. Adjust docker-compose.yml and .env to your needs
+#. Compose
+    .. code-block:: bash
 
-Setup
------
+        docker compose up -d --pull always
 
+Development
+-----------
 #. Install `Composer<https://getcomposer.org/>`_
 #. Clone the repository. see :ref:`Cloning <cloning-guide>`
 #. Open a terminal and change working directory to the root of the project folder.

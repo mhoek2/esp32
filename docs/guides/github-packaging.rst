@@ -25,7 +25,8 @@ Personal Access Token - GitHub (PTA)
     .. code-block:: bash
 
         # build and push
-        docker build -t ghcr.io/mhoek2/esp32:1.0.0 .
+        # explicit use of Dockerfile.deploy
+        docker build -f Dockerfile.deploy -t ghcr.io/mhoek2/esp32:1.0.1 .
         docker push ghcr.io/mhoek2/esp32:1.0.0
 
 #. Tagging with latest
