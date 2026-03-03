@@ -215,8 +215,36 @@
             
     <p>Setting up a fresh install</p>
 
-            <section class="section " id="setup">
-            <h2>Setup</h2>
+            <section class="section " id="deploy-docker-package">
+            <h2>Deploy Docker Package</h2>
+
+            
+    
+<ol>
+    <li><dl>
+                        <dt>Clone the deploy branch</dt>
+        
+        <dd><pre><code class="language-bash">git clone --branch deploy https://github.com/mhoek2/esp32.git</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li>Adjust docker-compose.yml and .env to your needs</li>
+
+    <li><dl>
+                        <dt>Compose</dt>
+        
+        <dd><pre><code class="language-bash">docker compose up -d --pull always</code></pre>
+</dd>
+            </dl>
+</li>
+
+</ol>
+
+    </section>
+
+            <section class="section " id="development">
+            <h2>Development</h2>
 
             
     
