@@ -81,6 +81,19 @@ Notes
         # Stop and remove containers, networks, AND associated named volumes
         docker compose down -v
 
+        # change environment to a docker container, to close type; exit
+        # use either container name or ID
+        docker exec -it esp32_app /bin/bash
+
+        # directory on host to volumes
+        ls /var/lib/docker/volumes/esp32_appdata/_data/
+
+        # list volumes
+        docker volume ls
+
+        # remove volume (container has to be shut down)
+        docker volume rm esp32_appdata
+
 #. TIP: Temporary enable error printing:
     .. code-block:: bash
 

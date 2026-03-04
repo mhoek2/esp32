@@ -3,7 +3,7 @@ Github Packaging
 
 Collection of CLI commands for packaging a docker image manually on Github.
 
-This can be integrated in **CICD** for convenience later
+This can be integrated in **CICD** for convenience later.
 
 Personal Access Token - GitHub (PTA)
 ------------------------------
@@ -24,16 +24,17 @@ Personal Access Token - GitHub (PTA)
 #. Build and push package with version number
     .. code-block:: bash
 
-        # build and push
-        # explicit use of Dockerfile.deploy
-        docker build -f Dockerfile.deploy -t ghcr.io/mhoek2/esp32:1.0.1 .
+        # explicit use of Dockerfile.deploy because:
+        # in production; the appdata (php/assets) that lives in 'var/www' is bundled in the image
+        # in development; the appdata lives in the root of the project
+        docker build -f Dockerfile.deploy -t ghcr.io/mhoek2/esp32:1.0.0 .
         docker push ghcr.io/mhoek2/esp32:1.0.0
 
 #. Tagging with latest
     .. code-block:: bash
 
         # build and push
-        docker build -t ghcr.io/mhoek2/esp32:1.0.0 .
+        docker build -f Dockerfile.deploy-t ghcr.io/mhoek2/esp32:1.0.0 .
         
         # tag
         docker tag ghcr.io/mhoek2/esp32:1.0.0 ghcr.io/mhoek2/esp32:latest
@@ -42,7 +43,20 @@ Personal Access Token - GitHub (PTA)
         docker push ghcr.io/mhoek2/esp32:1.0.0
         docker push ghcr.io/mhoek2/esp32:latest
 
-#. Pull using tag or version number
+Usecase
+-------
+#. Pull and compose (Update containers)
+    .. code-block:: bash
+
+        # clone
+        git clone --branch deploy https://github.com/mhoek2/esp32.git
+
+        # pull and compose (update)
+        docker compose up -d --pull always
+
+**OR**
+
+#. Pull image (Update image only)
     .. code-block:: bash
 
         # pull using version number

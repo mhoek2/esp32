@@ -44,8 +44,5 @@ This is a quick guide, there are higher detailed guides online!
         docker version
         docker compose version
 
-If you have already cloned the repo
-`Proceed to: Configure Docker <configure_docker.rst>`_
-
 Else follow these steps:
 `Proceed to: Installation <installing.rst>`_
