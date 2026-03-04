@@ -364,7 +364,20 @@ docker compose up -d --build
 docker compose down
 
 # Stop and remove containers, networks, AND associated named volumes
-docker compose down -v</code></pre>
+docker compose down -v
+
+# change environment to a docker container, to close type; exit
+# use either container name or ID
+docker exec -it esp32_app /bin/bash
+
+# directory on host to volumes
+ls /var/lib/docker/volumes/esp32_appdata/_data/
+
+# list volumes
+docker volume ls
+
+# remove volume (container has to be shut down)
+docker volume rm esp32_appdata</code></pre>
 </dd>
             </dl>
 </li>

@@ -224,7 +224,8 @@
     <li><dl>
                         <dt>Clone the deploy branch</dt>
         
-        <dd><pre><code class="language-bash">git clone --branch deploy https://github.com/mhoek2/esp32.git</code></pre>
+        <dd><pre><code class="language-bash">git clone --branch deploy https://github.com/mhoek2/esp32.git
+cd esp32</code></pre>
 </dd>
             </dl>
 </li>
@@ -239,7 +240,32 @@
             </dl>
 </li>
 
+    <li>Dashboard is now accessable using the url set in .env</li>
+
 </ol>
+
+            
+
+<ul>
+    <li class="dash"><dl>
+                        <dt><strong>Updating</strong>
+</dt>
+        
+        <dd><pre><code class="language-bash">cd esp32
+
+# shutdown containers
+docker compose down
+
+# remove appdata volume (/var/www)
+docker volume rm esp32_appdata
+
+# pull latest &amp; compose
+docker compose up -d --pull always</code></pre>
+</dd>
+            </dl>
+</li>
+
+</ul>
 
     </section>
 
