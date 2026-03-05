@@ -21,7 +21,7 @@ Personal Access Token - GitHub (PTA)
         # replace 'mhoek2' with your username
         echo ghp_xxxxxxxxxxxxxxxxxxxx | docker login ghcr.io -u mhoek2 --password-stdin
 
-Build package for GitHub
+Build & Publish package to GitHub
 ---------------
 **Use bash script**
     .. code-block:: bash
