@@ -6,6 +6,7 @@
    :titlesonly:
 
    getting-started/index
+   development/index
    guides/index
    report/index
 

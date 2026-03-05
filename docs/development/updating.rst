@@ -4,13 +4,16 @@ Updating
 Updating (public repository)
 ---------------------
 
-Updating repository using Git CLI
+**Updating repository using Git CLI**
     .. code-block:: bash
 
         # cd to the root of the application
         # eg /esp32
         cd /esp32
         git pull
+
+**Using package**
+
 
 Updating (private repository)
 ------------------------------

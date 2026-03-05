@@ -43,6 +43,3 @@ This is a quick guide, there are higher detailed guides online!
 
         docker version
         docker compose version
-
-Else follow these steps:
-`Proceed to: Installation <installing.rst>`_

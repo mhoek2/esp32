@@ -8,7 +8,6 @@ Quick-Guides
    general
    dashboard-modules
    user-meta-service
-   github-packaging
    
 Docs & Reports
 --------------
