@@ -62,27 +62,41 @@
 </h4>
     <ul class="phpdocumentor-list">
                     <li>
-                <a href="guide/getting-started/installing.html#installation" class="">Installation</a>
+                <a href="guide/getting-started/setup.html#setup" class="">Setup</a>
                 
             </li>
                     <li>
                 <a href="guide/getting-started/install_docker.html#install-docker" class="">Install Docker</a>
                 
             </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/development/index.html#development" class="">Development</a>
+</h4>
+    <ul class="phpdocumentor-list">
                     <li>
-                <a href="guide/getting-started/configure_docker.html#configure-docker" class="">Configure Docker</a>
+                <a href="guide/development/setup.html#setup" class="">Setup</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/configure_dedicated.html#configure-dedicated-server" class="">Configure Dedicated Server</a>
+                <a href="guide/development/configure_docker.html#configure-docker" class="">Configure Docker</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/cloning.html#cloning" class="">Cloning</a>
+                <a href="guide/development/configure_dedicated.html#configure-dedicated-server" class="">Configure Dedicated Server</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/updating.html#updating" class="">Updating</a>
+                <a href="guide/development/cloning.html#cloning" class="">Cloning</a>
+                
+            </li>
+                    <li>
+                <a href="guide/development/updating.html#updating" class="">Updating</a>
+                
+            </li>
+                    <li>
+                <a href="guide/development/github-packaging.html#github-packaging" class="">Github Packaging</a>
                 
             </li>
             </ul>
@@ -101,10 +115,6 @@
             </li>
                     <li>
                 <a href="guide/guides/user-meta-service.html#user-meta-service" class="">User Meta Service</a>
-                
-            </li>
-                    <li>
-                <a href="guide/guides/github-packaging.html#github-packaging" class="">Github Packaging</a>
                 
             </li>
                     <li>
@@ -209,204 +219,49 @@
 </aside>
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
-                                        <section class="section " id="configure-docker">
-            <h1>Configure Docker</h1>
+                                        <section class="section " id="setup">
+            <h1>Setup</h1>
 
             
-    <p>A few things need to be set-up and configured.</p>
-
-            
-    <p>Some composer modules might have changed been updated, so we want to verify a few things.</p>
-
-            <div class="phpdocumentor-admonition tip">
-                    <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            <article>
-        
-    <p>Requires docker and docker compose to be installed</p>
-
-    </article>
-</div>
-
-            <section class="section " id="setup-containers">
-            <h2>Setup containers</h2>
+    <p><strong>Setup Development Environment</strong>
+</p>
 
             
     
 <ol type="1">
+    <li>Install <a href="https://getcomposer.org/">Composer</a></li>
+
+    <li>Clone the repository. see <a href="guide/development/cloning.html#cloning-guide">Cloning</a></li>
+
     <li>Open a terminal and change working directory to the root of the project folder.</li>
 
-    <li>If you want to serve on custom ports or database credentials, modify in <code>docker-compose.yml</code>
-</li>
-
     <li><dl>
-                        <dt>Deploy the docker images and services</dt>
+                        <dt>Run the following command</dt>
         
-        <dd><pre><code class="language-bash"># Set up mysql, nginx and app services:
-docker compose up -d --build</code></pre>
+        <dd><pre><code class="language-bash"># This will install the dependencies set in composer.json
+composer install</code></pre>
 </dd>
             </dl>
 </li>
 
 </ol>
 
-    </section>
-
-            <section class="section " id="setup-domain">
-            <h2>Setup domain</h2>
+            <section class="section " id="using-docker">
+            <h2>Using Docker</h2>
 
             
-    
-<ol>
-    <li><dl>
-                        <dt>Uncomment and point <code>app.baseURL</code>
- in <code>.env</code>
- to the root url of your server. eg: <a href="http://esp32.your-domain.com/">http://esp32.your-domain.com/</a></dt>
-        
-        <dd><pre><code class="language-php">app.baseURL = &#039;&#039;</code></pre>
-</dd>
-            </dl>
-</li>
+    <p><a href="guide/getting-started/install_docker.html">Proceed to: Installing Docker if you have not</a></p>
 
-    <li><dl>
-                        <dt>Ensure database connection variables uncommented and correctly set in <code>.env</code>
-</dt>
-        
-        <dd><pre><code class="language-php">database.default.hostname = db
-database.default.database = esp32_db
-database.default.username = esp32_user
-database.default.password = esp32_pass
-database.default.DBDriver = MySQLi
-database.default.DBPrefix =
-database.default.port = 3306</code></pre>
-</dd>
-            </dl>
-</li>
-
-</ol>
+            
+    <p><a href="guide/development/configure_docker.html">Proceed to: Configure Docker</a></p>
 
     </section>
 
-            <section class="section " id="access-rights">
-            <h2>Access Rights</h2>
+            <section class="section " id="using-dedicated-server">
+            <h2>Using Dedicated Server</h2>
 
             
-    
-<ol>
-    <li><dl>
-                        <dt>Give valid permissions to writable folder and subfolders</dt>
-        
-        <dd><pre><code class="language-bash"># This will add permissions, use valid user, commonly www-data for apache2 servers
-sudo chown -R www-data writable</code></pre>
-</dd>
-            </dl>
-</li>
-
-</ol>
-
-    </section>
-
-            <section class="section " id="done">
-            <h2>Done</h2>
-
-            
-    <p>You should now be able to see a correctly setup instance when you navigate to: <a href="http://esp32.your-domain.com/">http://esp32.your-domain.com/</a></p>
-
-            <div class="phpdocumentor-admonition tip">
-                    <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            <article>
-        
-    <p>Additional info:</p>
-
-    </article>
-</div>
-
-    </section>
-
-            <section class="section " id="verify">
-            <h2>Verify</h2>
-
-            
-    
-<ol>
-    <li><dl>
-                        <dt>The Login controller is a clone of Shield&#039;s, this prevents the custom login page from being overwritten.</dt>
-        
-        <dd>Ensure <code>Controllers\LoginController::loginView()</code>
- matches <code>CodeIgniter\Shield\Controllers\LoginController::loginView()</code>
-.</dd>
-            </dl>
-</li>
-
-</ol>
-
-    </section>
-
-            <section class="section " id="notes">
-            <h2>Notes</h2>
-
-            
-    
-<ol>
-    <li><dl>
-                        <dt>Usfull docker commands:</dt>
-        
-        <dd><pre><code class="language-bash">docker compose exec db mysql -uroot -proot -e &quot;SELECT User,Host FROM mysql.user;&quot;
-docker compose exec db mysql -uroot -proot -e &quot;SHOW DATABASES;&quot;
-docker compose exec db mysql -uroot -proot -e &quot;USE esp32_db; SHOW TABLES;&quot;
-
-# Start all services defined in docker-compose.yml in detached mode
-docker compose up -d
-
-# Build (or rebuild) images and start services in detached mode
-docker compose up -d --build
-
-# Stop and remove containers, networks, and default resources
-docker compose down
-
-# Stop and remove containers, networks, AND associated named volumes
-docker compose down -v
-
-# change environment to a docker container, to close type; exit
-# use either container name or ID
-docker exec -it esp32_app /bin/bash
-
-# directory on host to volumes
-ls /var/lib/docker/volumes/esp32_appdata/_data/
-
-# list volumes
-docker volume ls
-
-# remove volume (container has to be shut down)
-docker volume rm esp32_appdata</code></pre>
-</dd>
-            </dl>
-</li>
-
-    <li><dl>
-                        <dt>TIP: Temporary enable error printing:</dt>
-        
-        <dd><pre><code class="language-bash">nano app/Config/Boot/production.php
-# Change:
-ini_set(&#039;display_errors&#039;, &#039;0&#039;);
-# To:
-ini_set(&#039;display_errors&#039;, &#039;1&#039;);</code></pre>
-</dd>
-            </dl>
-</li>
-
-    <li><dl>
-                        <dt>ERROR: Call to a member function getErrors() on null</dt>
-        
-        <dd><pre><code class="language-bash"># If you encounter a php error during login, likely reason is a glitch with shield.
-# Try the following commands in the root of the project using the cli:
-
-composer require codeigniter4/shield:^1.1
-composer update</code></pre>
-</dd>
-            </dl>
-</li>
-
-</ol>
+    <p><a href="guide/development/configure_dedicated.html">Proceed to: Configure Dedicated</a></p>
 
     </section>
 

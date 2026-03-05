@@ -62,27 +62,41 @@
 </h4>
     <ul class="phpdocumentor-list">
                     <li>
-                <a href="guide/getting-started/installing.html#installation" class="">Installation</a>
+                <a href="guide/getting-started/setup.html#setup" class="">Setup</a>
                 
             </li>
                     <li>
                 <a href="guide/getting-started/install_docker.html#install-docker" class="">Install Docker</a>
                 
             </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/development/index.html#development" class="">Development</a>
+</h4>
+    <ul class="phpdocumentor-list">
                     <li>
-                <a href="guide/getting-started/configure_docker.html#configure-docker" class="">Configure Docker</a>
+                <a href="guide/development/setup.html#setup" class="">Setup</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/configure_dedicated.html#configure-dedicated-server" class="">Configure Dedicated Server</a>
+                <a href="guide/development/configure_docker.html#configure-docker" class="">Configure Docker</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/cloning.html#cloning" class="">Cloning</a>
+                <a href="guide/development/configure_dedicated.html#configure-dedicated-server" class="">Configure Dedicated Server</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/updating.html#updating" class="">Updating</a>
+                <a href="guide/development/cloning.html#cloning" class="">Cloning</a>
+                
+            </li>
+                    <li>
+                <a href="guide/development/updating.html#updating" class="">Updating</a>
+                
+            </li>
+                    <li>
+                <a href="guide/development/github-packaging.html#github-packaging" class="">Github Packaging</a>
                 
             </li>
             </ul>
@@ -101,10 +115,6 @@
             </li>
                     <li>
                 <a href="guide/guides/user-meta-service.html#user-meta-service" class="">User Meta Service</a>
-                
-            </li>
-                    <li>
-                <a href="guide/guides/github-packaging.html#github-packaging" class="">Github Packaging</a>
                 
             </li>
                     <li>
@@ -209,8 +219,8 @@
 </aside>
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
-                                        <section class="section " id="configure-dedicated-server">
-            <h1>Configure Dedicated Server</h1>
+                                        <section class="section " id="configure-docker">
+            <h1>Configure Docker</h1>
 
             
     <p>A few things need to be set-up and configured.</p>
@@ -222,28 +232,37 @@
                     <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
             <article>
         
-    <p>Hosting environment requires <code>PHP&gt;8.2</code>
- and <code>ext-intl</code>
- extension enabled.</p>
+    <p>Requires docker and docker compose to be installed</p>
 
     </article>
 </div>
 
-            <section class="section " id="import-database">
-            <h2>Import Database</h2>
+            <section class="section " id="setup-containers">
+            <h2>Setup containers</h2>
 
             
     
 <ol type="1">
-    <li>Create a Mysql database and import <code>sql/esp32.sql</code>
- (Tip: use PhpMyAdmin)</li>
+    <li>Open a terminal and change working directory to the root of the project folder.</li>
+
+    <li>If you want to serve on custom ports or database credentials, modify in <code>docker-compose.yml</code>
+</li>
+
+    <li><dl>
+                        <dt>Deploy the docker images and services</dt>
+        
+        <dd><pre><code class="language-bash"># Set up mysql, nginx and app services:
+docker compose up -d --build</code></pre>
+</dd>
+            </dl>
+</li>
 
 </ol>
 
     </section>
 
-            <section class="section " id="adjust-the-env-configuration">
-            <h2>Adjust the .env configuration</h2>
+            <section class="section " id="setup-domain">
+            <h2>Setup domain</h2>
 
             
     
@@ -277,53 +296,39 @@ database.default.port = 3306</code></pre>
 
     </section>
 
-            <section class="section " id="when-not-using-the-env-file">
-            <h2>When not using the .env file:</h2>
+            <section class="section " id="access-rights">
+            <h2>Access Rights</h2>
 
             
     
 <ol>
     <li><dl>
-                        <dt>Set variable <code>$baseURL</code>
- in <code>app/Config/App.php</code>
- to the root url of your server. eg: <a href="http://esp32.your-domain.com/">http://esp32.your-domain.com/</a></dt>
+                        <dt>Give valid permissions to writable folder and subfolders</dt>
         
-        <dd><pre><code class="language-php">/**
-* --------------------------------------------------------------------------
-* Base Site URL
-* --------------------------------------------------------------------------
-*
-* URL to your CodeIgniter root. Typically, this will be your base URL,
-* WITH a trailing slash:
-*
-* E.g., http://example.com/
-*/
-public string $baseURL = &#039;http://esp32.your-domain.com/&#039;;</code></pre>
-</dd>
-            </dl>
-</li>
-
-    <li><dl>
-                        <dt>Ensure database connection variables are correctly set in <code>app/Config/Database.php</code>
-</dt>
-        
-        <dd><pre><code class="language-php">/**
-* The default database connection.
-*
-* @var array&lt;string, mixed&gt;
-*/
-public array $default = [
-    &#039;DSN&#039;          =&gt; &#039;&#039;,
-    &#039;hostname&#039;     =&gt; &#039;localhost&#039;,
-    &#039;username&#039;     =&gt; &#039;your-username&#039;,
-    &#039;password&#039;     =&gt; &#039;your-password&#039;,
-    &#039;database&#039;     =&gt; &#039;your-database-name&#039;,
-    &#039;DBDriver&#039;     =&gt; &#039;MySQLi&#039;,</code></pre>
+        <dd><pre><code class="language-bash"># This will add permissions, use valid user, commonly www-data for apache2 servers
+sudo chown -R www-data writable</code></pre>
 </dd>
             </dl>
 </li>
 
 </ol>
+
+    </section>
+
+            <section class="section " id="done">
+            <h2>Done</h2>
+
+            
+    <p>You should now be able to see a correctly setup instance when you navigate to: <a href="http://esp32.your-domain.com/">http://esp32.your-domain.com/</a></p>
+
+            <div class="phpdocumentor-admonition tip">
+                    <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <article>
+        
+    <p>Additional info:</p>
+
+    </article>
+</div>
 
     </section>
 
@@ -346,65 +351,43 @@ public array $default = [
 
     </section>
 
-            <section class="section " id="configure-apache-server">
-            <h2>Configure Apache server</h2>
-
-            
-    <p>If you run a fresh apache webserver, you might want to set up the following.</p>
+            <section class="section " id="notes">
+            <h2>Notes</h2>
 
             
     
 <ol>
     <li><dl>
-                        <dt>Give valid permissions to writable folder and subfolders</dt>
+                        <dt>Usfull docker commands:</dt>
         
-        <dd><pre><code class="language-bash"># This will add permissions, use valid user, commonly www-data for apache2 servers
-sudo chown -R www-data writable</code></pre>
-</dd>
-            </dl>
-</li>
+        <dd><pre><code class="language-bash">docker compose exec db mysql -uroot -proot -e &quot;SELECT User,Host FROM mysql.user;&quot;
+docker compose exec db mysql -uroot -proot -e &quot;SHOW DATABASES;&quot;
+docker compose exec db mysql -uroot -proot -e &quot;USE esp32_db; SHOW TABLES;&quot;
 
-    <li><dl>
-                        <dt>Enable modrewrite</dt>
-        
-        <dd><pre><code class="language-bash"># Check if modrewrite is enabled:
-apache2ctl -M | grep rewrite
+# Start all services defined in docker-compose.yml in detached mode
+docker compose up -d
 
-# when nothing returns, enable using:
-sudo a2enmod rewrite
-sudo systemctl restart apache2</code></pre>
-</dd>
-            </dl>
-</li>
+# Build (or rebuild) images and start services in detached mode
+docker compose up -d --build
 
-    <li><dl>
-                        <dt>Create Virtual Host</dt>
-        
-        <dd><pre><code class="language-bash"># When you don&#039;t have this set up already, add a vhost.
-# sudo nano /etc/apache2/sites-available/esp32.your-domain.com.conf
-&lt;VirtualHost *:80&gt;
-    ServerName esp32.your-domain.com
+# Stop and remove containers, networks, and default resources
+docker compose down
 
-    ServerAdmin webmaster@localhost
-    DocumentRoot /var/www/html/esp32/public
+# Stop and remove containers, networks, AND associated named volumes
+docker compose down -v
 
-    &lt;Directory /var/www/html/esp32/public&gt;
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    &lt;/Directory&gt;
+# change environment to a docker container, to close type; exit
+# use either container name or ID
+docker exec -it esp32_app /bin/bash
 
-    ErrorLog ${APACHE_LOG_DIR}/esp32_error.log
-    CustomLog ${APACHE_LOG_DIR}/esp32_access.log combined
-&lt;/VirtualHost&gt;
+# directory on host to volumes
+ls /var/lib/docker/volumes/esp32_appdata/_data/
 
-# save &amp; exit
-sudo a2ensite esp32.your-domain.com.conf
-sudo systemctl reload apache2
+# list volumes
+docker volume ls
 
-# disable default vhost:
-sudo a2dissite 000-default.conf
-sudo systemctl reload apache2</code></pre>
+# remove volume (container has to be shut down)
+docker volume rm esp32_appdata</code></pre>
 </dd>
             </dl>
 </li>
@@ -434,14 +417,6 @@ composer update</code></pre>
 </li>
 
 </ol>
-
-    </section>
-
-            <section class="section " id="done">
-            <h2>Done</h2>
-
-            
-    <p>You should now be able to see a correctly setup instance when you navigate to: <a href="http://esp32.your-domain.com/">http://esp32.your-domain.com/</a></p>
 
     </section>
 

@@ -62,27 +62,41 @@
 </h4>
     <ul class="phpdocumentor-list">
                     <li>
-                <a href="guide/getting-started/installing.html#installation" class="">Installation</a>
+                <a href="guide/getting-started/setup.html#setup" class="">Setup</a>
                 
             </li>
                     <li>
                 <a href="guide/getting-started/install_docker.html#install-docker" class="">Install Docker</a>
                 
             </li>
+            </ul>
+
+                                    <h4 class="phpdocumentor-sidebar__root-namespace">
+    <a href="guide/development/index.html#development" class="">Development</a>
+</h4>
+    <ul class="phpdocumentor-list">
                     <li>
-                <a href="guide/getting-started/configure_docker.html#configure-docker" class="">Configure Docker</a>
+                <a href="guide/development/setup.html#setup" class="">Setup</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/configure_dedicated.html#configure-dedicated-server" class="">Configure Dedicated Server</a>
+                <a href="guide/development/configure_docker.html#configure-docker" class="">Configure Docker</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/cloning.html#cloning" class="">Cloning</a>
+                <a href="guide/development/configure_dedicated.html#configure-dedicated-server" class="">Configure Dedicated Server</a>
                 
             </li>
                     <li>
-                <a href="guide/getting-started/updating.html#updating" class="">Updating</a>
+                <a href="guide/development/cloning.html#cloning" class="">Cloning</a>
+                
+            </li>
+                    <li>
+                <a href="guide/development/updating.html#updating" class="">Updating</a>
+                
+            </li>
+                    <li>
+                <a href="guide/development/github-packaging.html#github-packaging" class="">Github Packaging</a>
                 
             </li>
             </ul>
@@ -101,10 +115,6 @@
             </li>
                     <li>
                 <a href="guide/guides/user-meta-service.html#user-meta-service" class="">User Meta Service</a>
-                
-            </li>
-                    <li>
-                <a href="guide/guides/github-packaging.html#github-packaging" class="">Github Packaging</a>
                 
             </li>
                     <li>
@@ -209,38 +219,39 @@
 </aside>
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
-                                        <section class="section " id="updating">
-            <h1>Updating</h1>
+                                        <section class="section " id="cloning">
+            <a id="cloning-guide"></a>
 
-            <section class="section " id="updating-public-repository">
-            <h2>Updating (public repository)</h2>
+            <h1>Cloning</h1>
+
+            <section class="section " id="cloning-public-repository">
+            <h2>Cloning (public repository)</h2>
 
             <dl>
-                        <dt>Updating repository using Git CLI</dt>
+                        <dt>Clone repository using Git CLI</dt>
         
-        <dd><pre><code class="language-bash"># cd to the root of the application
-# eg /esp32
-cd /esp32
-git pull</code></pre>
+        <dd><pre><code class="language-bash"># Browse to the directory where you want to store the project.
+# This example uses the root directory (/) and will create an &quot;esp32&quot; folder there.
+# The cloned repository folder will serve as the root directory of the application
+# (e.g., /esp32).
+cd /
+git clone https://github.com/mhoek2/esp32.git</code></pre>
 </dd>
             </dl>
 
     </section>
 
-            <section class="section " id="updating-private-repository">
-            <h2>Updating (private repository)</h2>
+            <section class="section " id="cloning-private-repository-linux">
+            <h2>Cloning (private repository) - Linux</h2>
+
+            
+    <p>When the repository is private, a deployment key is required</p>
 
             <div class="phpdocumentor-admonition tip">
                     <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
             <article>
         
-
-<ul>
-    <li class="dash">Assuming you followed deployment key setup in <a href="guide/getting-started/cloning.html#cloning-guide">Cloning</a></li>
-
-    <li class="dash">If you use a fork, replace &#039;mhoek2&#039; in the following snippets with your username</li>
-
-</ul>
+    <p>If you use a fork, replace &#039;mhoek2&#039; in the following snippets with your username</p>
 
     </article>
 </div>
@@ -249,22 +260,67 @@ git pull</code></pre>
     
 <ol>
     <li><dl>
-                        <dt>Create a update.sh file</dt>
+                        <dt>Create a public key using ssh-keygen</dt>
         
-        <dd><pre><code class="language-bash"># dedicated server:
-# cd to the root of the application.
-cd /var/www/html/esp32
-
-# or for docker:
-cd /esp32
-
-sudo nano update.sh</code></pre>
+        <dd><pre><code class="language-bash"># Create a ssh pub key
+cd ~/.ssh/
+ssh-keygen -t rsa -b 4096 -C &quot;esp-deploy&quot;</code></pre>
 </dd>
             </dl>
 </li>
 
     <li><dl>
-                        <dt>Write to update.sh</dt>
+                        <dt>*Optional SSH host:</dt>
+        
+        <dd><pre><code class="language-bash"># use git@esp instead of git@github.com
+# for now, use git@github.com in the setup scripts (clone.sh &amp; update.sh)
+
+# Add to ssh config
+nano ~/.ssh/config:
+
+Host esp
+  HostName github.com
+  User repo-user
+  IdentityFile ~/.ssh/esp-deploy
+
+# Test authentication
+ssh -T git@esp</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li>Go to GitHub.com and navigate to: <strong>Your repository -&gt; Settings -&gt; Deploy keys</strong>
+</li>
+
+    <li>Click <strong>Add a deploy key</strong>
+ and keep it read-only!</li>
+
+    <li><dl>
+                        <dt>Enter a name, then copy the content of the .pub file in the value field.</dt>
+        
+        <dd><pre><code class="language-bash"># find the content of the .pub key:
+cat ~/.ssh/esp-deploy.pub</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li><dl>
+                        <dt>Create a clone.sh file</dt>
+        
+        <dd><pre><code class="language-bash"># dedicated server:
+# cd to the root of the webserver.
+cd /var/www/html
+
+# or for docker:
+cd /
+
+sudo nano clone.sh</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li><dl>
+                        <dt>Write to clone.sh</dt>
         
         <dd><pre><code class="language-bash">#!/bin/bash
 #
@@ -283,52 +339,24 @@ else
     echo &quot;SSH key already added.&quot;
 fi
 
-# Update the repo
-git pull git@github.com:mhoek2/esp32.git</code></pre>
+# Clone the repo
+git clone git@github.com:mhoek2/esp32.git</code></pre>
 </dd>
             </dl>
 </li>
 
     <li><dl>
-                        <dt>Make update.sh executable</dt>
+                        <dt>Make clone.sh executable</dt>
         
-        <dd><pre><code class="language-bash">sudo chmod +x update.sh</code></pre>
+        <dd><pre><code class="language-bash">sudo chmod +x clone.sh</code></pre>
 </dd>
             </dl>
 </li>
 
     <li><dl>
-                        <dt>Run update.sh</dt>
+                        <dt>Run clone.sh</dt>
         
-        <dd><pre><code class="language-bash">./update.sh</code></pre>
-</dd>
-            </dl>
-</li>
-
-</ol>
-
-    </section>
-
-            <section class="section " id="notes">
-            <h2>Notes</h2>
-
-            
-    
-<ol>
-    <li><dl>
-                        <dt>If changes were made to .env which prevents pulling:</dt>
-        
-        <dd><pre><code class="language-bash"># export changes
-git diff &gt; changes.log
-
-# restore to original
-git restore .env
-
-# pull
-git pull
-
-# restore
-git restore changes.log</code></pre>
+        <dd><pre><code class="language-bash">./clone.sh</code></pre>
 </dd>
             </dl>
 </li>

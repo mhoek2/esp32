@@ -4,8 +4,9 @@
     <meta charset="utf-8">
             <title>ESP32 Platform Documentation</title>
     
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <base href="../">
+    <base href="../../">
     <link rel="icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
@@ -218,154 +219,141 @@
 </aside>
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
-                                <section>
-                                        <ul class="phpdocumentor-breadcrumbs">
-    </ul>
+                                        <section class="section " id="updating">
+            <h1>Updating</h1>
 
-    <article class="phpdocumentor-element -file">
-        <h2 class="phpdocumentor-content__title">user.php</h2>
+            <section class="section " id="updating-public-repository">
+            <h2>Updating (public repository)</h2>
 
+            <dl>
+                        <dt><strong>Updating repository using Git CLI</strong>
+</dt>
         
-        
-        
-        
-
-
-        
-<h3 id="toc">
-    Table of Contents
-    <a href="files/app-views-admin-user.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
-
-</h3>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-        
-        <div class="phpdocumentor-modal" id="source-view">
-    <div class="phpdocumentor-modal-bg" data-exit-button></div>
-    <div class="phpdocumentor-modal-container">
-        <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/app/Views/admin/user.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
-        </div>
-        <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
-    </div>
-</div>
-
-    <script type="text/javascript">
-        (function () {
-            function loadExternalCodeSnippet(el, url, line) {
-                Array.prototype.slice.call(el.querySelectorAll('pre[data-src]')).forEach((pre) => {
-                    const src = url || pre.getAttribute('data-src').replace(/\\/g, '/');
-                    const language = 'php';
-
-                    const code = document.createElement('code');
-                    code.className = 'language-' + language;
-                    pre.textContent = '';
-                    pre.setAttribute('data-line', line)
-                    code.textContent = 'Loading…';
-                    pre.appendChild(code);
-
-                    var xhr = new XMLHttpRequest();
-
-                    xhr.open('GET', src, true);
-
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState !== 4) {
-                            return;
-                        }
-
-                        if (xhr.status < 400 && xhr.responseText) {
-                            code.textContent = xhr.responseText;
-                            Prism.highlightElement(code);
-                            d=document.getElementsByClassName("line-numbers");
-                            d[0].scrollTop = d[0].children[1].offsetTop;
-                            return;
-                        }
-
-                        if (xhr.status === 404) {
-                            code.textContent = '✖ Error: File could not be found';
-                            return;
-                        }
-
-                        if (xhr.status >= 400) {
-                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
-                            return;
-                        }
-
-                        code.textContent = '✖ Error: An unknown error occurred';
-                    };
-
-                    xhr.send(null);
-                });
-            }
-
-            const modalButtons = document.querySelectorAll("[data-modal]");
-            const openedAsLocalFile = window.location.protocol === 'file:';
-            if (modalButtons.length > 0 && openedAsLocalFile) {
-                console.warn(
-                    'Viewing the source code is unavailable because you are opening this page from the file:// scheme; ' +
-                    'browsers block XHR requests when a page is opened this way'
-                );
-            }
-
-            modalButtons.forEach(function (trigger) {
-                if (openedAsLocalFile) {
-                    trigger.setAttribute("hidden", "hidden");
-                }
-
-                trigger.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    const modal = document.getElementById(trigger.dataset.modal);
-                    if (!modal) {
-                        console.error(`Modal with id "${trigger.dataset.modal}" could not be found`);
-                        return;
-                    }
-                    modal.classList.add("phpdocumentor-modal__open");
-
-                    loadExternalCodeSnippet(modal, trigger.dataset.src || null, trigger.dataset.line)
-                    const exits = modal.querySelectorAll("[data-exit-button]");
-                    exits.forEach(function (exit) {
-                        exit.addEventListener("click", function (event) {
-                            event.preventDefault();
-                            modal.classList.remove("phpdocumentor-modal__open");
-                        });
-                    });
-                });
-            });
-        })();
-    </script>
-
-    </article>
-                                </section>
-                <section class="phpdocumentor-on-this-page__sidebar">
-                            
-    <section class="phpdocumentor-on-this-page__content">
-        <strong class="phpdocumentor-on-this-page__title">On this page</strong>
-
-        <ul class="phpdocumentor-list -clean">
-            <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
-            <li>
-                <ul class="phpdocumentor-list -clean">
-                                                                                                                                                                                </ul>
-            </li>
+        <dd><pre><code class="language-bash"># cd to the root of the application
+# eg /esp32
+cd /esp32
+git pull</code></pre>
+</dd>
+            </dl>
 
             
-                    </ul>
+    <p><strong>Using package</strong>
+</p>
+
     </section>
 
-                </section>
+            <section class="section " id="updating-private-repository">
+            <h2>Updating (private repository)</h2>
+
+            <div class="phpdocumentor-admonition tip">
+                    <svg class="phpdocumentor-admonition__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <article>
+        
+
+<ul>
+    <li class="dash">Assuming you followed deployment key setup in <a href="guide/development/cloning.html#cloning-guide">Cloning</a></li>
+
+    <li class="dash">If you use a fork, replace &#039;mhoek2&#039; in the following snippets with your username</li>
+
+</ul>
+
+    </article>
+</div>
+
+            
+    
+<ol>
+    <li><dl>
+                        <dt>Create a update.sh file</dt>
+        
+        <dd><pre><code class="language-bash"># dedicated server:
+# cd to the root of the application.
+cd /var/www/html/esp32
+
+# or for docker:
+cd /esp32
+
+sudo nano update.sh</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li><dl>
+                        <dt>Write to update.sh</dt>
+        
+        <dd><pre><code class="language-bash">#!/bin/bash
+#
+
+# Check if ssh-agent is running
+if [ -z &quot;$SSH_AUTH_SOCK&quot; ]; then
+    echo &quot;Starting ssh-agent...&quot;
+    eval &quot;$(ssh-agent -s)&quot;
+fi
+
+# Check if the key is already added
+if ! ssh-add -l | grep -q &quot;esp-deploy&quot;; then
+    echo &quot;Adding SSH key...&quot;
+    ssh-add ~/.ssh/esp-deploy
+else
+    echo &quot;SSH key already added.&quot;
+fi
+
+# Update the repo
+git pull git@github.com:mhoek2/esp32.git</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li><dl>
+                        <dt>Make update.sh executable</dt>
+        
+        <dd><pre><code class="language-bash">sudo chmod +x update.sh</code></pre>
+</dd>
+            </dl>
+</li>
+
+    <li><dl>
+                        <dt>Run update.sh</dt>
+        
+        <dd><pre><code class="language-bash">./update.sh</code></pre>
+</dd>
+            </dl>
+</li>
+
+</ol>
+
+    </section>
+
+            <section class="section " id="notes">
+            <h2>Notes</h2>
+
+            
+    
+<ol>
+    <li><dl>
+                        <dt>If changes were made to .env which prevents pulling:</dt>
+        
+        <dd><pre><code class="language-bash"># export changes
+git diff &gt; changes.log
+
+# restore to original
+git restore .env
+
+# pull
+git pull
+
+# restore
+git restore changes.log</code></pre>
+</dd>
+            </dl>
+</li>
+
+</ol>
+
+    </section>
+
+    </section>
+
                             </div>
             <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
@@ -379,7 +367,7 @@
     </section>
 </section>
         </div>
-        <a href="files/app-views-admin-user.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
