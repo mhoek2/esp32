@@ -1,195 +1,171 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Page Title</title>
-
-<style>
-	* {
-		background: #f1f1f1;
-		box-sizing: border-box;
-	}
-	.form-wrapper {
-		width: 80%;
-		max-width:350px;
-		position: absolute;
-		transform: translateX(-50%);
-		left:50%;
-		top: 50px;
-		min-height:500px;
-	}
-		.form-container {
-			width: 100%;
-			height: 100%;
-			border: 1px solid #636363;
-			border-radius: 10px;
-			overflow: hidden;
-			padding: 2em;
-		}
-		.form-container .icon-wrapper {
-			display: block;
-			text-align: center;
-		}
-		.form-container .icon-wrapper > svg {
-			width:6em;
-		}
-		.form-container form {
-
-		}
-			.form-container form .input-wrapper {
-				margin-top:1em;
-			}
-			.form-container form .input-wrapper > input {
-				background: #fff;
-				border: 1px solid #000;
-				line-height: 2.2em;
-				padding-left: 15px;
-				width: 100%;
-			}
-			.form-container form button[type="submit"] {
-				margin-top:1em;
-				background: transparent;
-				border: 2px solid #000;
-				border-radius: 2.2em;
-				line-height: 2.2em;
-				padding:0 2em;
-				cursor:pointer;
-			}
-</style>
+<head>    
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>ESP32 Setup WiFi</title>
+    <link href="style.css" rel="stylesheet">
 </head>
+
 <body>
-
-<div class="form-wrapper">
-	<div class="form-container">
-		<div class="icon-wrapper">
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M320 160C229.1 160 146.8 196 86.3 254.6C73.6 266.9 53.3 266.6 41.1 253.9C28.9 241.2 29.1 220.9 41.8 208.7C113.7 138.9 211.9 96 320 96C428.1 96 526.3 138.9 598.3 208.7C611 221 611.3 241.3 599 253.9C586.7 266.5 566.4 266.9 553.8 254.6C493.2 196 410.9 160 320 160zM272 496C272 469.5 293.5 448 320 448C346.5 448 368 469.5 368 496C368 522.5 346.5 544 320 544C293.5 544 272 522.5 272 496zM200 390.2C188.3 403.5 168.1 404.7 154.8 393C141.5 381.3 140.3 361.1 152 347.8C193 301.4 253.1 272 320 272C386.9 272 447 301.4 488 347.8C499.7 361.1 498.4 381.3 485.2 393C472 404.7 451.7 403.4 440 390.2C410.6 356.9 367.8 336 320 336C272.2 336 229.4 356.9 200 390.2z"/></svg>
-		</div>
-		<div id="getAPs">Get APs</div>
-
-		<form id="wifi_sta_config" method="POST" action="xhr">
-			<input name="mode" value="set_wifi_ap" type="hidden">
-			<div class="input-wrapper">
-				<input list="ap_list" name="sta_ssid" type="text" placeholder="Access Point SSID" autocomplete="off" required/>
-				<datalist id="ap_list"></datalist>
-			</div>
-
-			<div class="input-wrapper">
-				<input name="sta_passphrase" type="password" placeholder="Passphrase" required/>
-			</div>
-			<button submit="submit" id="btn_set_sta_config">Set Wifi AP</button>
-			<div id="response"></div>
-		</form>
+	<div class="backgorund">
+		<div class="disc disc1"></div>
+		<div class="disc disc2"></div>
+		<div class="disc disc3"></div>
 	</div>
-</div>
 
-<script>
-	document.getElementById("getAPs").addEventListener("click", async (e) => {
-		try {
-			const response = await fetch( "find_ap", {
-				method: "GET"
-			});
+	<div class="form-wrapper">
+		<div class="form-container">
+			<div class="icon-wrapper">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M320 160C229.1 160 146.8 196 86.3 254.6C73.6 266.9 53.3 266.6 41.1 253.9C28.9 241.2 29.1 220.9 41.8 208.7C113.7 138.9 211.9 96 320 96C428.1 96 526.3 138.9 598.3 208.7C611 221 611.3 241.3 599 253.9C586.7 266.5 566.4 266.9 553.8 254.6C493.2 196 410.9 160 320 160zM272 496C272 469.5 293.5 448 320 448C346.5 448 368 469.5 368 496C368 522.5 346.5 544 320 544C293.5 544 272 522.5 272 496zM200 390.2C188.3 403.5 168.1 404.7 154.8 393C141.5 381.3 140.3 361.1 152 347.8C193 301.4 253.1 272 320 272C386.9 272 447 301.4 488 347.8C499.7 361.1 498.4 381.3 485.2 393C472 404.7 451.7 403.4 440 390.2C410.6 356.9 367.8 336 320 336C272.2 336 229.4 356.9 200 390.2z"/></svg>
+			</div>
+			<!--<div id="getAPs">Get APs</div>-->
 
-			if (!response.ok) {
-				throw new Error(`HTTP error ${response.status}`);
-			}
+			<div class="steps">
+				<div class="step active" id="active_step">Setup WiFi</div>
+				<div class="step content">
+					<form id="wifi_sta_config" method="POST" action="xhr">
+						<input name="mode" value="set_wifi_ap" type="hidden">
+						<div class="input-wrapper">
+							<input list="ap_list" name="sta_ssid" type="text" placeholder="Access Point SSID" autocomplete="off" required/>
+							<datalist id="ap_list"></datalist>
+						</div>
+						<div class="input-wrapper">
+							<input name="sta_passphrase" type="password" placeholder="Passphrase" required/>
+						</div>
+						<button submit="submit" id="btn_set_sta_config">Continue</button>
+						<div id="response"></div>
+					</form>
+				</div>
+				<div class="step pending">Configure Server</div>
+				<div class="step pending" id="last_step">Done</div>
+			</div>
 
-			const result = await response.json();
-			console.log(result);
+			<div id="refresh_timer">
+				<div class="graph">
+					<div class="bar-container">
+						<div class="bar-usage" data-usage="50"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-			if ( result.status.flag == 'success'){
-				const num_aps = result.data.num_ap;
+	<script>
+		/*
+		document.getElementById("getAPs").addEventListener("click", async (e) => {
+			try {
+				const response = await fetch( "find_ap", {
+					method: "GET"
+				});
 
-				// clear
-				document.getElementById("ap_list").innerHTML = "";
-
-				// duplicated
-				let dups = [];
-				
-				for ( let i = 0; i < result.data.num_ap; i++ )
-				{
-					let ssid = result.data.aps[i];
-
-					if ( dups.includes(ssid) )
-						continue;
-
-					let ap = document.createElement("option");
-					ap.value = ssid;
-					document.getElementById("ap_list").append( ap );
-
-					dups.push( ssid );
+				if (!response.ok) {
+					throw new Error(`HTTP error ${response.status}`);
 				}
+
+				const result = await response.json();
+				console.log(result);
+
+				if ( result.status.flag == 'success'){
+					const num_aps = result.data.num_ap;
+
+					// clear
+					document.getElementById("ap_list").innerHTML = "";
+
+					// duplicated
+					let dups = [];
+					
+					for ( let i = 0; i < result.data.num_ap; i++ )
+					{
+						let ssid = result.data.aps[i];
+
+						if ( dups.includes(ssid) )
+							continue;
+
+						let ap = document.createElement("option");
+						ap.value = ssid;
+						document.getElementById("ap_list").append( ap );
+
+						dups.push( ssid );
+					}
+				}
+
 			}
-
-		}
-		catch (error) {
-			console.error("Error:", error);
-		}
-	});
-
-	document.getElementById("wifi_sta_config").addEventListener("submit", async (e) => {
-		e.preventDefault();
-
-		const form = e.target;
-		const formData = new URLSearchParams(new FormData(form));
-
-		const btn_submit = document.getElementById("btn_set_sta_config");
-		const status_dom = document.getElementById("response");
-
-		try {
-			
-			btn_submit.disabled = true;
-			btn_submit.textContent = "Connecting...";
-			
-			const response = await fetch( form.action, {
-				method: form.method,
-				headers: {
-					"Content-Type": "application/x-www-form-urlencoded"
-				},
-				body: formData.toString()
-			});
-
-			/*
-			const data = {
-				SSID: form.SSID.value,
-				passphrase: form.passphrase.value
-			};
-
-			fetch("/wifi_connect", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(data)
-			});
-			*/
-			
-			if (!response.ok) {
-			  throw new Error(`HTTP error ${response.status}`);
+			catch (error) {
+				console.error("Error:", error);
 			}
+		});
+		*/
 
-			//const result = await response.text();
-			const result = await response.json();
+		function start_refresh_timer()
+		{
+			const refresh_timer = document.getElementById("refresh_timer");
+			refresh_timer.classList.add('active');
 
-			// result.status.flag = (success, error)
-			status_dom.html( result.status.message );
-
-			//
-			//console.log("Success:", result);
-			//if (result.connected == true){
-			//	btn_submit.disabled = false;
-			//	btn_submit.textContent = "CONNECTED";
-			//}
-			//else{
-			//	btn_submit.disabled = false;
-			//	btn_submit.textContent = "Reconnect";	
-			//}
-
+			setTimeout(() => {
+				location.reload();
+			}, 15000 );
 		}
-		catch (error) {
-			console.error("Error:", error);
-			btn_submit.textContent = "Unrecoverable error occurred";
-		}
-	});
-</script>
-	
+
+		document.getElementById("wifi_sta_config").addEventListener("submit", async (e) => {
+			e.preventDefault();
+
+			const form = e.target;
+			const formData = new URLSearchParams(new FormData(form));
+
+			const btn_submit = document.getElementById("btn_set_sta_config");
+			const response_dom = document.getElementById("response");
+			const step_indicator = document.getElementById("active_step");
+
+			try {
+				btn_submit.disabled = true;
+				btn_submit.textContent = "Connecting...";
+				step_indicator.classList.remove("active");
+				step_indicator.classList.add("working");
+
+				const response = await fetch( form.action, {
+					method: form.method,
+					headers: {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					body: formData.toString()
+				});
+
+				if ( !response.ok )
+					throw new Error(`HTTP error ${response.status}`);
+
+				const result = await response.json();
+
+				if ( typeof result.status === 'undefined')
+					throw new Error('result status is undefined');
+
+				if ( result.status.flag != 'success')
+					throw new Error(`${response.status.message}`);
+
+				btn_submit.remove();
+
+				// set reponse
+				response_dom.setAttribute('class', '');
+				response_dom.classList.add("success");
+				response_dom.innerText = result.status.message;
+
+				// change step indicator to done
+				step_indicator.classList.remove("working");
+				step_indicator.classList.add("done");
+
+				// start refresh timer
+				start_refresh_timer();
+			}
+			catch (error) {
+				console.error("Error:", error);
+				btn_submit.disabled = false;
+				btn_submit.textContent = "Retry";
+
+				// set reponse
+				response_dom.setAttribute('class', '');
+				response_dom.classList.add("error");
+				response_dom.innerText = "Error occurred";
+			}
+		});
+	</script>
 </body>
 </html>

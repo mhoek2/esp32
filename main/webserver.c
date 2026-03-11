@@ -225,6 +225,33 @@ static esp_err_t root_get_handler( httpd_req_t *req )
     return ESP_OK;
 }
 
+// assets
+static esp_err_t style_css_get_handler(httpd_req_t *req)
+{
+    FILE *asset_file = fopen("/spiffs/web/style.css", "r");
+
+    if ( !asset_file ) 
+    {
+        httpd_resp_send_404(req);
+        return ESP_FAIL;
+    }
+
+    httpd_resp_set_type(req, "text/css");
+
+    char buffer[1024];
+    size_t read_bytes;
+
+    while ( ( read_bytes = fread( buffer, 1, sizeof(buffer), asset_file ) ) > 0 ) {
+        httpd_resp_send_chunk(req, buffer, read_bytes);
+    }
+
+    fclose(asset_file);
+    httpd_resp_send_chunk( req, NULL, 0 );
+
+    return ESP_OK;
+}
+
+// xhr requests
 static esp_err_t xhr_invalid_mode( httpd_req_t *req )
 {
     char response[256] = {0};
@@ -491,6 +518,10 @@ static void define_endpoints( void )
     ADD_URI_HANDLER( HTTP_GET,      "/find_ap",         find_ap_handler )
     ADD_URI_HANDLER( HTTP_GET,      "/reboot_device",   reboot_device_handler )
     ADD_URI_HANDLER( HTTP_GET,      "/disable_ap",      disable_ap_handler )
+
+    // assets
+    ADD_URI_HANDLER( HTTP_GET,      "/style.css",       style_css_get_handler )
+
 }
 
 httpd_handle_t init_webserver( void )
