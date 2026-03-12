@@ -1,12 +1,4 @@
 <?php
-// step/page
-$step = 0;
-$steps = [
-    "sta_setup.html",
-    "server_setup.html",
-    "overview.html",
-];
-
 class httpd_uri_t {
     public $uri; 
     protected $method; 
@@ -23,140 +15,153 @@ class httpd_uri_t {
     }
 }
 
-$uri_handlers = [];
-
-function root_get_handler()
+class PHPSim 
 {
-    global $step;
-    global $steps;
+    private $step = 0;
+    private $steps = [
+        "sta_setup.html",
+        "server_setup.html",
+        "overview.html",
+    ];
 
-    // most basic way to locally serve a webpage that is stored on the SoC
-    // NOTE: This does not simulate xhr traffic
-    if ( array_key_exists( $step, $steps ) && is_file( $steps[$step] ) ) {
-        include $steps[$step];
-        exit();
+    private $uri_handlers = [];
+
+    public function __construct() 
+    {
+        $this->define_endpoints();
     }
-}
 
-// simulate xhr requests locally
-// keep syntax as similar to the firmware written in c for clarity
-function httpd_resp_set_type( $type )
-{
-    header('Content-Type: ' . $type );
-}
-
-function httpd_resp_send( $response )
-{
-    die( $response );
-}
-
-function xhr_set_wifi_sta( $post ) 
-{
-    $response = "{\"data\":{\"sta_ssid\":\"%s\", \"sta_passphrase\":\"%s\"}, \"status\":{\"flag\":\"success\", \"message\":\"Wifi AP SSID changed, device will reboot now\"}}";
-
-    httpd_resp_set_type("application/json");
-    httpd_resp_send( $response );
-}
-
-function xhr_set_server_ip( $post ) 
-{
-    $response = "{\"data\":{\"server_ip\":\"%s\"}, \"status\":{\"flag\":\"success\", \"message\":\"Set the server IP\"}}";
-
-    httpd_resp_set_type("application/json");
-    httpd_resp_send( $response );
-}
-
-function &xhr_handler()
-{
-    // retrieve the operation mode
-    if ( empty( $_POST['mode'] ) )
-        throw new Exception('mode keyword is missing in POST data');
-
-    $post = &$_POST;
-
-    try {
-        $mode = $post['mode'];
-
-        // operation mode dispatching
-        if ( $mode == "set_wifi_ap" )
-        {
-            xhr_set_wifi_sta( $post );
-        }
-        else if ( $mode == "set_server_ip" )
-        {
-            xhr_set_server_ip( $post );
-        }
-        else 
-        {
-            throw new Exception('invalid mode');
+    public function root_get_handler() 
+    {
+        // most basic way to locally serve a webpage that is stored on the SoC
+        // NOTE: This does not simulate xhr traffic
+        if ( array_key_exists( $this->step, $this->steps ) && is_file( $this->steps[$this->step] ) ) {
+            include $this->steps[$this->step];
+            exit();
         }
     }
-    catch( Exception $e ) {
+
+    // xhr requests
+    private function httpd_resp_set_type( $type ) 
+    {
+        header('Content-Type: ' . $type );
+    }
+
+    private function httpd_resp_send( $response ) 
+    {
+        die( $response );
+    }
+
+    private function xhr_invalid_mode()
+    {
         $response = "{\"status\":\"invalid mode!\"}";
 
-        httpd_resp_set_type("application/json");
-        httpd_resp_send( $response );
+        $this->httpd_resp_set_type("application/json");
+        $this->httpd_resp_send( $response );
     }
-}
 
-function &get_factory_reset_handler ()
-{
-    $response = "{\"data\":{}, \"status\":{\"flag\":\"success\", \"message\":\"Device is reset\"}}";
-
-    httpd_resp_set_type("application/json");
-    httpd_resp_send( $response );
-}
-
-function &reboot_device_handler()
-{
-    $response = "{\"data\":{}, \"status\":{\"flag\":\"success\", \"message\":\"Device is rebooting\"}}";
-
-    httpd_resp_set_type("application/json");
-    httpd_resp_send( $response );
-}
-
-function &disable_ap_handler()
-{
-    $response = "{\"data\":{}, \"status\":{\"flag\":\"success\", \"message\":\"AP is disabling\"}}";
-
-    httpd_resp_set_type("application/json");
-    httpd_resp_send( $response );
-}
-
-function ADD_URI_HANDLER( $_method, $_uri, $_handler, &$count )
-{
-    global $uri_handlers;
-
-    $uri_handlers[$count++] = new httpd_uri_t(
-        $_uri,
-        $_method,
-        $_handler
-    );
-}
-
-function define_endpoints()
-{
-    $num_uri_handlers = 0;
-
-    ADD_URI_HANDLER( "_GET", "/",               "root_get_handler",             $num_uri_handlers );
-    ADD_URI_HANDLER( "_GET", "/xhr",            "xhr_handler",                  $num_uri_handlers );
-    ADD_URI_HANDLER( "_GET", "/factory_reset",  "get_factory_reset_handler",    $num_uri_handlers );
-    ADD_URI_HANDLER( "_GET", "/reboot_device",  "reboot_device_handler",        $num_uri_handlers );
-    ADD_URI_HANDLER( "_GET", "/disable_ap",     "disable_ap_handler",           $num_uri_handlers );
-}
-
-define_endpoints();
-
-// handle endpoints
-if ( !empty($_ENV) ) {
-    foreach ( $uri_handlers as $handler )
+    private function xhr_set_wifi_sta( $post ) 
     {
-        if ( $handler->uri === $_ENV['REQUEST_URI'] )
-        {
-            $handler->run();
+        $response = "{\"data\":{\"sta_ssid\":\"%s\", \"sta_passphrase\":\"%s\"}, \"status\":{\"flag\":\"success\", \"message\":\"Wifi AP SSID changed, device will reboot now\"}}";
+
+        $this->httpd_resp_set_type("application/json");
+        $this->httpd_resp_send( $response );
+    }
+
+    private function xhr_set_server_ip( $post ) 
+    {
+        $response = "{\"data\":{\"server_ip\":\"%s\"}, \"status\":{\"flag\":\"success\", \"message\":\"Set the server IP\"}}";
+
+        $this->httpd_resp_set_type("application/json");
+        $this->httpd_resp_send( $response );
+    }
+
+    public function xhr_handler() 
+    {
+        // retrieve the operation mode
+        if ( empty( $_POST['mode'] ) )
+            throw new Exception('mode keyword is missing in POST data');
+
+        $post = &$_POST;
+
+        try {
+            $mode = $post['mode'];
+
+             // operation mode dispatching
+            if ( $mode == "set_wifi_ap" ) 
+            {
+                $this->xhr_set_wifi_sta( $post );
+            }
+            else if ( $mode == "set_server_ip" ) 
+            {
+                $this->xhr_set_server_ip( $post );
+            }
+            else 
+            {
+                throw new Exception('invalid mode');
+            }
+        }
+        catch( Exception $e ) {
+            $this->xhr_invalid_mode();
         }
     }
+
+    public function get_factory_reset_handler() 
+    {
+        $response = "{\"data\":{}, \"status\":{\"flag\":\"success\", \"message\":\"Device is reset\"}}";
+
+        $this->httpd_resp_set_type("application/json");
+        $this->httpd_resp_send( $response );
+    }
+
+    public function reboot_device_handler() 
+    {
+        $response = "{\"data\":{}, \"status\":{\"flag\":\"success\", \"message\":\"Device is rebooting\"}}";
+
+        $this->httpd_resp_set_type("application/json");
+        $this->httpd_resp_send( $response );
+    }
+
+    public function disable_ap_handler() 
+    {
+        $response = "{\"data\":{}, \"status\":{\"flag\":\"success\", \"message\":\"AP is disabling\"}}";
+
+        $this->httpd_resp_set_type("application/json");
+        $this->httpd_resp_send( $response );
+    }
+
+    private function ADD_URI_HANDLER( $_method, $_uri, $_handler ) 
+    {
+        $this->uri_handlers[] = new httpd_uri_t(
+            $_uri,
+            $_method,
+            [$this, $_handler]
+        );
+    }
+
+    private function define_endpoints() 
+    {
+        $this->ADD_URI_HANDLER( "_GET", "/",               "root_get_handler" );
+        $this->ADD_URI_HANDLER( "_GET", "/xhr",            "xhr_handler" );
+        $this->ADD_URI_HANDLER( "_GET", "/factory_reset",  "get_factory_reset_handler" );
+        $this->ADD_URI_HANDLER( "_GET", "/reboot_device",  "reboot_device_handler" );
+        $this->ADD_URI_HANDLER( "_GET", "/disable_ap",     "disable_ap_handler" );
+    }
+
+    public function handle_request( $request_uri ) 
+    {
+        foreach ( $this->uri_handlers as $handler ) {
+            if ( $handler->uri === $request_uri ) {
+                $handler->run();
+            }
+        }
+
+        die("Invalid page");
+    }
 }
 
-die("Invalid page");
+$sim = new PHPSim();
+
+if ( !empty($_ENV) ) 
+    $sim->handle_request( $_ENV['REQUEST_URI'] );
 ?>
