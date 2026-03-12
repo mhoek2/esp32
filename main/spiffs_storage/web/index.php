@@ -1,6 +1,6 @@
 <?php
 // step/page
-$step = 1;
+$step = 0;
 $steps = [
     "sta_setup.html",
     "server_setup.html",

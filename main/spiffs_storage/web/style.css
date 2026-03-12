@@ -34,29 +34,29 @@ html {
         filter: blur(120px);
         opacity: 0.6;
     }
-        .backgorund > .disc > .disc1 {
+        .backgorund > .disc.disc1 {
             width: 500px;
             height: 500px;
             background: #8d3ab4;
             top: -100px;
             left: -100px;
-            animation: float1 30s ease-in-out infinite;
+            animation: float1 9s ease-in-out infinite;
         }
-        .backgorund > .disc > .disc2 {
+        .backgorund > .disc.disc2 {
             width: 600px;
             height: 600px;
             background: #1d86fd;
             bottom: -150px;
             right: -100px;
-            animation: float2 40s ease-in-out infinite;
+            animation: float2 7s ease-in-out infinite;
         }
-        .backgorund > .disc > .disc3 {
+        .backgorund > .disc.disc3 {
             width: 450px;
             height: 450px;
             background: #39d9db;
             top: 40%;
             left: 60%;
-            animation: float3 35s ease-in-out infinite;
+            animation: float3 10s ease-in-out infinite;
         }
 
 /* movement */
@@ -282,11 +282,27 @@ body {
         position: absolute;
         left:0;
         top:0;
-        /*width: attr(data-usage %);*/
         background: var(--step-working-color);
         height: inherit;
         transition: width 0.3s ease;
+        overflow: hidden;
     }
+    #refresh_timer .bar-usage::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        height: 100%;
+        width: 4em;
+        background: linear-gradient( 90deg, transparent, rgba(255,255,255,0.2), transparent );
+        animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer {
+        100% {
+            left: 120%;
+        }
+    }
+
     #refresh_timer.active {
         display: block;
     }
