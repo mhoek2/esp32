@@ -45,7 +45,7 @@ class DeviceService
 				case 27:
 					$device['data'] = $this->protocol_27->where([
 						'mac' => $device['mac']
-					])->find()[0];
+					])->find()[0] ?? [];
 					break;
 				default:
 					break;

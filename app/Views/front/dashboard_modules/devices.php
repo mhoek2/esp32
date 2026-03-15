@@ -110,8 +110,10 @@
 		}
 	}
 </style>
+
 <div class="devices grid">
-<?php foreach( $devices as $idx => $device ){ ?>
+<?php foreach( $devices as $idx => $device ) { ?>
+
 	<div class="device" data-device-protocol="<?=$device['protocol']?>" data-device-id="<?=$device['id']?>">
 		<div class="title">
 			<div class="info">
@@ -120,13 +122,18 @@
 			</div>
 			<div id="heartbeat"></div>
 		</div>
-		
-		<?php if( (int)$device['protocol'] === 27 ){ ?>
-			<input type="checkbox" data-protocol-state <?=$device['data']['state'] ? 'checked="checked"' : '';?>">
-			
-			<?php $states = ["Closed", "Open"]; ?>
-			<div id="state" data-state-text="-"></div>
-		<?php } ?>
+
+		<?php
+			try {
+				if ( empty($device['view']) )
+					throw new Exception("view is missing");
+
+				echo $device['view'];
+			}
+			catch( Exception $e ) {
+				echo $e->getMessage();
+			}
+		?>
 	</div>
 <?php } ?>
 </div>
