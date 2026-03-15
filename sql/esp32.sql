@@ -145,7 +145,9 @@ CREATE TABLE `devices` (
   `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `mac` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `protocol` int DEFAULT '0',
-  `sleep` int NOT NULL DEFAULT '0'
+  `sleep` int NOT NULL DEFAULT '0',
+  `map_x` float NOT NULL DEFAULT '0',
+  `map_y` float NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

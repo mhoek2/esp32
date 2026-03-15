@@ -14,6 +14,41 @@ class DeviceController extends BaseController
 		$this->deviceModel = new Devices();
     }
 
+	public function update_map() 
+	{
+		$device_id 	= (int)$this->request->getPost('device_id');
+		$device = $this->deviceModel->getDevices($device_id);
+
+	   	if ( empty($device)){
+	        return $this->response->setJSON([
+				'status' 			=> 'suerrorccess',
+				'message' 			=> 'No device with this ID',
+				'errors'			=> null,
+				'redirect'			=> null,
+				'new_csrf_token'	=> csrf_hash(),
+			]);
+		}
+
+		$mac_address = $device[0]['mac'];
+
+        $data = [
+            'map_x' => (float)$this->request->getPost('map_x'),
+            'map_y' => (float)$this->request->getPost('map_y')
+        ];
+
+		$db = \Config\Database::connect();
+        $builder = $db->table('devices');
+        $builder->where('mac', $mac_address)->update($data);
+
+        return $this->response->setJSON([
+			'status' 			=> 'success',
+			'message' 			=> 'Device map positional data has been saved',
+			'errors'			=> null,
+			'redirect'			=> null,
+			'new_csrf_token'	=> csrf_hash(),
+		]);
+	}
+
 	public function update( int $device_id ) 
 	{
 		$device = $this->deviceModel->getDevices($device_id);

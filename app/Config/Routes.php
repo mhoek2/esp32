@@ -40,6 +40,8 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => \Ap
 		$routes->get(	'', 						'DeviceController::index/$1', 						['as' => 'admin.device']);
 		$routes->post(	'', 						'DeviceController::update/$1', 						['as' => 'admin.device.update']);
 	});
+	$routes->post(	'device/update_map', 			'DeviceController::update_map', 					['as' => 'admin.device.update_map']);
+
 	
 	// User
 	$routes->get(	'users/new', 					'UserController::new_user', 						['as' => 'admin.user.new']);

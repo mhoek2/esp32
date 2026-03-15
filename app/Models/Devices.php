@@ -8,7 +8,7 @@ class Devices extends Model
 {
     protected $table      = 'devices';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['id', 'name', 'mac', 'protocol', 'sleep'];	
+    protected $allowedFields = ['id', 'name', 'mac', 'protocol', 'sleep', 'map_x', 'map_y'];	
 	
     public function getDevices( $id_or_mac = NULL )
     {
