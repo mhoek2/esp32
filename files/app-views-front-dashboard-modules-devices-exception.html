@@ -4,9 +4,8 @@
     <meta charset="utf-8">
             <title>ESP32 Platform Documentation</title>
     
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <base href="../../">
+    <base href="../">
     <link rel="icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
@@ -219,123 +218,154 @@
 </aside>
 
             <div class="phpdocumentor-column -nine phpdocumentor-content">
-                                        <section class="section " id="phpstan-report">
-            <h1>PHPStan Report</h1>
+                                <section>
+                                        <ul class="phpdocumentor-breadcrumbs">
+    </ul>
+
+    <article class="phpdocumentor-element -file">
+        <h2 class="phpdocumentor-content__title">exception.php</h2>
+
+        
+        
+        
+        
+
+
+        
+<h3 id="toc">
+    Table of Contents
+    <a href="files/app-views-front-dashboard-modules-devices-exception.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        
+        <div class="phpdocumentor-modal" id="source-view">
+    <div class="phpdocumentor-modal-bg" data-exit-button></div>
+    <div class="phpdocumentor-modal-container">
+        <div class="phpdocumentor-modal-content">
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/app/Views/front/dashboard_modules/devices/exception.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+        </div>
+        <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
+    </div>
+</div>
+
+    <script type="text/javascript">
+        (function () {
+            function loadExternalCodeSnippet(el, url, line) {
+                Array.prototype.slice.call(el.querySelectorAll('pre[data-src]')).forEach((pre) => {
+                    const src = url || pre.getAttribute('data-src').replace(/\\/g, '/');
+                    const language = 'php';
+
+                    const code = document.createElement('code');
+                    code.className = 'language-' + language;
+                    pre.textContent = '';
+                    pre.setAttribute('data-line', line)
+                    code.textContent = 'Loading…';
+                    pre.appendChild(code);
+
+                    var xhr = new XMLHttpRequest();
+
+                    xhr.open('GET', src, true);
+
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState !== 4) {
+                            return;
+                        }
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+                            Prism.highlightElement(code);
+                            d=document.getElementsByClassName("line-numbers");
+                            d[0].scrollTop = d[0].children[1].offsetTop;
+                            return;
+                        }
+
+                        if (xhr.status === 404) {
+                            code.textContent = '✖ Error: File could not be found';
+                            return;
+                        }
+
+                        if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                            return;
+                        }
+
+                        code.textContent = '✖ Error: An unknown error occurred';
+                    };
+
+                    xhr.send(null);
+                });
+            }
+
+            const modalButtons = document.querySelectorAll("[data-modal]");
+            const openedAsLocalFile = window.location.protocol === 'file:';
+            if (modalButtons.length > 0 && openedAsLocalFile) {
+                console.warn(
+                    'Viewing the source code is unavailable because you are opening this page from the file:// scheme; ' +
+                    'browsers block XHR requests when a page is opened this way'
+                );
+            }
+
+            modalButtons.forEach(function (trigger) {
+                if (openedAsLocalFile) {
+                    trigger.setAttribute("hidden", "hidden");
+                }
+
+                trigger.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const modal = document.getElementById(trigger.dataset.modal);
+                    if (!modal) {
+                        console.error(`Modal with id "${trigger.dataset.modal}" could not be found`);
+                        return;
+                    }
+                    modal.classList.add("phpdocumentor-modal__open");
+
+                    loadExternalCodeSnippet(modal, trigger.dataset.src || null, trigger.dataset.line)
+                    const exits = modal.querySelectorAll("[data-exit-button]");
+                    exits.forEach(function (exit) {
+                        exit.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            modal.classList.remove("phpdocumentor-modal__open");
+                        });
+                    });
+                });
+            });
+        })();
+    </script>
+
+    </article>
+                                </section>
+                <section class="phpdocumentor-on-this-page__sidebar">
+                            
+    <section class="phpdocumentor-on-this-page__content">
+        <strong class="phpdocumentor-on-this-page__title">On this page</strong>
+
+        <ul class="phpdocumentor-list -clean">
+            <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                                                                                                                                                                </ul>
+            </li>
 
             
-    <p><strong>app/Controllers/Admin/DashboardModules/DevicesDashboardModule.php</strong>
-</p>
-
-            <blockquote><pre><code class="language-bash">Line 19: Access to an undefined property App\Controllers\Admin\DashboardModules\DevicesDashboardModule::$devices.
-Line 31: Instantiated class App\Controllers\Admin\DashboardModules\Exception not found.
-Line 31: Throwing object of an unknown class App\Controllers\Admin\DashboardModules\Exception.
-Line 39: Instantiated class App\Controllers\Admin\DashboardModules\Exception not found.
-Line 39: Throwing object of an unknown class App\Controllers\Admin\DashboardModules\Exception.
-Line 40: Unreachable statement - code above always terminates.
-Line 43: Caught class App\Controllers\Admin\DashboardModules\Exception not found.
-Line 54: Access to an undefined property App\Controllers\Admin\DashboardModules\DevicesDashboardModule::$devices.
-Line 55: Access to an undefined property App\Controllers\Admin\DashboardModules\DevicesDashboardModule::$devices.</code></pre>
-</blockquote>
-
-            
-    <p><strong>app/Controllers/Admin/UserController.php</strong>
-</p>
-
-            <blockquote><pre><code class="language-bash">Line 199: Call to unknown service method &#039;passwords&#039;.
-Line 256: Parameter #1 $name of function model expects a valid class string, array|bool|float|int|object|string|null given.
-Line 258: Call to function assert() with false and &#039;Config Auth…&#039; will always evaluate to false.
-Line 258: Instanceof between null and CodeIgniter\Shield\Models\UserModel will always evaluate to false.</code></pre>
-</blockquote>
-
-            
-    <p><strong>app/Controllers/DeviceControler.php</strong>
-</p>
-
-            <blockquote><pre><code class="language-bash">Line 14: Access to an undefined property App\Controllers\DeviceControler::$deviceModel.
-Line 15: Access to an undefined property App\Controllers\DeviceControler::$protocol_27.
-Line 17: Access to an undefined property App\Controllers\DeviceControler::$devices.
-Line 23: Access to an undefined property App\Controllers\DeviceControler::$devices.
-Line 24: Access to an undefined property App\Controllers\DeviceControler::$devices.
-Line 49: Access to an undefined property App\Controllers\DeviceControler::$deviceModel.
-Line 59: Access to an undefined property App\Controllers\DeviceControler::$deviceModel.
-Line 93: Access to an undefined property App\Controllers\DeviceControler::$deviceModel.
-Line 102: Access to an undefined property App\Controllers\DeviceControler::$deviceModel.
-Line 111: Access to an undefined property App\Controllers\DeviceControler::$protocol_27.
-Line 148: Access to an undefined property App\Controllers\DeviceControler::$deviceModel.
-Line 157: Access to an undefined property App\Controllers\DeviceControler::$deviceModel.</code></pre>
-</blockquote>
-
-            
-    <p><strong>app/Controllers/Front/DashboardModules/DevicesDashboardModule.php</strong>
-</p>
-
-            <blockquote><pre><code class="language-bash">Line 20: Access to an undefined property App\Controllers\Front\DashboardModules\DevicesDashboardModule::$devices.
-Line 41: Unreachable statement - code above always terminates.
-Line 55: Access to an undefined property App\Controllers\Front\DashboardModules\DevicesDashboardModule::$devices.
-Line 56: Access to an undefined property App\Controllers\Front\DashboardModules\DevicesDashboardModule::$devices.</code></pre>
-</blockquote>
-
-            
-    <p><strong>app/Controllers/Front/FilesController.php</strong>
-</p>
-
-            <blockquote><pre><code class="language-bash">Line 38: Call to an undefined method App\Controllers\Front\FilesController::get_meeting().
-Line 42: Access to an undefined property App\Controllers\Front\FilesController::$assignments.
-Line 49: Function load_sidebar not found.</code></pre>
-</blockquote>
-
-            
-    <p><strong>app/Controllers/LoginController.php</strong>
-</p>
-
-            <blockquote><pre><code class="language-bash">Line 15: PHPDoc tag @var for variable $authenticator contains unknown class App\Controllers\Session.
-Line 15: PHPDoc tag @var with type App\Controllers\Session is not subtype of native type CodeIgniter\Shield\Authentication\AuthenticatorInterface.
-Line 18: Call to method hasAction() on an unknown class App\Controllers\Session.</code></pre>
-</blockquote>
-
-            
-    <p><strong>app/Helpers/download_helper.php</strong>
-</p>
-
-            <blockquote><pre><code class="language-bash">Line 13: Invalid array key type float.</code></pre>
-</blockquote>
-
-            
-    <p><strong>app/Models/Devices.php</strong>
-</p>
-
-            <blockquote><pre><code class="language-bash">Line 23: Constant id_or_mac not found.
-Line 24: Undefined variable: $mac</code></pre>
-</blockquote>
-
-            
-    <p><strong>app/Services/DeviceService.php</strong>
-</p>
-
-            <blockquote><pre><code class="language-bash">Line 30: PHPDoc tag @throws with type App\Services\Exception is not subtype of Throwable
-Line 32: Access to an undefined property App\Services\DeviceService::$deviceModel.
-Line 33: Access to an undefined property App\Services\DeviceService::$protocol_27.
-Line 46: Access to an undefined property App\Services\DeviceService::$protocol_27.
-Line 58: Access to an undefined property App\Services\DeviceService::$deviceModel.</code></pre>
-</blockquote>
-
-            
-    <p><strong>app/Services/HardwareService.php</strong>
-</p>
-
-            <blockquote><pre><code class="language-bash">Line 30: PHPDoc tag @throws with type App\Services\Exception is not subtype of Throwable
-Line 46: Invalid array key type float.</code></pre>
-</blockquote>
-
-            
-    <p><strong>app/Services/UserMetaService.php</strong>
-</p>
-
-            <blockquote><pre><code class="language-bash">Line 36: PHPDoc tag @throws with type App\Services\Exception is not subtype of Throwable</code></pre>
-</blockquote>
-
+                    </ul>
     </section>
 
+                </section>
                             </div>
             <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
@@ -349,7 +379,7 @@ Line 46: Invalid array key type float.</code></pre>
     </section>
 </section>
         </div>
-        <a href="#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="files/app-views-front-dashboard-modules-devices-exception.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

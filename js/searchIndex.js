@@ -86,6 +86,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/App-Controllers-Admin-DashboardModules-DevicesDashboardModule.html#method___construct"
         },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DashboardModules\\DevicesDashboardModule\u003A\u003Aload_devices_views\u0028\u0029",
+            "name": "load_devices_views",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DashboardModules-DevicesDashboardModule.html#method_load_devices_views"
+        },                {
             "fqsen": "\\App\\Controllers\\Admin\\DashboardModules\\DevicesDashboardModule\u003A\u003Aindex\u0028\u0029",
             "name": "index",
             "summary": "",
@@ -435,6 +440,11 @@ Search.appendIndex(
             "name": "__construct",
             "summary": "",
             "url": "classes/App-Controllers-Front-DashboardModules-DevicesDashboardModule.html#method___construct"
+        },                {
+            "fqsen": "\\App\\Controllers\\Front\\DashboardModules\\DevicesDashboardModule\u003A\u003Aload_devices_views\u0028\u0029",
+            "name": "load_devices_views",
+            "summary": "",
+            "url": "classes/App-Controllers-Front-DashboardModules-DevicesDashboardModule.html#method_load_devices_views"
         },                {
             "fqsen": "\\App\\Controllers\\Front\\DashboardModules\\DevicesDashboardModule\u003A\u003Aindex\u0028\u0029",
             "name": "index",
