@@ -104,9 +104,14 @@
 			width: 100%;
 		}
 
-	@media only screen and (min-width: 1024px) {
+	@media only screen and (max-width: 768px) {
 		.devices.grid {
-			grid-template-columns: repeat(6, 1fr);
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}	
+	@media only screen and (min-width: 1200px) {
+		.devices.grid {
+			grid-template-columns: repeat(5, 1fr);
 		}
 	}
 </style>

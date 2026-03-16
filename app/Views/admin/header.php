@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="<?=base_url('assets/css/header.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/css/backend.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/css/backend_entries.css')?>">
-    <link rel="stylesheet" href="<?=base_url('assets/css/meeting.css')?>">
 	<link rel="stylesheet" href="<?=base_url('assets/css/upload.css')?>">
 
     <?=service('text_editor')->load_style()?>
