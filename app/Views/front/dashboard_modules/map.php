@@ -11,12 +11,16 @@
 		font-size: 12px;
 		padding: 3px 6px;
 		border-radius: 4px;
+		z-index: 9999;
 	}
 	.leaflet-tooltip #heartbeat {
 
 	}
 	#map {
 		--map-device-titlebar-height: 2em;
+	}
+	#map svg {
+		all:unset
 	}
 	#map .device .title {
 		display: flex;
@@ -172,7 +176,13 @@
 <script {csp-script-nonce}>
 	$(document).ready(function() {
 		const devices = <?=json_encode($devices)?>;
-		let markers = [];
+		const device_groups = <?=json_encode($device_groups)?>;
+
+		//console.log("Devices:", devices);
+		//console.log("Device groups:", device_groups);
+
+		const markers = [];
+		const marker_groups = {};
 		
 		// if this map is changed, the bounds must be updated accordingly.
 		// the coordinates of devices are based on these bounds.
@@ -180,24 +190,29 @@
 		const size_x = bounds[1][1] - bounds[0][1];
 		const size_y = bounds[1][0] - bounds[0][0]; 
 
-		// wheter editing is enabled or not, the device positions can be updated by dragging the markers. 
+		// wheter editing is enabled or not (only for admins in backoffice)
 		let edit_enabled = false;
 	
-		<?php if($is_backoffice && $user["is_admin"]): ?>
-		function updateMarkerDragging() {
-			markers.forEach(marker => {
-				if (edit_enabled)
-					marker.dragging.enable();
-				else
-					marker.dragging.disable();
-			});
+		function findDeviceGroupById( id ) 
+		{
+			return device_groups.find(group => group.id == id);
 		}
-		
-		$('#enable_map_edit').change(function() {
-			edit_enabled = $(this).is(':checked');
 
-			updateMarkerDragging();
-		});
+		<?php if($is_backoffice && $user["is_admin"]): ?>
+			function updateMarkerDragging() {
+				markers.forEach(marker => {
+					if (edit_enabled)
+						marker.dragging.enable();
+					else
+						marker.dragging.disable();
+				});
+			}
+			
+			$('#enable_map_edit').change(function() {
+				edit_enabled = $(this).is(':checked');
+
+				updateMarkerDragging();
+			});
 		<?php endif ?>
 
 		function updateDevicePosition( id, map_x, map_y ) 
@@ -242,15 +257,18 @@
 			devices.forEach(device => {
 				const marker = L.marker(
 					[device.map_y * size_y, device.map_x * size_x],
-					{ draggable: edit_enabled }
-				).addTo(map);
-				markers.push(marker);
+					{ 
+						pane:'devices',
+						draggable: edit_enabled 
+					}
+				);
 
 				marker.bindTooltip( renderDeviceLabel(device), {
-					permanent: true,
-					direction: "top",
-					offset: [0, -10],
-					interactive: true
+					pane		:'devices',
+					permanent	: true,
+					direction	: "top",
+					offset		: [0, -10],
+					interactive	: true
 				});
 
 				<?php if( $is_backoffice && $user["is_admin"] ): ?>
@@ -264,6 +282,35 @@
 					);
 				});
 				<?php endif ?>
+
+				// create group if it doesn't exist and add the marker to the group
+				if (!marker_groups[device.group_id]) {
+					marker_groups[device.group_id] = L.featureGroup().addTo(map);
+					marker_groups[device.group_id].meta = findDeviceGroupById(device.group_id);
+				}
+				marker.addTo( marker_groups[device.group_id] );
+
+				// add to flat list for easy access
+				marker.device_group_id = device.group_id;
+				markers.push(marker);
+			});
+		}
+
+		function renderDeviceGroups( map )
+		{
+			Object.entries(marker_groups).forEach(([group_id, marker_group]) => {
+				const aabb = marker_group.getBounds();
+marker_group
+				const rectangle = L.rectangle(aabb.pad(0.1), {
+					pane		: 'groups',
+					color		: marker_group.meta.color,
+					weight		: 2,
+					fillOpacity	: 0.07,
+					lineJoin	: 'round',
+				}).addTo(map);
+
+				// zoom in on a specific group
+				// map.fitBounds(aabb);
 			});
 		}
 
@@ -272,16 +319,27 @@
 			var map = L.map('map', {
 				crs		: L.CRS.Simple,
 				minZoom	: -5,
-				maxZoom	: 0
+				maxZoom	: 0,
+				renderer: L.svg()
 			});
 
-			var image = L.imageOverlay('/assets/map/floorplan.png', bounds).addTo(map);
+			// panes for z-fighting
+			map.createPane('floor');
+			map.createPane('groups');
+			map.createPane('devices');
+			map.getPane('floor').style.zIndex = 200;
+			map.getPane('groups').style.zIndex = 400;
+			map.getPane('devices').style.zIndex = 500;
+
+			var image = L.imageOverlay('/assets/map/floorplan.png', bounds, {pane:'floor'}).addTo(map);
 
 			map.fitBounds(bounds);
-			map.setZoom( -4);
+			map.setZoom( -4 );
 
-			addDeviceToMap( map );
+			addDEvicetoMap( map );
+			renderDeviceGroups( map );
 
+			//console.log(map._layers);
 			//map.on('click', function(e) {
 			//	console.log("X:", e.latlng.lng);
 			// 	console.log("Y:", e.latlng.lat);
