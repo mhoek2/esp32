@@ -32,6 +32,14 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => \Ap
 {
 	$routes->get(	'',								'Home::dashboard', 									['as' => 'admin']);
 	
+	// Device Groups
+	$routes->get(	'device_groups',				'DeviceGroupsController::index', 						['as' => 'admin.device_groups']);
+	$routes->group('device_groups/(:num)', function ($routes)
+	{
+		$routes->get(	'', 						'DeviceGroupController::index/$1', 						['as' => 'admin.device_group']);
+		$routes->post(	'', 						'DeviceGroupController::update/$1', 					['as' => 'admin.device_group.update']);
+	});
+
 	// Devices	   
 	$routes->get(	'devices',						'DevicesController::index', 						['as' => 'admin.devices']);
 				   
