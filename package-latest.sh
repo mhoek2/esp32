@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION="1.0.1"
+VERSION="1.0.2"
 IMAGE="ghcr.io/mhoek2/esp32"
 
 docker build -f Dockerfile.deploy -t "${IMAGE}:${VERSION}" .
