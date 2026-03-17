@@ -5,13 +5,16 @@ use App\Controllers\Admin\BaseController;
 use CodeIgniter\I18n\Time;
 
 use App\Models\Devices;
+use App\Models\DeviceGroups;
 
 class DeviceController extends BaseController
 {
 	protected $deviceModel;
+	protected $deviceGroupsModel;
 	
     public function __construct() {
 		$this->deviceModel = new Devices();
+		$this->deviceGroupsModel = new DeviceGroups();
     }
 
 	public function update_map() 
@@ -65,10 +68,12 @@ class DeviceController extends BaseController
 		
         $data = [
             'name' => $this->request->getPost('name'),
+            'group_id' => $this->request->getPost('group_id'),
         ];
 		
         $rules = [
             'name' => 'required|min_length[2]',
+            'group_id' => 'required|min_length[1]',
         ];
 
 		// Validation failed
@@ -108,6 +113,7 @@ class DeviceController extends BaseController
 		}
 	   
 	   	$this->data['device'] = $device[0];
+		$this->data['device_groups'] = $this->deviceGroupsModel->findAll();
 
 		load_header( $this->data );
 		load_footer( $this->data );

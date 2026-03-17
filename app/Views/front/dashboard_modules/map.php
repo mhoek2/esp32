@@ -283,6 +283,13 @@
 				});
 				<?php endif ?>
 
+				// group doesn't exist, add to map without group
+				if (device.group_id < 0 || !findDeviceGroupById(device.group_id)) {
+					marker.addTo(map);
+					markers.push(marker);
+					return;
+				}
+
 				// create group if it doesn't exist and add the marker to the group
 				if (!marker_groups[device.group_id]) {
 					marker_groups[device.group_id] = L.featureGroup().addTo(map);
@@ -336,7 +343,7 @@ marker_group
 			map.fitBounds(bounds);
 			map.setZoom( -4 );
 
-			addDEvicetoMap( map );
+			addDeviceToMap( map );
 			renderDeviceGroups( map );
 
 			//console.log(map._layers);

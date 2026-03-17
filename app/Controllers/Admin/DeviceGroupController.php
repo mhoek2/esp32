@@ -14,6 +14,37 @@ class DeviceGroupController extends BaseController
 		$this->deviceGroupModel = new DeviceGroups();
     }
 
+	public function new() : string 
+	{
+		load_header( $this->data );
+		load_footer( $this->data );
+		
+        return view('admin/device_group', $this->data);
+	}
+
+	public function create(){
+		$validation = \Config\Services::validation();
+		
+		$data = [
+			'name' => $this->request->getPost('name'),
+			'color' => $this->request->getPost('color'),
+		];
+		
+		$rules = [
+			'name' => 'required|min_length[2]',
+			'color' => 'required|min_length[3]|max_length[7]',
+		];
+
+		// Validation failed
+		if (! $this->validateData($this->request->getPost(), $rules, [], config('Auth')->DBGroup)) {	
+			return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+		} 
+		
+		$device_group_id = $this->deviceGroupModel->insert($data);
+		
+		return redirect()->to(route_to('admin.device_group', $device_group_id));
+	}
+
 	public function update( int $device_group_id ) 
 	{
 		$device_group = $this->deviceGroupModel->find($device_group_id);
@@ -66,13 +97,13 @@ class DeviceGroupController extends BaseController
 	
    public function index( int $device_group_id ): string
     {
-		$group = $this->deviceGroupModel->findall($device_group_id);
+		$group = $this->deviceGroupModel->find($device_group_id);
 	   
 	   	if ( empty($group)){
 			die("No device group with this id");
 		}
 	   
-	   	$this->data['device_group'] = $group[0];
+	   	$this->data['device_group'] = $group;
 
 		load_header( $this->data );
 		load_footer( $this->data );

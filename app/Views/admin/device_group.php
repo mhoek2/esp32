@@ -1,8 +1,18 @@
 <?php echo $header; ?>
 
 <?php
-$action = base_url(route_to('admin.device_group.update', $device_group['id']));
-$action_button = 'Opslaan';
+if( empty($device_group) )
+{
+	$action = base_url(route_to('admin.device_group.new'));
+	$action_button = 'Create';
+	$breadcrumb = "New device group";
+}
+else
+{
+	$action = base_url(route_to('admin.device_group.update', $device_group['id']));
+	$action_button = 'Save';
+	$breadcrumb = $device_group['name'];
+}
 ?>
 
 <style>
@@ -27,22 +37,22 @@ $action_button = 'Opslaan';
 <div class="breadcrumbs">
    	<ul>
 		<li><a href="<?=base_url(route_to('admin.device_groups'))?>">Device Groups</a></li>
-		<li><span><?=$device_group['name']?></span></li>
+		<li><span><?=$breadcrumb?></span></li>
     </ul>
 </div>
 
 <section class="main">
     <div class="content">
 
-		<form action="<?=$action?>" method="post" id="device_form">
+		<form action="<?=$action?>" method="post" id="device_form<?=empty($device_group) ? '_new' : ''?>">
 			<div class="container">
 				<div class="form-group">
 					<label for="meta_name">Name</label>
-					<input type="text" id="name" name="name" class="form-control" value="<?= old('name') ?? $device_group['name'] ?>">
+					<input type="text" id="name" name="name" class="form-control" value="<?= old('name') ?? ($device_group['name'] ?? '') ?>" placeholder="Living room">
 				</div>
 				<div class="form-group">
 					<label for="meta_color">Color</label>
-					<input type="text" id="color" name="color" class="form-control" value="<?= old('color') ?? $device_group['color'] ?>">
+					<input type="color" id="color" name="color" class="form-control" value="<?= old('color') ?? ($device_group['color'] ?? '#fff') ?>">
 				</div>
 			</div>
 

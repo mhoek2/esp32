@@ -40,6 +40,17 @@ $action_button = 'Opslaan';
 					<label for="meta_name">Name</label>
 					<input type="text" id="name" name="name" class="form-control" value="<?= old('name') ?? $device['name'] ?>">
 				</div>
+				<div class="form-group">
+					<label for="meta_color">Device group</label>
+					<select name="group_id" id="group_id" class="form-control">
+						<option value="-1">No group</option>
+						<?php foreach($device_groups as $group): ?>
+							<option value="<?= $group['id'] ?>" <?= (old('group_id') == $group['id'] || $device['group_id'] == $group['id']) ? 'selected' : '' ?>>
+								<?= $group['name'] ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</div>
 			</div>
 
 			<?= csrf_field() ?>

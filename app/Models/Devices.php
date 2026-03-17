@@ -12,8 +12,9 @@ class Devices extends Model
 	
     public function getDevices( $id_or_mac = NULL )
     {
-		$builder = $this->select('devices.*')
-					->join('device_meta', 'device_meta.mac = devices.mac', 'left');
+		$builder = $this->select('devices.*, COALESCE(device_groups.name, "None") as group_name')
+					->join('device_meta', 'device_meta.mac = devices.mac', 'left')
+					->join('device_groups', 'device_groups.id = devices.group_id', 'left');
 					
 		if ( !empty($id_or_mac) ) 
 		{
