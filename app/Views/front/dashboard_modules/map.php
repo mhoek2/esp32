@@ -161,6 +161,83 @@
 				background: #4caf50;
 			}
 	<?php endif ?>
+
+	/* legend */
+	#map .legend {
+		/*background: rgba(255,255,255,0.8);
+		padding: 2em;
+		border-radius: 5px;
+		border: 2px solid rgba(0,0,0,0.2)*/
+	}
+
+	#map .legend {
+	}
+		#map .legend #legend_item {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 0.5em;
+			font-size: 14px;
+			margin-bottom: 0.5em;
+			padding: 0.2em 0.5em;
+
+			background-color: #fff;
+			border: 1px solid #fff;
+			border-radius: 3px;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+		}
+		#map .legend #legend_item .item {
+			width: 20px;
+			height: 20px;
+			border-radius: 3px;
+		}
+		#map .legend #legend_item .legend-color {
+			border-radius: 100%;
+		}
+		#map .legend #legend_item .legend-name {
+			flex: 1;
+			font-weight: bold;
+		}
+		#map .legend #legend_item .legend-navigate {
+			text-align: center;
+			margin: 0 !important;
+			padding: 2px 5px;
+			cursor: pointer;
+		}
+		#map .legend #legend_item .legend-navigate:hover,
+		#map .legend #legend_item .legend-toggle label:hover
+		{
+			background: rgba(0,0,0,0.1);
+		}
+		#map .legend #legend_item .legend-toggle {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 0.2em;
+		}
+			#map .legend #legend_item .legend-toggle input {
+				display:none;
+			}
+			#map .legend #legend_item .legend-toggle label {
+				text-align: center;
+				padding: 2px 5px;
+				margin: 0 !important;
+				cursor:pointer;
+				border-radius: 3px;
+			}
+				#map .legend #legend_item .legend-toggle label::before {
+					content: "\f070";
+					font-family: "Font Awesome 6 Free";
+					font-weight: 900;
+					font-style: normal;
+					font-variant: normal;
+					text-rendering: auto;
+					color: #000;
+				}
+
+				#map .legend #legend_item .legend-toggle input:checked + label::before {
+					content: "\f06e";
+				}
 </style>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -319,7 +396,7 @@
 		{
 			Object.entries(marker_groups).forEach(([group_id, marker_group]) => {
 				const aabb = marker_group.getBounds();
-marker_group
+
 				const rectangle = L.rectangle(aabb.pad(0.1), {
 					pane		: 'groups',
 					color		: marker_group.meta.color,
@@ -335,6 +412,65 @@ marker_group
 			});
 		}
 
+		function renderLegendDeviceGroup( map )
+		{
+			// render legend for device groups
+			Object.entries(marker_groups).forEach(([group_id, marker_group]) => {
+				const legendItem = `
+					<div id="legend_item" data-group-id="${group_id}">
+						<span class="legend-color item" style="background:${marker_group.meta.color}"></span>
+						<span class="legend-name">${marker_group.meta.name}</span>
+						<span class="legend-navigate item">
+							<i class="fa-solid fa-location-crosshairs"></i>
+						</span>
+						<span class="legend-toggle item">
+							<input type="checkbox" id="legend_toggle_${group_id}" checked/>
+							<label for="legend_toggle_${group_id}"></label>
+						</span>
+					</div>
+				`;
+
+				$('#map .legend').append(legendItem);
+			});
+
+			$('#map #legend_item .legend-navigate').on('click', function() {
+				const group_id = $(this).closest('#legend_item').data('group-id');
+				const marker_group = marker_groups[group_id];
+
+				if (marker_group) {
+					const aabb = marker_group.getBounds();
+					map.fitBounds(aabb);
+				}
+			});
+
+			$("#map #legend_item .legend-toggle > input").on('change', function() {
+				const group_id = $(this).closest('#legend_item').data('group-id');
+				const marker_group = marker_groups[group_id];
+
+				if (marker_group) {
+					if ($(this).is(':checked')) {
+						marker_group.addTo(map);
+						marker_group.rectangle.addTo(map);
+					} else {
+						map.removeLayer(marker_group);
+						map.removeLayer(marker_group.rectangle);
+					}
+				}
+			});
+		}
+
+		function createLegend( map )
+		{
+			var legend = L.control({position: 'topleft', pane:'legend'});
+
+			legend.onAdd = function(map) {
+				return L.DomUtil.create('div', 'legend');
+			};
+
+			legend.addTo( map );
+			renderLegendDeviceGroup( map );
+		}
+
 		function initDeviceMap() 
 		{
 			var map = L.map('map', {
@@ -348,9 +484,11 @@ marker_group
 			map.createPane('floor');
 			map.createPane('groups');
 			map.createPane('devices');
+			map.createPane('legend');
 			map.getPane('floor').style.zIndex = 200;
 			map.getPane('groups').style.zIndex = 400;
 			map.getPane('devices').style.zIndex = 500;
+			map.getPane('legend').style.zIndex = 600;
 
 			var image = L.imageOverlay('/assets/map/floorplan.png', bounds, {pane:'floor'}).addTo(map);
 
@@ -359,7 +497,7 @@ marker_group
 
 			addDeviceToMap( map );
 			renderDeviceGroups( map );
-
+			createLegend( map )
 			//console.log(map._layers);
 			//map.on('click', function(e) {
 			//	console.log("X:", e.latlng.lng);
