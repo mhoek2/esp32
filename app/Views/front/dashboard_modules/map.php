@@ -117,47 +117,50 @@
 			font-size:0.7em;
 			width: 100%;
 		}
-	/* enable map edit */
-	#enable_map_edit {
-		display: none;
-	}
-	#enable_map_edit + label {
-		width: fit-content;
-		padding:0;
-		background: rgba(255,255,255,0.8);
-		border: 1px solid #292929;
-		border-radius: 5px;
-		display:flex;
-		flex-direction: row;
-		cursor:pointer;
-	}
-		#enable_map_edit + label > span {
-			padding: 5px 10px;
+
+	<?php if($is_backoffice && $user["is_admin"]): ?>
+		/* enable map edit */
+		#enable_map_edit {
+			display: none;
 		}
-		#enable_map_edit + label > i {
-			background: #292929;
-			width: 20px;
-			text-align: center;
-			padding: 5px;
+		#enable_map_edit + label {
+			width: fit-content;
+			padding:0;
+			background: rgba(255,255,255,0.8);
+			border: 1px solid #292929;
+			border-radius: 5px;
+			display:flex;
+			flex-direction: row;
+			cursor:pointer;
 		}
-		#enable_map_edit + label > i::before {
-			content: "\e51f";
-			font-family: "Font Awesome 6 Free";
-			font-weight: 900;
-			font-style: normal;
-			font-variant: normal;
-			text-rendering: auto;
-			color: #fff;
-		}
-		#enable_map_edit:checked + label > i::before {
-			content: "\f3c5";
-		}
-		#enable_map_edit:checked + label {
-			border-color: #4caf50;
-		}
-		#enable_map_edit:checked + label > i {
-			background: #4caf50;
-		}
+			#enable_map_edit + label > span {
+				padding: 5px 10px;
+			}
+			#enable_map_edit + label > i {
+				background: #292929;
+				width: 20px;
+				text-align: center;
+				padding: 5px;
+			}
+			#enable_map_edit + label > i::before {
+				content: "\e51f";
+				font-family: "Font Awesome 6 Free";
+				font-weight: 900;
+				font-style: normal;
+				font-variant: normal;
+				text-rendering: auto;
+				color: #fff;
+			}
+			#enable_map_edit:checked + label > i::before {
+				content: "\f3c5";
+			}
+			#enable_map_edit:checked + label {
+				border-color: #4caf50;
+			}
+			#enable_map_edit:checked + label > i {
+				background: #4caf50;
+			}
+	<?php endif ?>
 </style>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -213,24 +216,33 @@
 
 				updateMarkerDragging();
 			});
+
+			function updateGroupRectangles() 
+			{
+				Object.entries(marker_groups).forEach(([group_id, marker_group]) => {
+					const aabb = marker_group.getBounds();
+					marker_group.rectangle.setBounds(aabb.pad(0.1));
+				});
+			}
+
+			function updateDevicePosition( id, map_x, map_y ) 
+			{
+				$.ajax({
+					url: '<?=base_url(route_to('admin.device.update_map'))?>',
+					method: 'POST',
+					data: {
+						device_id	: id,
+						map_x		: map_x,
+						map_y		: map_y
+					},
+					success: function (response) {
+						updateGroupRectangles();
+
+						console.log("Device position updated successfully");
+					}
+				});
+			}
 		<?php endif ?>
-
-		function updateDevicePosition( id, map_x, map_y ) 
-		{
-			$.ajax({
-				url: '<?=base_url(route_to('admin.device.update_map'))?>',
-				method: 'POST',
-				data: {
-					device_id	: id,
-					map_x		: map_x,
-					map_y		: map_y
-				},
-				success: function (response) {
-					console.log("Device position updated successfully");
-				}
-			});
-		}
-
 		function renderDeviceLabel( device ) 
 		{
 			return `
@@ -315,6 +327,8 @@ marker_group
 					fillOpacity	: 0.07,
 					lineJoin	: 'round',
 				}).addTo(map);
+
+				marker_group.rectangle = rectangle;
 
 				// zoom in on a specific group
 				// map.fitBounds(aabb);
