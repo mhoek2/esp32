@@ -126,6 +126,41 @@ Search.appendIndex(
             "summary": "Custom\u0020css\u0020class",
             "url": "classes/App-Controllers-Admin-DashboardModules-ExampleDashboardModule.html#property_css_class"
         },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DashboardModules\\MapDashboardModule",
+            "name": "MapDashboardModule",
+            "summary": "Dashboard\u0020Module",
+            "url": "classes/App-Controllers-Admin-DashboardModules-MapDashboardModule.html"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DashboardModules\\MapDashboardModule\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DashboardModules-MapDashboardModule.html#method___construct"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DashboardModules\\MapDashboardModule\u003A\u003Aindex\u0028\u0029",
+            "name": "index",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DashboardModules-MapDashboardModule.html#method_index"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DashboardModules\\MapDashboardModule\u003A\u003A\u0024sort",
+            "name": "sort",
+            "summary": "Sort\u0020order",
+            "url": "classes/App-Controllers-Admin-DashboardModules-MapDashboardModule.html#property_sort"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DashboardModules\\MapDashboardModule\u003A\u003A\u0024css_class",
+            "name": "css_class",
+            "summary": "Custom\u0020css\u0020class",
+            "url": "classes/App-Controllers-Admin-DashboardModules-MapDashboardModule.html#property_css_class"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DashboardModules\\MapDashboardModule\u003A\u003A\u0024devices",
+            "name": "devices",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DashboardModules-MapDashboardModule.html#property_devices"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DashboardModules\\MapDashboardModule\u003A\u003A\u0024deviceGroupsModel",
+            "name": "deviceGroupsModel",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DashboardModules-MapDashboardModule.html#property_deviceGroupsModel"
+        },                {
             "fqsen": "\\App\\Controllers\\Admin\\DeviceController",
             "name": "DeviceController",
             "summary": "Class\u0020BaseController",
@@ -135,6 +170,11 @@ Search.appendIndex(
             "name": "__construct",
             "summary": "",
             "url": "classes/App-Controllers-Admin-DeviceController.html#method___construct"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceController\u003A\u003Aupdate_map\u0028\u0029",
+            "name": "update_map",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceController.html#method_update_map"
         },                {
             "fqsen": "\\App\\Controllers\\Admin\\DeviceController\u003A\u003Aupdate\u0028\u0029",
             "name": "update",
@@ -150,6 +190,71 @@ Search.appendIndex(
             "name": "deviceModel",
             "summary": "",
             "url": "classes/App-Controllers-Admin-DeviceController.html#property_deviceModel"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceController\u003A\u003A\u0024deviceGroupsModel",
+            "name": "deviceGroupsModel",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceController.html#property_deviceGroupsModel"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupController",
+            "name": "DeviceGroupController",
+            "summary": "Class\u0020BaseController",
+            "url": "classes/App-Controllers-Admin-DeviceGroupController.html"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupController\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceGroupController.html#method___construct"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupController\u003A\u003Anew\u0028\u0029",
+            "name": "new",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceGroupController.html#method_new"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupController\u003A\u003Acreate\u0028\u0029",
+            "name": "create",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceGroupController.html#method_create"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupController\u003A\u003Aupdate\u0028\u0029",
+            "name": "update",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceGroupController.html#method_update"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupController\u003A\u003Aindex\u0028\u0029",
+            "name": "index",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceGroupController.html#method_index"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupController\u003A\u003A\u0024deviceGroupModel",
+            "name": "deviceGroupModel",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceGroupController.html#property_deviceGroupModel"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupsController",
+            "name": "DeviceGroupsController",
+            "summary": "Class\u0020BaseController",
+            "url": "classes/App-Controllers-Admin-DeviceGroupsController.html"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupsController\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceGroupsController.html#method___construct"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupsController\u003A\u003Adelete\u0028\u0029",
+            "name": "delete",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceGroupsController.html#method_delete"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupsController\u003A\u003Aindex\u0028\u0029",
+            "name": "index",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceGroupsController.html#method_index"
+        },                {
+            "fqsen": "\\App\\Controllers\\Admin\\DeviceGroupsController\u003A\u003A\u0024deviceGroupModel",
+            "name": "deviceGroupModel",
+            "summary": "",
+            "url": "classes/App-Controllers-Admin-DeviceGroupsController.html#property_deviceGroupModel"
         },                {
             "fqsen": "\\App\\Controllers\\Admin\\DevicesController",
             "name": "DevicesController",
@@ -461,6 +566,41 @@ Search.appendIndex(
             "summary": "Custom\u0020css\u0020class",
             "url": "classes/App-Controllers-Front-DashboardModules-DevicesDashboardModule.html#property_css_class"
         },                {
+            "fqsen": "\\App\\Controllers\\Front\\DashboardModules\\MapDashboardModule",
+            "name": "MapDashboardModule",
+            "summary": "Dashboard\u0020Module",
+            "url": "classes/App-Controllers-Front-DashboardModules-MapDashboardModule.html"
+        },                {
+            "fqsen": "\\App\\Controllers\\Front\\DashboardModules\\MapDashboardModule\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/App-Controllers-Front-DashboardModules-MapDashboardModule.html#method___construct"
+        },                {
+            "fqsen": "\\App\\Controllers\\Front\\DashboardModules\\MapDashboardModule\u003A\u003Aindex\u0028\u0029",
+            "name": "index",
+            "summary": "",
+            "url": "classes/App-Controllers-Front-DashboardModules-MapDashboardModule.html#method_index"
+        },                {
+            "fqsen": "\\App\\Controllers\\Front\\DashboardModules\\MapDashboardModule\u003A\u003A\u0024sort",
+            "name": "sort",
+            "summary": "Sort\u0020order",
+            "url": "classes/App-Controllers-Front-DashboardModules-MapDashboardModule.html#property_sort"
+        },                {
+            "fqsen": "\\App\\Controllers\\Front\\DashboardModules\\MapDashboardModule\u003A\u003A\u0024css_class",
+            "name": "css_class",
+            "summary": "Custom\u0020css\u0020class",
+            "url": "classes/App-Controllers-Front-DashboardModules-MapDashboardModule.html#property_css_class"
+        },                {
+            "fqsen": "\\App\\Controllers\\Front\\DashboardModules\\MapDashboardModule\u003A\u003A\u0024devices",
+            "name": "devices",
+            "summary": "",
+            "url": "classes/App-Controllers-Front-DashboardModules-MapDashboardModule.html#property_devices"
+        },                {
+            "fqsen": "\\App\\Controllers\\Front\\DashboardModules\\MapDashboardModule\u003A\u003A\u0024deviceGroupsModel",
+            "name": "deviceGroupsModel",
+            "summary": "",
+            "url": "classes/App-Controllers-Front-DashboardModules-MapDashboardModule.html#property_deviceGroupsModel"
+        },                {
             "fqsen": "\\App\\Controllers\\Front\\DownloadController",
             "name": "DownloadController",
             "summary": "Class\u0020BaseController",
@@ -660,6 +800,36 @@ Search.appendIndex(
             "name": "generateUserFullName",
             "summary": "",
             "url": "namespaces/default.html#function_generateUserFullName"
+        },                {
+            "fqsen": "\\App\\Models\\DeviceGroups",
+            "name": "DeviceGroups",
+            "summary": "",
+            "url": "classes/App-Models-DeviceGroups.html"
+        },                {
+            "fqsen": "\\App\\Models\\DeviceGroups\u003A\u003AhasMembers\u0028\u0029",
+            "name": "hasMembers",
+            "summary": "",
+            "url": "classes/App-Models-DeviceGroups.html#method_hasMembers"
+        },                {
+            "fqsen": "\\App\\Models\\DeviceGroups\u003A\u003AgetDeviceGroups\u0028\u0029",
+            "name": "getDeviceGroups",
+            "summary": "",
+            "url": "classes/App-Models-DeviceGroups.html#method_getDeviceGroups"
+        },                {
+            "fqsen": "\\App\\Models\\DeviceGroups\u003A\u003A\u0024table",
+            "name": "table",
+            "summary": "",
+            "url": "classes/App-Models-DeviceGroups.html#property_table"
+        },                {
+            "fqsen": "\\App\\Models\\DeviceGroups\u003A\u003A\u0024primaryKey",
+            "name": "primaryKey",
+            "summary": "",
+            "url": "classes/App-Models-DeviceGroups.html#property_primaryKey"
+        },                {
+            "fqsen": "\\App\\Models\\DeviceGroups\u003A\u003A\u0024allowedFields",
+            "name": "allowedFields",
+            "summary": "",
+            "url": "classes/App-Models-DeviceGroups.html#property_allowedFields"
         },                {
             "fqsen": "\\App\\Models\\DeviceMeta",
             "name": "DeviceMeta",

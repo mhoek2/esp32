@@ -226,7 +226,7 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    Devices
+    DeviceGroups
 
         <span class="phpdocumentor-element__extends">
         extends <abbr title="\CodeIgniter\Model">Model</abbr>
@@ -248,7 +248,7 @@
 </div>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/Devices.php"><a href="files/app-models-devices.html"><abbr title="app/Models/Devices.php">Devices.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceGroups.php"><a href="files/app-models-devicegroups.html"><abbr title="app/Models/DeviceGroups.php">DeviceGroups.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">7</span>
 
@@ -263,7 +263,7 @@
     
 <h3 id="toc">
     Table of Contents
-    <a href="classes/App-Models-Devices.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/App-Models-DeviceGroups.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h3>
 
@@ -277,24 +277,24 @@
 
 <h4 id="toc-properties">
     Properties
-    <a href="classes/App-Models-Devices.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/App-Models-DeviceGroups.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/App-Models-Devices.html#property_allowedFields">$allowedFields</a>
+    <a class="" href="classes/App-Models-DeviceGroups.html#property_allowedFields">$allowedFields</a>
     <span>
                         &nbsp;: mixed            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/App-Models-Devices.html#property_primaryKey">$primaryKey</a>
+    <a class="" href="classes/App-Models-DeviceGroups.html#property_primaryKey">$primaryKey</a>
     <span>
                         &nbsp;: mixed            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/App-Models-Devices.html#property_table">$table</a>
+    <a class="" href="classes/App-Models-DeviceGroups.html#property_table">$table</a>
     <span>
                         &nbsp;: mixed            </span>
 </dt>
@@ -303,14 +303,20 @@
 
 <h4 id="toc-methods">
     Methods
-    <a href="classes/App-Models-Devices.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/App-Models-DeviceGroups.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/App-Models-Devices.html#method_getDevices">getDevices()</a>
+    <a class="" href="classes/App-Models-DeviceGroups.html#method_getDeviceGroups">getDeviceGroups()</a>
     <span>
                                 &nbsp;: mixed    </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a class="" href="classes/App-Models-DeviceGroups.html#method_hasMembers">hasMembers()</a>
+    <span>
+                                &nbsp;: bool    </span>
 </dt>
 
     </dl>
@@ -323,7 +329,7 @@
     <section class="phpdocumentor-properties">
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
-            <a href="classes/App-Models-Devices.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/App-Models-DeviceGroups.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
@@ -335,13 +341,13 @@
 >
     <h4 class="phpdocumentor-element__name" id="property_allowedFields">
         $allowedFields
-        <a href="classes/App-Models-Devices.html#property_allowedFields" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/App-Models-DeviceGroups.html#property_allowedFields" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
                                             </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/Devices.php"><a href="files/app-models-devices.html"><abbr title="app/Models/Devices.php">Devices.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceGroups.php"><a href="files/app-models-devicegroups.html"><abbr title="app/Models/DeviceGroups.php">DeviceGroups.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">11</span>
 
@@ -353,7 +359,7 @@
         <span class="phpdocumentor-signature__visibility">protected</span>
             <span class="phpdocumentor-signature__type">mixed</span>
     <span class="phpdocumentor-signature__name">$allowedFields</span>
-     = <span class="phpdocumentor-signature__default-value">[&#039;id&#039;, &#039;group_id&#039;, &#039;name&#039;, &#039;mac&#039;, &#039;protocol&#039;, &#039;sleep&#039;, &#039;map_x&#039;, &#039;map_y&#039;]</span></code>
+     = <span class="phpdocumentor-signature__default-value">[&#039;id&#039;, &#039;name&#039;, &#039;color&#039;]</span></code>
 
     
     
@@ -372,13 +378,13 @@
 >
     <h4 class="phpdocumentor-element__name" id="property_primaryKey">
         $primaryKey
-        <a href="classes/App-Models-Devices.html#property_primaryKey" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/App-Models-DeviceGroups.html#property_primaryKey" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
                                             </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/Devices.php"><a href="files/app-models-devices.html"><abbr title="app/Models/Devices.php">Devices.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceGroups.php"><a href="files/app-models-devicegroups.html"><abbr title="app/Models/DeviceGroups.php">DeviceGroups.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">10</span>
 
@@ -409,13 +415,13 @@
 >
     <h4 class="phpdocumentor-element__name" id="property_table">
         $table
-        <a href="classes/App-Models-Devices.html#property_table" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/App-Models-DeviceGroups.html#property_table" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
                                             </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/Devices.php"><a href="files/app-models-devices.html"><abbr title="app/Models/Devices.php">Devices.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceGroups.php"><a href="files/app-models-devicegroups.html"><abbr title="app/Models/DeviceGroups.php">DeviceGroups.php</abbr></a></abbr>
     :
     <span class="phpdocumentor-element-found-in__line">9</span>
 
@@ -427,7 +433,7 @@
         <span class="phpdocumentor-signature__visibility">protected</span>
             <span class="phpdocumentor-signature__type">mixed</span>
     <span class="phpdocumentor-signature__name">$table</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;devices&#039;</span></code>
+     = <span class="phpdocumentor-signature__default-value">&#039;device_groups&#039;</span></code>
 
     
     
@@ -442,7 +448,7 @@
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/App-Models-Devices.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/App-Models-DeviceGroups.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
@@ -451,22 +457,22 @@
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_getDevices">
-        getDevices()
-        <a href="classes/App-Models-Devices.html#method_getDevices" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_getDeviceGroups">
+        getDeviceGroups()
+        <a href="classes/App-Models-DeviceGroups.html#method_getDeviceGroups" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/Devices.php"><a href="files/app-models-devices.html"><abbr title="app/Models/Devices.php">Devices.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceGroups.php"><a href="files/app-models-devicegroups.html"><abbr title="app/Models/DeviceGroups.php">DeviceGroups.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">13</span>
+    <span class="phpdocumentor-element-found-in__line">18</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getDevices</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$id_or_mac</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">getDeviceGroups</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$group_id</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -475,7 +481,7 @@
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-argument-list__argument__name">$id_or_mac</span>
+                <span class="phpdocumentor-argument-list__argument__name">$group_id</span>
                 : <span class="phpdocumentor-argument-list__argument__type">mixed</span>
                  = <span class="phpdocumentor-argument-list__argument__default-value">null</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
@@ -489,13 +495,61 @@
     
     
 </article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_hasMembers">
+        hasMembers()
+        <a href="classes/App-Models-DeviceGroups.html#method_hasMembers" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceGroups.php"><a href="files/app-models-devicegroups.html"><abbr title="app/Models/DeviceGroups.php">DeviceGroups.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">13</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">hasMembers</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$group_id</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-argument-list__argument__name">$group_id</span>
+                : <span class="phpdocumentor-argument-list__argument__type">mixed</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+        
+    
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+            </section>
+
+</article>
             </section>
 
         <div class="phpdocumentor-modal" id="source-view">
     <div class="phpdocumentor-modal-bg" data-exit-button></div>
     <div class="phpdocumentor-modal-container">
         <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/app/Models/Devices.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/app/Models/DeviceGroups.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
         </div>
         <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
     </div>
@@ -596,24 +650,25 @@
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                                            <li><a href="classes/App-Models-Devices.html#toc-properties">Properties</a></li>
-                                                            <li><a href="classes/App-Models-Devices.html#toc-methods">Methods</a></li>
+                                                            <li><a href="classes/App-Models-DeviceGroups.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/App-Models-DeviceGroups.html#toc-methods">Methods</a></li>
                                     </ul>
             </li>
             
                             <li class="phpdocumentor-on-this-page-section__title">Properties</li>
                 <li>
                     <ul class="phpdocumentor-list -clean">
-                                                    <li class=""><a href="classes/App-Models-Devices.html#property_allowedFields">$allowedFields</a></li>
-                                                    <li class=""><a href="classes/App-Models-Devices.html#property_primaryKey">$primaryKey</a></li>
-                                                    <li class=""><a href="classes/App-Models-Devices.html#property_table">$table</a></li>
+                                                    <li class=""><a href="classes/App-Models-DeviceGroups.html#property_allowedFields">$allowedFields</a></li>
+                                                    <li class=""><a href="classes/App-Models-DeviceGroups.html#property_primaryKey">$primaryKey</a></li>
+                                                    <li class=""><a href="classes/App-Models-DeviceGroups.html#property_table">$table</a></li>
                                             </ul>
                 </li>
             
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li class=""><a href="classes/App-Models-Devices.html#method_getDevices">getDevices()</a></li>
+                                            <li class=""><a href="classes/App-Models-DeviceGroups.html#method_getDeviceGroups">getDeviceGroups()</a></li>
+                                            <li class=""><a href="classes/App-Models-DeviceGroups.html#method_hasMembers">hasMembers()</a></li>
                                     </ul>
             </li>
                     </ul>
@@ -633,7 +688,7 @@
     </section>
 </section>
         </div>
-        <a href="classes/App-Models-Devices.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/App-Models-DeviceGroups.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 

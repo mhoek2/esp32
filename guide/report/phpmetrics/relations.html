@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PhpMetrics report [2026-03-15 11:53:52]</title>
+    <title>PhpMetrics report [2026-03-17 12:05:04]</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico?v=v3.0.0-rc8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/milligram.min.css?v=v3.0.0-rc8">
@@ -50,7 +50,7 @@
 <div class="page">
     <div class="content content-first">
         <div class="report-details">
-            Created at 2026-03-15 11:53:52        , with PHPMetrics v3.0.0-rc8 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
+            Created at 2026-03-17 12:05:04        , with PHPMetrics v3.0.0-rc8 (<a href="https://twitter.com/Halleck45">Jean-François Lépine</a>).
         </div>
 
         
@@ -559,6 +559,11 @@
         "relations": []
     },
     {
+        "name": "\\App\\Models\\DeviceGroups",
+        "size": 3000,
+        "relations": []
+    },
+    {
         "name": "\\App\\Models\\Uploads",
         "size": 3000,
         "relations": []
@@ -615,6 +620,13 @@
         "relations": []
     },
     {
+        "name": "\\App\\Controllers\\Front\\DashboardModules\\MapDashboardModule",
+        "size": 3000,
+        "relations": [
+            "\\App\\Models\\DeviceGroups"
+        ]
+    },
+    {
         "name": "\\App\\Controllers\\Front\\DashboardModules\\DashboardModule",
         "size": 3000,
         "relations": []
@@ -635,7 +647,8 @@
         "name": "\\App\\Controllers\\Admin\\DeviceController",
         "size": 3000,
         "relations": [
-            "\\App\\Models\\Devices"
+            "\\App\\Models\\Devices",
+            "\\App\\Models\\DeviceGroups"
         ]
     },
     {
@@ -695,6 +708,13 @@
         "relations": []
     },
     {
+        "name": "\\App\\Controllers\\Admin\\DashboardModules\\MapDashboardModule",
+        "size": 3000,
+        "relations": [
+            "\\App\\Models\\DeviceGroups"
+        ]
+    },
+    {
         "name": "\\App\\Controllers\\Admin\\DashboardModules\\DashboardModule",
         "size": 3000,
         "relations": []
@@ -708,6 +728,20 @@
         "name": "\\App\\Controllers\\Admin\\DashboardModules\\ExampleDashboardModule",
         "size": 3000,
         "relations": []
+    },
+    {
+        "name": "\\App\\Controllers\\Admin\\DeviceGroupController",
+        "size": 3000,
+        "relations": [
+            "\\App\\Models\\DeviceGroups"
+        ]
+    },
+    {
+        "name": "\\App\\Controllers\\Admin\\DeviceGroupsController",
+        "size": 3000,
+        "relations": [
+            "\\App\\Models\\DeviceGroups"
+        ]
     },
     {
         "name": "\\App\\Controllers\\DeviceControler",

@@ -4,6 +4,7 @@ auth_logins
 auth_permissions_users
 auth_remember_tokens
 auth_token_logins
+device_groups
 device_meta
 devices
 migrations

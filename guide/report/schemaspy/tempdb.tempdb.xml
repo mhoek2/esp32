@@ -112,6 +112,15 @@
             <column ascending="true" name="user_id"/>
          </index>
       </table>
+      <table catalog="tempdb" name="device_groups" numRows="1" remarks="" type="TABLE">
+         <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="Group" digits="0" id="1" name="name" nullable="false" remarks="" size="256" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="#e0cfff" digits="0" id="2" name="color" nullable="false" remarks="" size="7" type="VARCHAR" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
       <table catalog="tempdb" name="device_meta" numRows="0" remarks="" type="TABLE">
          <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="mac" nullable="false" remarks="" size="65535" type="TEXT" typeCode="-1"/>
@@ -123,12 +132,15 @@
             <column ascending="true" name="mac"/>
          </index>
       </table>
-      <table catalog="tempdb" name="devices" numRows="0" remarks="" type="TABLE">
+      <table catalog="tempdb" name="devices" numRows="2" remarks="" type="TABLE">
          <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="name" nullable="false" remarks="" size="65535" type="TEXT" typeCode="-1"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="mac" nullable="false" remarks="" size="65535" type="TEXT" typeCode="-1"/>
-         <column autoUpdated="false" defaultValue="0" digits="0" id="3" name="protocol" nullable="true" remarks="" size="10" type="INT" typeCode="4"/>
-         <column autoUpdated="false" defaultValue="0" digits="0" id="4" name="sleep" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="-1" digits="0" id="1" name="group_id" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="name" nullable="false" remarks="" size="65535" type="TEXT" typeCode="-1"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="mac" nullable="false" remarks="" size="65535" type="TEXT" typeCode="-1"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="4" name="protocol" nullable="true" remarks="" size="10" type="INT" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="5" name="sleep" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="6" name="map_x" nullable="false" remarks="" size="12" type="FLOAT" typeCode="7"/>
+         <column autoUpdated="false" defaultValue="0" digits="0" id="7" name="map_y" nullable="false" remarks="" size="12" type="FLOAT" typeCode="7"/>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="PRIMARY" unique="true">
             <column ascending="true" name="id"/>
@@ -150,7 +162,7 @@
             <column ascending="true" name="id"/>
          </index>
       </table>
-      <table catalog="tempdb" name="protocol_27" numRows="0" remarks="" type="TABLE">
+      <table catalog="tempdb" name="protocol_27" numRows="2" remarks="" type="TABLE">
          <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="mac" nullable="false" remarks="" size="65535" type="TEXT" typeCode="-1"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="state" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>

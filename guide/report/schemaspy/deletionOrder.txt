@@ -6,6 +6,7 @@ protocol_27
 migrations
 devices
 device_meta
+device_groups
 auth_token_logins
 auth_remember_tokens
 auth_permissions_users
