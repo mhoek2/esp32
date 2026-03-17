@@ -32,21 +32,32 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin', 'filter' => \Ap
 {
 	$routes->get(	'',								'Home::dashboard', 									['as' => 'admin']);
 	
+	// Device Groups
+	$routes->get(	'device_groups/new', 			'DeviceGroupController::new', 						['as' => 'admin.device_group.new']);
+	$routes->post(	'device_groups/new', 			'DeviceGroupController::create');
+	$routes->post(	'device_groups/delete', 		'DeviceGroupsController::delete', 					['as' => 'admin.device_group.delete']);
+	$routes->get(	'device_groups',				'DeviceGroupsController::index', 					['as' => 'admin.device_groups']);
+	$routes->group(	'device_groups/(:num)', function ($routes)
+	{
+		$routes->get(	'', 						'DeviceGroupController::index/$1', 					['as' => 'admin.device_group']);
+		$routes->post(	'', 						'DeviceGroupController::update/$1', 				['as' => 'admin.device_group.update']);
+	});
+
 	// Devices	   
-	$routes->get(	'devices',						'DevicesController::index', 						['as' => 'admin.devices']);
-				   
-	$routes->group('devices/(:num)', function ($routes)
+	$routes->get(	'devices',						'DevicesController::index', 						['as' => 'admin.devices']);		   
+	$routes->group(	'devices/(:num)', function ($routes)
 	{
 		$routes->get(	'', 						'DeviceController::index/$1', 						['as' => 'admin.device']);
 		$routes->post(	'', 						'DeviceController::update/$1', 						['as' => 'admin.device.update']);
 	});
+	$routes->post(	'device/update_map', 			'DeviceController::update_map', 					['as' => 'admin.device.update_map']);
+
 	
 	// User
 	$routes->get(	'users/new', 					'UserController::new_user', 						['as' => 'admin.user.new']);
 	$routes->post(	'users/new', 					'UserController::new_user_create');
 	$routes->get(	'users',						'UsersController::index', 							['as' => 'admin.users']);
-	
-	$routes->group('users/(:num)', function ($routes)
+	$routes->group(	'users/(:num)', function ($routes)
 	{
 		$routes->get(	'', 						'UserController::index/$1', 						['as' => 'admin.user']);
 		$routes->post(	'', 						'UserController::update/$1', 						['as' => 'admin.user.update']);

@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="<?=base_url('assets/css/header.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/css/backend.css')?>">
     <link rel="stylesheet" href="<?=base_url('assets/css/backend_entries.css')?>">
-    <link rel="stylesheet" href="<?=base_url('assets/css/meeting.css')?>">
 	<link rel="stylesheet" href="<?=base_url('assets/css/upload.css')?>">
 
     <?=service('text_editor')->load_style()?>
@@ -51,6 +50,7 @@
             </li>
             <li class="menu-item hidden"><a href="<?=base_url(route_to('admin'))?>"><i class="fa-solid fa-house"></i> Home</a></li>
             <li class="menu-item hidden"><a href="<?=base_url(route_to('admin.devices'))?>"><i class="fa-solid fa-microchip"></i> Devices</a></li>
+            <li class="menu-item hidden"><a href="<?=base_url(route_to('admin.device_groups'))?>"><i class="fa-solid fa-layer-group"></i> Device Groups</a></li>
             <li class="menu-item hidden"><a href="<?=base_url(route_to('admin.users'))?>"><i class="fa-solid fa-user-cog"></i> Users</a></li>
         </ul>
         <ul>

@@ -1,8 +1,18 @@
 <?php echo $header; ?>
 
 <?php
-$action = base_url(route_to('admin.device.update', $device['id']));
-$action_button = 'Opslaan';
+if( empty($device_group) )
+{
+	$action = base_url(route_to('admin.device_group.new'));
+	$action_button = 'Create';
+	$breadcrumb = "New device group";
+}
+else
+{
+	$action = base_url(route_to('admin.device_group.update', $device_group['id']));
+	$action_button = 'Save';
+	$breadcrumb = $device_group['name'];
+}
 ?>
 
 <style>
@@ -26,30 +36,23 @@ $action_button = 'Opslaan';
 
 <div class="breadcrumbs">
    	<ul>
-		<li><a href="<?=base_url(route_to('admin.devices'))?>">Devices</a></li>
-		<li><span><?=$device['name']?></span></li>
+		<li><a href="<?=base_url(route_to('admin.device_groups'))?>">Device Groups</a></li>
+		<li><span><?=$breadcrumb?></span></li>
     </ul>
 </div>
 
 <section class="main">
     <div class="content">
 
-		<form action="<?=$action?>" method="post" id="device_form">
+		<form action="<?=$action?>" method="post" id="device_form<?=empty($device_group) ? '_new' : ''?>">
 			<div class="container">
 				<div class="form-group">
 					<label for="meta_name">Name</label>
-					<input type="text" id="name" name="name" class="form-control" value="<?= old('name') ?? $device['name'] ?>">
+					<input type="text" id="name" name="name" class="form-control" value="<?= old('name') ?? ($device_group['name'] ?? '') ?>" placeholder="Living room">
 				</div>
 				<div class="form-group">
-					<label for="meta_color">Device group</label>
-					<select name="group_id" id="group_id" class="form-control">
-						<option value="-1">No group</option>
-						<?php foreach($device_groups as $group): ?>
-							<option value="<?= $group['id'] ?>" <?= (old('group_id') == $group['id'] || $device['group_id'] == $group['id']) ? 'selected' : '' ?>>
-								<?= $group['name'] ?>
-							</option>
-						<?php endforeach; ?>
-					</select>
+					<label for="meta_color">Color</label>
+					<input type="color" id="color" name="color" class="form-control" value="<?= old('color') ?? ($device_group['color'] ?? '#fff') ?>">
 				</div>
 			</div>
 

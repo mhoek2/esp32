@@ -8,12 +8,13 @@ class Devices extends Model
 {
     protected $table      = 'devices';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['id', 'name', 'mac', 'protocol', 'sleep'];	
+    protected $allowedFields = ['id', 'group_id', 'name', 'mac', 'protocol', 'sleep', 'map_x', 'map_y'];	
 	
     public function getDevices( $id_or_mac = NULL )
     {
-		$builder = $this->select('devices.*')
-					->join('device_meta', 'device_meta.mac = devices.mac', 'left');
+		$builder = $this->select('devices.*, COALESCE(device_groups.name, "None") as group_name')
+					->join('device_meta', 'device_meta.mac = devices.mac', 'left')
+					->join('device_groups', 'device_groups.id = devices.group_id', 'left');
 					
 		if ( !empty($id_or_mac) ) 
 		{

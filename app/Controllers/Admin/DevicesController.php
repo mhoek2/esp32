@@ -8,18 +8,18 @@ use App\Models\Devices;
 
 class DevicesController extends BaseController
 {
-	protected $deviceModel;
-	
+    protected $deviceModel;
+
     public function __construct() {
-		$this->deviceModel = new Devices();
+        $this->deviceModel = new Devices();
     }
 
     public function index(): string
     {
-		$this->data['devices'] = $this->deviceModel->getDevices();
-		
-		load_header( $this->data );
-		load_footer( $this->data );
+        $this->data['devices'] = $this->deviceModel->getDevices();
+        
+        load_header( $this->data );
+        load_footer( $this->data );
 		
         return view('admin/devices', $this->data);
     }
