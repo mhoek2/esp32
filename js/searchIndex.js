@@ -766,6 +766,11 @@ Search.appendIndex(
             "summary": "",
             "url": "namespaces/default.html#function_setCSRFPostData"
         },                {
+            "fqsen": "\\deviceActionsJS\u0028\u0029",
+            "name": "deviceActionsJS",
+            "summary": "",
+            "url": "namespaces/default.html#function_deviceActionsJS"
+        },                {
             "fqsen": "\\deviceUpdateHandlerJS\u0028\u0029",
             "name": "deviceUpdateHandlerJS",
             "summary": "",
