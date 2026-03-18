@@ -21,6 +21,50 @@
 	#map svg {
 		all:unset
 	}
+
+	/* device marker */
+	#map .device-marker {
+		position:relative;
+	}
+		#map .device-marker-container .marker::before {
+			content: "\f041";
+			font-family: "Font Awesome 6 Free";
+			font-weight: 900;
+			color: #566feb;
+			font-size: 3.5em;
+			text-shadow: 5px 6px 11px #959595;
+		}
+		#map .device-marker-container .marker::after {
+			content: "";
+			position: absolute;
+			top: 15px;
+			left: 6px;
+			width:20px;
+			height:20px;
+		}
+
+		/* device marker protocols */
+		#map .device-marker-container [data-device-protocol="27"] .marker::after {
+			background-color: #515151;
+			-webkit-mask-image: url('/assets/floorplan/protocol_27_icon.png');
+			-webkit-mask-repeat: no-repeat;
+			-webkit-mask-position: center;
+			-webkit-mask-size: contain;
+			mask-image: url('/assets/floorplan/protocol_27_icon.png');
+			mask-repeat: no-repeat;
+			mask-position: center;
+			mask-size: contain;
+		}
+		#map .device-marker-container [data-device-protocol="27"] .marker::before {
+			color: #afffd3;
+			-webkit-text-stroke: 2px #7ed3a8;
+		}
+		#map .device-marker-container [data-device-protocol="27"] input[data-protocol-state]:checked ~ .marker::before {
+			color: #ffafaf;
+			-webkit-text-stroke: 2px #d37e7e
+		}
+
+	/* device tooltip */
 	#map .device .title {
 		display: flex;
 		flex-direction: row;
@@ -92,6 +136,7 @@
 		width: 150px;
 		height: 30px;
     	border-radius: 5px;
+
 		margin: 0 auto;
 		position:relative;
 	}
@@ -301,7 +346,6 @@
 				map.panTo( marker.getLatLng() );
 
 				// highlight the marker
-				console.log(highlight);
 				if ( highlight == null ) {
 					highlight = L.circle( marker.getLatLng(), {
 						radius		: 150, 
@@ -357,7 +401,6 @@
 					<div class="device" data-device-protocol="${device.protocol}" data-device-id="${device.id}">
 						<div class="title">
 							<div id="heartbeat" class="alive"></div>
-							<span>${device.name}</span>
 							<label for="ddt_${device.id}">
 								<i class="fa-solid fa-ellipsis-vertical"></i>
 							</label>
@@ -365,20 +408,35 @@
 
 						<input type="checkbox" id="ddt_${device.id}" class="map-device-details-dropdown-toggle"/>
 						<div class="map-device-details-dropdown">
+							<span>${device.name}</span>
 							<input type="checkbox" data-protocol-state>
 							<div id="state" data-state-text="-"></div>
 						</div>
 					</div>
 				`;
 			},
-			addDeviceToMap( )
+			getSensorIcon( device_id, protocol ) 
+			{
+				return L.divIcon({
+					className: `device-marker-container`,
+					iconSize: [20, 20],
+					iconAnchor: [10, 50],
+					html: `
+					<div class="device" data-device-protocol="${protocol}" data-device-id="${device_id}">
+						<input type="checkbox" data-protocol-state>
+						<div class="marker"></div>
+					</div>`
+				});
+			},
+			addDeviceToMap()
 			{
 				devices.forEach(device => {
 					const marker = L.marker(
 						[device.map_y * size_y, device.map_x * size_x],
 						{ 
 							pane:'devices',
-							draggable: edit_enabled 
+							draggable: edit_enabled,
+							icon: window.FP.getSensorIcon( device.id, device.protocol )
 						}
 					);
 
@@ -386,7 +444,7 @@
 						pane		:'devices',
 						permanent	: true,
 						direction	: "top",
-						offset		: [0, -10],
+						offset		: [0, -45],
 						interactive	: true
 					});
 
@@ -537,12 +595,12 @@
 				<?php endif ?>
 	
 				//console.log(map._layers);
-				//map.on('click', function(e) {
-				//	console.log("X:", e.latlng.lng);
-				// 	console.log("Y:", e.latlng.lat);
+				// map.on('click', function(e) {
+				// 	console.log("X:", e.latlng.lng / size_x );
+				// 	console.log("Y:", e.latlng.lat / size_y );
 
-				//L.marker(e.latlng).addTo(map);
-				//});
+				// 	L.marker(e.latlng).addTo(map);
+				// });
 			},
 			map() 
 			{
