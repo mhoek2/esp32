@@ -1,5 +1,4 @@
 <style>
-
 	.device-map {
 		width: 100%;
     	height: 768px;
@@ -164,13 +163,7 @@
 
 	/* legend */
 	#map .legend {
-		/*background: rgba(255,255,255,0.8);
-		padding: 2em;
-		border-radius: 5px;
-		border: 2px solid rgba(0,0,0,0.2)*/
-	}
 
-	#map .legend {
 	}
 		#map .legend #legend_item {
 			display: flex;
@@ -254,7 +247,9 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script {csp-script-nonce}>
-	$(document).ready(function() {
+	// floorplan module
+	window.FP = (function() {
+		let map;
 		const devices = <?=json_encode($devices)?>;
 		const device_groups = <?=json_encode($device_groups)?>;
 
@@ -263,250 +258,303 @@
 
 		const markers = [];
 		const marker_groups = {};
-		
+		let highlight = null;
+
 		// if this map is changed, the bounds must be updated accordingly.
 		// the coordinates of devices are based on these bounds.
-		const bounds = [[0,0], [9933,12992]];
-		const size_x = bounds[1][1] - bounds[0][1];
-		const size_y = bounds[1][0] - bounds[0][0]; 
+		let bounds = [[0,0], [9933,12992]];
+		let size_x = bounds[1][1] - bounds[0][1];
+		let size_y = bounds[1][0] - bounds[0][0]; 
 
 		// wheter editing is enabled or not (only for admins in backoffice)
 		let edit_enabled = false;
+
+		return {
+			configureBounds( new_bounds )
+			{
+				bounds = new_bounds;
+				size_x = bounds[1][1] - bounds[0][1];
+				size_y = bounds[1][0] - bounds[0][0]; 
+			},
+			findDeviceGroupById( id ) 
+			{
+				return device_groups.find(group => group.id == id);
+			},
+			findDeviceById( id ) 
+			{
+				return devices.find(device => device.id == id);
+			},
+			findMarkerById( id ) 
+			{
+				return markers[id] ? markers[id] : null;
+			},
+			locateDevice( device_id )
+			{
+				let device = window.FP.findDeviceById( device_id );
+				let marker = window.FP.findMarkerById( device_id );
+
+				if ( !device || !marker ) {
+					console.log("Device or Marker not found:", device_id);
+					return;
+				}
 	
-		function findDeviceGroupById( id ) 
-		{
-			return device_groups.find(group => group.id == id);
-		}
+				map.panTo( marker.getLatLng() );
 
-		<?php if($is_backoffice && $user["is_admin"]): ?>
-			function updateMarkerDragging() {
-				markers.forEach(marker => {
-					if (edit_enabled)
-						marker.dragging.enable();
-					else
-						marker.dragging.disable();
-				});
-			}
+				// highlight the marker
+				console.log(highlight);
+				if ( highlight == null ) {
+					highlight = L.circle( marker.getLatLng(), {
+						radius		: 150, 
+						color		: 'blue',
+						weight		: 2,
+						fillOpacity	: 0.2
+					}).addTo(map);
+				}
+				else
+				{
+					highlight.setLatLng( marker.getLatLng() );
+				}
+			},
+	
+				// admin features
+				updateMarkerDragging() 
+				{
+					markers.forEach(marker => {
+						if (edit_enabled)
+							marker.dragging.enable();
+						else
+							marker.dragging.disable();
+					});
+				},
+				updateGroupRectangles() 
+				{
+					Object.entries(marker_groups).forEach(([group_id, marker_group]) => {
+						const aabb = marker_group.getBounds();
+						marker_group.rectangle.setBounds(aabb.pad(0.1));
+					});
+				},
+				updateDevicePosition( id, map_x, map_y ) 
+				{
+					$.ajax({
+						url: '<?=base_url(route_to('admin.device.update_map'))?>',
+						method: 'POST',
+						data: {
+							device_id	: id,
+							map_x		: map_x,
+							map_y		: map_y
+						},
+						success: function (response) {
+							window.FP.updateGroupRectangles();
+
+							console.log("Device position updated successfully");
+						}
+					});
+				},
 			
-			$('#enable_map_edit').change(function() {
-				edit_enabled = $(this).is(':checked');
+			renderDeviceLabel( device ) 
+			{
+				return `
+					<div class="device" data-device-protocol="${device.protocol}" data-device-id="${device.id}">
+						<div class="title">
+							<div id="heartbeat" class="alive"></div>
+							<span>${device.name}</span>
+							<label for="ddt_${device.id}">
+								<i class="fa-solid fa-ellipsis-vertical"></i>
+							</label>
+						</div>
 
-				updateMarkerDragging();
-			});
+						<input type="checkbox" id="ddt_${device.id}" class="map-device-details-dropdown-toggle"/>
+						<div class="map-device-details-dropdown">
+							<input type="checkbox" data-protocol-state>
+							<div id="state" data-state-text="-"></div>
+						</div>
+					</div>
+				`;
+			},
+			addDeviceToMap( )
+			{
+				devices.forEach(device => {
+					const marker = L.marker(
+						[device.map_y * size_y, device.map_x * size_x],
+						{ 
+							pane:'devices',
+							draggable: edit_enabled 
+						}
+					);
 
-			function updateGroupRectangles() 
+					marker.bindTooltip( window.FP.renderDeviceLabel(device), {
+						pane		:'devices',
+						permanent	: true,
+						direction	: "top",
+						offset		: [0, -10],
+						interactive	: true
+					});
+
+					<?php if( $is_backoffice && $user["is_admin"] ): ?>
+					marker.on('dragend', function(e) {
+						const pos = e.target.getLatLng();
+
+						window.FP.updateDevicePosition(
+							device.id,
+							pos.lng / size_x, 
+							pos.lat / size_y
+						);
+					});
+					<?php endif ?>
+
+					// group doesn't exist, add to map without group
+					if (device.group_id < 0 || !window.FP.findDeviceGroupById(device.group_id)) {
+						marker.addTo(map);
+						markers.push(marker);
+						return;
+					}
+
+					// create group if it doesn't exist and add the marker to the group
+					if (!marker_groups[device.group_id]) {
+						marker_groups[device.group_id] = L.featureGroup().addTo(map);
+						marker_groups[device.group_id].meta = window.FP.findDeviceGroupById(device.group_id);
+					}
+					marker.addTo( marker_groups[device.group_id] );
+
+					// add to flat list for easy access
+					marker.device_group_id = device.group_id;
+					marker.device_id = device.id;
+					markers[device.id] = marker;
+				});
+			},
+			renderDeviceGroups( )
 			{
 				Object.entries(marker_groups).forEach(([group_id, marker_group]) => {
 					const aabb = marker_group.getBounds();
-					marker_group.rectangle.setBounds(aabb.pad(0.1));
-				});
-			}
 
-			function updateDevicePosition( id, map_x, map_y ) 
+					const rectangle = L.rectangle(aabb.pad(0.1), {
+						pane		: 'groups',
+						color		: marker_group.meta.color,
+						weight		: 2,
+						fillOpacity	: 0.07,
+						lineJoin	: 'round',
+					}).addTo(map);
+
+					marker_group.rectangle = rectangle;
+
+					// zoom in on a specific group
+					// map.fitBounds(aabb);
+				});
+			},
+			renderLegendDeviceGroup( )
 			{
-				$.ajax({
-					url: '<?=base_url(route_to('admin.device.update_map'))?>',
-					method: 'POST',
-					data: {
-						device_id	: id,
-						map_x		: map_x,
-						map_y		: map_y
-					},
-					success: function (response) {
-						updateGroupRectangles();
+				// render legend for device groups
+				Object.entries(marker_groups).forEach(([group_id, marker_group]) => {
+					const legendItem = `
+						<div id="legend_item" data-group-id="${group_id}">
+							<span class="legend-color item" style="background:${marker_group.meta.color}"></span>
+							<span class="legend-name">${marker_group.meta.name}</span>
+							<span class="legend-navigate item">
+								<i class="fa-solid fa-location-crosshairs"></i>
+							</span>
+							<span class="legend-toggle item">
+								<input type="checkbox" id="legend_toggle_${group_id}" checked/>
+								<label for="legend_toggle_${group_id}"></label>
+							</span>
+						</div>
+					`;
 
-						console.log("Device position updated successfully");
+					$('#map .legend').append(legendItem);
+				});
+
+				$('#map #legend_item .legend-navigate').on('click', function() {
+					const group_id = $(this).closest('#legend_item').data('group-id');
+					const marker_group = marker_groups[group_id];
+
+					if (marker_group) {
+						const aabb = marker_group.getBounds();
+						map.fitBounds(aabb);
 					}
 				});
-			}
-		<?php endif ?>
-		function renderDeviceLabel( device ) 
-		{
-			return `
-				<div class="device" data-device-protocol="${device.protocol}" data-device-id="${device.id}">
-					<div class="title">
-						<div id="heartbeat" class="alive"></div>
-						<span>${device.name}</span>
-						<label for="ddt_${device.id}">
-							<i class="fa-solid fa-ellipsis-vertical"></i>
-						</label>
-					</div>
 
-					<input type="checkbox" id="ddt_${device.id}" class="map-device-details-dropdown-toggle"/>
-					<div class="map-device-details-dropdown">
-						<input type="checkbox" data-protocol-state>
-						<div id="state" data-state-text="-"></div>
-					</div>
-				</div>
-			`;
-		}
+				$("#map #legend_item .legend-toggle > input").on('change', function() {
+					const group_id = $(this).closest('#legend_item').data('group-id');
+					const marker_group = marker_groups[group_id];
 
-		function addDeviceToMap( map )
-		{
-			devices.forEach(device => {
-				const marker = L.marker(
-					[device.map_y * size_y, device.map_x * size_x],
-					{ 
-						pane:'devices',
-						draggable: edit_enabled 
+					if (marker_group) {
+						if ($(this).is(':checked')) {
+							marker_group.addTo(map);
+							marker_group.rectangle.addTo(map);
+						} else {
+							map.removeLayer(marker_group);
+							map.removeLayer(marker_group.rectangle);
+						}
 					}
-				);
+				});
+			},
+			createLegend( )
+			{
+				var legend = L.control({position: 'topleft', pane:'legend'});
 
-				marker.bindTooltip( renderDeviceLabel(device), {
-					pane		:'devices',
-					permanent	: true,
-					direction	: "top",
-					offset		: [0, -10],
-					interactive	: true
+				legend.onAdd = function(map) {
+					return L.DomUtil.create('div', 'legend');
+				};
+
+				legend.addTo( map );
+				window.FP.renderLegendDeviceGroup();
+			},
+			init(config) 
+			{
+				map = L.map( config.id, {
+					crs		: L.CRS.Simple,
+					minZoom	: -5,
+					maxZoom	: 0,
+					renderer: L.svg()
 				});
 
-				<?php if( $is_backoffice && $user["is_admin"] ): ?>
-				marker.on('dragend', function(e) {
-					const pos = e.target.getLatLng();
+				// panes for z-fighting
+				map.createPane('floor');
+				map.createPane('groups');
+				map.createPane('devices');
+				map.createPane('legend');
+				map.getPane('floor').style.zIndex = 200;
+				map.getPane('groups').style.zIndex = 400;
+				map.getPane('devices').style.zIndex = 500;
+				map.getPane('legend').style.zIndex = 600;
 
-					updateDevicePosition(
-						device.id,
-						pos.lng / size_x, 
-						pos.lat / size_y
-					);
-				});
+				// set bounds and add floorplan image
+				window.FP.configureBounds( config.bounds );
+				var image = L.imageOverlay( config.floorplan, bounds, {pane:'floor'} ).addTo(map);
+				map.fitBounds( bounds );
+
+				// add devices and groups to map
+				window.FP.addDeviceToMap();
+				window.FP.renderDeviceGroups();
+				window.FP.createLegend();
+				
+				<?php if($is_backoffice && $user["is_admin"]): ?>
+					// admin features
+					$('#enable_map_edit').change(function() {
+						edit_enabled = $(this).is(':checked');
+
+						window.FP.updateMarkerDragging();
+					});
 				<?php endif ?>
+	
+				//console.log(map._layers);
+				//map.on('click', function(e) {
+				//	console.log("X:", e.latlng.lng);
+				// 	console.log("Y:", e.latlng.lat);
 
-				// group doesn't exist, add to map without group
-				if (device.group_id < 0 || !findDeviceGroupById(device.group_id)) {
-					marker.addTo(map);
-					markers.push(marker);
-					return;
-				}
+				//L.marker(e.latlng).addTo(map);
+				//});
+			},
+			map() 
+			{
+				return map;
+			}
+		};
+	})();
 
-				// create group if it doesn't exist and add the marker to the group
-				if (!marker_groups[device.group_id]) {
-					marker_groups[device.group_id] = L.featureGroup().addTo(map);
-					marker_groups[device.group_id].meta = findDeviceGroupById(device.group_id);
-				}
-				marker.addTo( marker_groups[device.group_id] );
-
-				// add to flat list for easy access
-				marker.device_group_id = device.group_id;
-				markers.push(marker);
-			});
-		}
-
-		function renderDeviceGroups( map )
-		{
-			Object.entries(marker_groups).forEach(([group_id, marker_group]) => {
-				const aabb = marker_group.getBounds();
-
-				const rectangle = L.rectangle(aabb.pad(0.1), {
-					pane		: 'groups',
-					color		: marker_group.meta.color,
-					weight		: 2,
-					fillOpacity	: 0.07,
-					lineJoin	: 'round',
-				}).addTo(map);
-
-				marker_group.rectangle = rectangle;
-
-				// zoom in on a specific group
-				// map.fitBounds(aabb);
-			});
-		}
-
-		function renderLegendDeviceGroup( map )
-		{
-			// render legend for device groups
-			Object.entries(marker_groups).forEach(([group_id, marker_group]) => {
-				const legendItem = `
-					<div id="legend_item" data-group-id="${group_id}">
-						<span class="legend-color item" style="background:${marker_group.meta.color}"></span>
-						<span class="legend-name">${marker_group.meta.name}</span>
-						<span class="legend-navigate item">
-							<i class="fa-solid fa-location-crosshairs"></i>
-						</span>
-						<span class="legend-toggle item">
-							<input type="checkbox" id="legend_toggle_${group_id}" checked/>
-							<label for="legend_toggle_${group_id}"></label>
-						</span>
-					</div>
-				`;
-
-				$('#map .legend').append(legendItem);
-			});
-
-			$('#map #legend_item .legend-navigate').on('click', function() {
-				const group_id = $(this).closest('#legend_item').data('group-id');
-				const marker_group = marker_groups[group_id];
-
-				if (marker_group) {
-					const aabb = marker_group.getBounds();
-					map.fitBounds(aabb);
-				}
-			});
-
-			$("#map #legend_item .legend-toggle > input").on('change', function() {
-				const group_id = $(this).closest('#legend_item').data('group-id');
-				const marker_group = marker_groups[group_id];
-
-				if (marker_group) {
-					if ($(this).is(':checked')) {
-						marker_group.addTo(map);
-						marker_group.rectangle.addTo(map);
-					} else {
-						map.removeLayer(marker_group);
-						map.removeLayer(marker_group.rectangle);
-					}
-				}
-			});
-		}
-
-		function createLegend( map )
-		{
-			var legend = L.control({position: 'topleft', pane:'legend'});
-
-			legend.onAdd = function(map) {
-				return L.DomUtil.create('div', 'legend');
-			};
-
-			legend.addTo( map );
-			renderLegendDeviceGroup( map );
-		}
-
-		function initDeviceMap() 
-		{
-			var map = L.map('map', {
-				crs		: L.CRS.Simple,
-				minZoom	: -5,
-				maxZoom	: 0,
-				renderer: L.svg()
-			});
-
-			// panes for z-fighting
-			map.createPane('floor');
-			map.createPane('groups');
-			map.createPane('devices');
-			map.createPane('legend');
-			map.getPane('floor').style.zIndex = 200;
-			map.getPane('groups').style.zIndex = 400;
-			map.getPane('devices').style.zIndex = 500;
-			map.getPane('legend').style.zIndex = 600;
-
-			var image = L.imageOverlay('/assets/map/floorplan.png', bounds, {pane:'floor'}).addTo(map);
-
-			map.fitBounds(bounds);
-			map.setZoom( -4 );
-
-			addDeviceToMap( map );
-			renderDeviceGroups( map );
-			createLegend( map )
-			//console.log(map._layers);
-			//map.on('click', function(e) {
-			//	console.log("X:", e.latlng.lng);
-			// 	console.log("Y:", e.latlng.lat);
-
-			//L.marker(e.latlng).addTo(map);
-			//});
-		}
-
-		initDeviceMap();
+	FP.init({ 
+		id			: 'map',
+		floorplan	: '/assets/map/floorplan.png',
+		bounds		: [[0,0], [9933,12992]] 
 	});
+	FP.map().setZoom(-4);
 </script>
