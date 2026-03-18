@@ -1,5 +1,26 @@
 <?php
 if (! function_exists('deviceUpdateHandlerJS')) {
+	function deviceActionsJS(){
+	?>
+		<script {csp-script-nonce}>
+			$('.device[data-device-id]').each(function()
+			{
+				const device_id = $(this).data('device-id');
+	
+				$(this).find('#locate').click(function()
+				{
+					if ( window.FP && typeof window.FP.locateDevice === 'function' ) {
+						window.FP.locateDevice( device_id );
+					}
+					else {
+						console.log('locateDevice function not found in FP');
+					}
+				});
+			});
+		</script>
+	<?php
+	}
+
     function deviceUpdateHandlerJS() 
 	{
 		//

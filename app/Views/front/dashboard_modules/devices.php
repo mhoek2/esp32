@@ -54,6 +54,32 @@
 						content: "\f186";
 						color: #fca523;
 					}
+				.devices .device .title #locate 
+				{
+					width:50px;
+					position:relative;
+					cursor: pointer;
+				}
+					.devices .device .title #locate::after
+					{
+						content: "\f601";
+						font-family: "Font Awesome 6 Free";
+						font-weight: 900;
+						color: #b9b9b9;
+						position: absolute;
+						top: 50%;
+						left: 50%;
+						line-height: inherit;
+						text-align: center;
+						padding: 5px;
+						background: #454545;
+						border-radius: 5px;
+						transform: translateY(-50%) translateX(-50%);
+					}
+					.devices .device .title #locate:hover::after
+					{
+						color: #dfdede;
+					}
 
 				.devices .device .title .info 
 				{
@@ -119,12 +145,13 @@
 <div class="devices grid">
 <?php foreach( $devices as $idx => $device ) { ?>
 
-	<div class="device" data-device-protocol="<?=$device['protocol']?>" data-device-id="<?=$device['id']?>">
+	<div class="device card" data-device-protocol="<?=$device['protocol']?>" data-device-id="<?=$device['id']?>">
 		<div class="title">
 			<div class="info">
 				<span><?=$device['name']?></span>
 				<span><?=$is_backoffice ? $device['mac'] : ""?></span>
 			</div>
+			<div id="locate"></div>
 			<div id="heartbeat"></div>
 		</div>
 

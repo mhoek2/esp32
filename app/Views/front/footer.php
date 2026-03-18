@@ -31,5 +31,7 @@
 <!-- device update handler -->
 <?= deviceUpdateHandlerJS() ?>
 
+<?= deviceActionsJS() ?>
+
 </body>
 </html>
