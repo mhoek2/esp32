@@ -65,6 +65,14 @@
 		}
 
 	/* device tooltip */
+	#map .leaflet-tooltip:has(> .device.tooltip.open) {
+		display:block;
+	}
+	#map .leaflet-tooltip:has(> .device.tooltip.closed) {
+		display:none;
+	}
+	
+
 	#map .device .title {
 		display: flex;
 		flex-direction: row;
@@ -86,6 +94,9 @@
 	}
 	#map .device .title label:hover {
 		background: rgba(236, 236, 236, 0.8);
+	}
+	#map .device .title .map-device-details-dropdown-label{
+		display: none;
 	}
 
 	#map .device .title #heartbeat 
@@ -124,12 +135,13 @@
 			display: none;
 		}
 		#map .map-device-details-dropdown {
-			display: none;
-		}
-		#map .map-device-details-dropdown-toggle:checked + .map-device-details-dropdown {
+			/*display: none;*/
 			display: block;
 			margin-top: 1em;
 		}
+		/*#map .map-device-details-dropdown-toggle:checked + .map-device-details-dropdown {
+			display: block;
+		}*/
 
 	/* protocols */
 	[data-device-protocol="27"] #state {
@@ -398,17 +410,17 @@
 			renderDeviceLabel( device ) 
 			{
 				return `
-					<div class="device" data-device-protocol="${device.protocol}" data-device-id="${device.id}">
+					<div class="device tooltip closed" data-device-protocol="${device.protocol}" data-device-id="${device.id}">
 						<div class="title">
 							<div id="heartbeat" class="alive"></div>
-							<label for="ddt_${device.id}">
+							<span>${device.name}</span>
+							<label for="ddt_${device.id}" class="map-device-details-dropdown-label">
 								<i class="fa-solid fa-ellipsis-vertical"></i>
 							</label>
 						</div>
 
 						<input type="checkbox" id="ddt_${device.id}" class="map-device-details-dropdown-toggle"/>
 						<div class="map-device-details-dropdown">
-							<span>${device.name}</span>
 							<input type="checkbox" data-protocol-state>
 							<div id="state" data-state-text="-"></div>
 						</div>
@@ -440,12 +452,29 @@
 						}
 					);
 
-					marker.bindTooltip( window.FP.renderDeviceLabel(device), {
-						pane		:'devices',
+					const tooltip = L.tooltip({
+						pane: 'devices',
 						permanent	: true,
-						direction	: "top",
-						offset		: [0, -45],
-						interactive	: true
+						direction: 'top',
+						offset: [0, -45],
+						interactive: true
+					}).setContent(window.FP.renderDeviceLabel(device));
+
+					marker.bindTooltip(tooltip);
+
+					// toggle tooltip on marker click
+					marker.on('click', function () {
+						if ( !marker.tooltip_open )
+							$(`#map .device.tooltip[data-device-id='${device.id}']`).removeClass('closed').addClass('open');
+						else
+							$(`#map .device.tooltip[data-device-id='${device.id}']`).removeClass('open').addClass('closed');
+
+						marker.tooltip_open = !marker.tooltip_open;
+						
+						const tooltip = marker.getTooltip();
+
+						if ( tooltip && tooltip._map )
+							tooltip._updatePosition();
 					});
 
 					<?php if( $is_backoffice && $user["is_admin"] ): ?>
@@ -477,6 +506,8 @@
 					// add to flat list for easy access
 					marker.device_group_id = device.group_id;
 					marker.device_id = device.id;
+					marker.tooltip = tooltip;
+					marker.tooltip_open = false;
 					markers[device.id] = marker;
 				});
 			},
