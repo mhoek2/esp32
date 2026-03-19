@@ -18,6 +18,11 @@
     <link rel="stylesheet" href="<?=base_url('assets/css/backend_entries.css')?>">
 	<link rel="stylesheet" href="<?=base_url('assets/css/upload.css')?>">
 
+    <!-- convert to service -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="<?=base_url('assets/floorplan/floorplan.css')?>">
+    <script src="<?=base_url('assets/floorplan/floorplan.js')?>"></script>
+
     <?=service('text_editor')->load_style()?>
 
 <?php 
