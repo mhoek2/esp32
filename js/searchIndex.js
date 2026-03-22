@@ -1016,6 +1016,56 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/App-Services-DeviceService.html#method_getDevices"
         },                {
+            "fqsen": "\\App\\Services\\FloorplanService",
+            "name": "FloorplanService",
+            "summary": "Provides\u0020service\u0020to\u0020set\u0020up\u0020the\u0020floorplan",
+            "url": "classes/App-Services-FloorplanService.html"
+        },                {
+            "fqsen": "\\App\\Services\\FloorplanService\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/App-Services-FloorplanService.html#method___construct"
+        },                {
+            "fqsen": "\\App\\Services\\FloorplanService\u003A\u003Aload_style\u0028\u0029",
+            "name": "load_style",
+            "summary": "",
+            "url": "classes/App-Services-FloorplanService.html#method_load_style"
+        },                {
+            "fqsen": "\\App\\Services\\FloorplanService\u003A\u003Aload_script\u0028\u0029",
+            "name": "load_script",
+            "summary": "",
+            "url": "classes/App-Services-FloorplanService.html#method_load_script"
+        },                {
+            "fqsen": "\\App\\Services\\FloorplanService\u003A\u003AgetFooterConfigJS\u0028\u0029",
+            "name": "getFooterConfigJS",
+            "summary": "",
+            "url": "classes/App-Services-FloorplanService.html#method_getFooterConfigJS"
+        },                {
+            "fqsen": "\\App\\Services\\FloorplanService\u003A\u003A\u0024devicesModel",
+            "name": "devicesModel",
+            "summary": "",
+            "url": "classes/App-Services-FloorplanService.html#property_devicesModel"
+        },                {
+            "fqsen": "\\App\\Services\\FloorplanService\u003A\u003A\u0024deviceGroupsModel",
+            "name": "deviceGroupsModel",
+            "summary": "",
+            "url": "classes/App-Services-FloorplanService.html#property_deviceGroupsModel"
+        },                {
+            "fqsen": "\\App\\Services\\FloorplanService\u003A\u003A\u0024map_image",
+            "name": "map_image",
+            "summary": "",
+            "url": "classes/App-Services-FloorplanService.html#property_map_image"
+        },                {
+            "fqsen": "\\App\\Services\\FloorplanService\u003A\u003A\u0024devices",
+            "name": "devices",
+            "summary": "",
+            "url": "classes/App-Services-FloorplanService.html#property_devices"
+        },                {
+            "fqsen": "\\App\\Services\\FloorplanService\u003A\u003A\u0024device_groups",
+            "name": "device_groups",
+            "summary": "",
+            "url": "classes/App-Services-FloorplanService.html#property_device_groups"
+        },                {
             "fqsen": "\\App\\Services\\HardwareService",
             "name": "HardwareService",
             "summary": "Provides\u0020service\u0020to\u0020store\u0020user\u0020meta",
