@@ -24,4 +24,4 @@
             FP.map().setZoom(-4);
         })();
 	</script>
-<? } ?>
+<?php } ?>
