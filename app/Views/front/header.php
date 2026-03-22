@@ -19,9 +19,8 @@
     <link rel="stylesheet" href="<?=base_url('assets/css/upload.css')?>">
 
     <!-- convert to service -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <link rel="stylesheet" href="<?=base_url('assets/floorplan/floorplan.css')?>">
-    <script src="<?=base_url('assets/floorplan/floorplan.js')?>"></script>
+    <?=service('floor_plan')->load_style()?>
+    <?=service('floor_plan')->load_script()?>
 
 <?php 
 	$local_assets = false;

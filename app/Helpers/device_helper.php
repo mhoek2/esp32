@@ -1,5 +1,5 @@
 <?php
-if (! function_exists('deviceUpdateHandlerJS')) {
+if (! function_exists('deviceActionsJS')) {
 	function deviceActionsJS(){
 	?>
 		<script {csp-script-nonce}>
@@ -20,7 +20,9 @@ if (! function_exists('deviceUpdateHandlerJS')) {
 		</script>
 	<?php
 	}
+}
 
+if (! function_exists('deviceUpdateHandlerJS')) {
     function deviceUpdateHandlerJS() 
 	{
 		//

@@ -12,6 +12,7 @@ use App\ThirdParty\TextEditorSummernote as Summernote;
 use App\Services\UserMetaService;
 use App\Services\HardwareService;
 use App\Services\DeviceService;
+use App\Services\FloorplanService;
 
 /**
  * Services Configuration file.
@@ -46,6 +47,15 @@ class Services extends BaseService
 		}
 
 		return new DeviceService();
+	}
+
+	public static function floor_plan($getShared = true): FloorplanService
+	{
+		if ($getShared) {
+			return static::getSharedInstance('floor_plan');
+		}
+
+		return new FloorplanService();
 	}
 
 	public static function hardware_info($getShared = true): HardwareService

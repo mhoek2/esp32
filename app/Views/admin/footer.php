@@ -62,9 +62,13 @@
 	}
 </script>
 
+<!-- floorplan map init -->
+<?= $FP_footer ?>
+
 <!-- device update handler -->
 <?= deviceUpdateHandlerJS() ?>
 
+<!-- device action handler -->
 <?= deviceActionsJS() ?>
 
 </body>
