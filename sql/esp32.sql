@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Generation Time: Mar 17, 2026 at 08:29 AM
+-- Generation Time: Mar 23, 2026 at 01:47 PM
 -- Server version: 8.0.45
 -- PHP Version: 8.3.30
 
@@ -30,17 +30,9 @@ SET time_zone = "+00:00";
 CREATE TABLE `auth_groups_users` (
   `id` int UNSIGNED NOT NULL,
   `user_id` int UNSIGNED NOT NULL,
-  `group` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `group` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `auth_groups_users`
---
-
-INSERT INTO `auth_groups_users` (`id`, `user_id`, `group`, `created_at`) VALUES
-(2, 2, 'admin', '2025-02-05 09:20:35'),
-(21, 21, 'user', '2025-09-10 12:27:50');
 
 -- --------------------------------------------------------
 
@@ -51,25 +43,17 @@ INSERT INTO `auth_groups_users` (`id`, `user_id`, `group`, `created_at`) VALUES
 CREATE TABLE `auth_identities` (
   `id` int UNSIGNED NOT NULL,
   `user_id` int UNSIGNED NOT NULL,
-  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `secret` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `secret2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `secret` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `secret2` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `expires` datetime DEFAULT NULL,
-  `extra` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `extra` text COLLATE utf8mb4_general_ci,
   `force_reset` tinyint(1) NOT NULL DEFAULT '0',
   `last_used_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `auth_identities`
---
-
-INSERT INTO `auth_identities` (`id`, `user_id`, `type`, `name`, `secret`, `secret2`, `expires`, `extra`, `force_reset`, `last_used_at`, `created_at`, `updated_at`) VALUES
-(2, 2, 'email_password', '', 'admin@esp32.io', '$2y$12$CFeavzQijA.w4yu7.276auOuovnwGJQtKFj59AEVcu3EFllrXs4yG', NULL, NULL, 0, '2026-03-17 08:01:40', '2025-02-05 09:20:35', '2026-03-17 08:01:40'),
-(21, 21, 'email_password', NULL, 'user1@esp32.io', '$2y$12$XZfuth7qTumIQnte894NU.wrPKrF9fToYTaVtjdbK.DtADtYPJQ3q', NULL, NULL, 0, '2026-01-24 14:50:29', '2025-09-10 12:27:50', '2026-01-24 14:50:29');
 
 -- --------------------------------------------------------
 
@@ -79,10 +63,10 @@ INSERT INTO `auth_identities` (`id`, `user_id`, `type`, `name`, `secret`, `secre
 
 CREATE TABLE `auth_logins` (
   `id` int UNSIGNED NOT NULL,
-  `ip_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `user_agent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `id_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `identifier` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `ip_address` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `user_agent` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id_type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `identifier` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` int UNSIGNED DEFAULT NULL,
   `date` datetime NOT NULL,
   `success` tinyint(1) NOT NULL
@@ -97,7 +81,7 @@ CREATE TABLE `auth_logins` (
 CREATE TABLE `auth_permissions_users` (
   `id` int UNSIGNED NOT NULL,
   `user_id` int UNSIGNED NOT NULL,
-  `permission` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `permission` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -109,8 +93,8 @@ CREATE TABLE `auth_permissions_users` (
 
 CREATE TABLE `auth_remember_tokens` (
   `id` int UNSIGNED NOT NULL,
-  `selector` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `hashedValidator` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `selector` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `hashedValidator` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` int UNSIGNED NOT NULL,
   `expires` datetime NOT NULL,
   `created_at` datetime NOT NULL,
@@ -125,10 +109,10 @@ CREATE TABLE `auth_remember_tokens` (
 
 CREATE TABLE `auth_token_logins` (
   `id` int UNSIGNED NOT NULL,
-  `ip_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `user_agent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `id_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `identifier` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `ip_address` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `user_agent` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id_type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `identifier` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` int UNSIGNED DEFAULT NULL,
   `date` datetime NOT NULL,
   `success` tinyint(1) NOT NULL
@@ -142,22 +126,14 @@ CREATE TABLE `auth_token_logins` (
 
 CREATE TABLE `devices` (
   `id` int NOT NULL,
-  `group_id` int NOT NULL DEFAULT '-1',
-  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mac` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `group_id` int NOT NULL DEFAULT '0',
+  `name` text COLLATE utf8mb4_general_ci NOT NULL,
+  `mac` varchar(17) COLLATE utf8mb4_general_ci NOT NULL,
   `protocol` int DEFAULT '0',
   `sleep` int NOT NULL DEFAULT '0',
   `map_x` float NOT NULL DEFAULT '0',
   `map_y` float NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `devices`
---
-
-INSERT INTO `devices` (`id`, `group_id`, `name`, `mac`, `protocol`, `sleep`, `map_x`, `map_y`) VALUES
-(3, 1, 'Device one', '00-1A-2B-3C-4D-5E', 27, 1, 0.305419, 0.703916),
-(4, 1, 'Device two', '00-1A-2B-3C-4D-6E', 27, 0, 0.456897, 0.501762);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -167,16 +143,9 @@ INSERT INTO `devices` (`id`, `group_id`, `name`, `mac`, `protocol`, `sleep`, `ma
 
 CREATE TABLE `device_groups` (
   `id` int NOT NULL,
-  `name` varchar(256) NOT NULL DEFAULT 'Group',
-  `color` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '#e0cfff'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `device_groups`
---
-
-INSERT INTO `device_groups` (`id`, `name`, `color`) VALUES
-(1, 'Group one', '#e0cfff');
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `color` varchar(7) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -186,7 +155,7 @@ INSERT INTO `device_groups` (`id`, `name`, `color`) VALUES
 
 CREATE TABLE `device_meta` (
   `id` int NOT NULL,
-  `mac` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+  `mac` varchar(17) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -197,10 +166,10 @@ CREATE TABLE `device_meta` (
 
 CREATE TABLE `migrations` (
   `id` bigint UNSIGNED NOT NULL,
-  `version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `class` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `group` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `namespace` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `version` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `class` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `group` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `namespace` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `time` int NOT NULL,
   `batch` int UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -213,17 +182,9 @@ CREATE TABLE `migrations` (
 
 CREATE TABLE `protocol_27` (
   `id` int NOT NULL,
-  `mac` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `state` int NOT NULL
+  `mac` varchar(17) COLLATE utf8mb4_general_ci NOT NULL,
+  `state` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `protocol_27`
---
-
-INSERT INTO `protocol_27` (`id`, `mac`, `state`) VALUES
-(1, '00-1A-2B-3C-4D-5E', 1),
-(2, '00-1A-2B-3C-4D-6E', 0);
 
 -- --------------------------------------------------------
 
@@ -233,11 +194,11 @@ INSERT INTO `protocol_27` (`id`, `mac`, `state`) VALUES
 
 CREATE TABLE `settings` (
   `id` int NOT NULL,
-  `class` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `type` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'string',
-  `context` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `class` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `key` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `value` text COLLATE utf8mb4_general_ci,
+  `type` varchar(31) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'string',
+  `context` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -252,13 +213,13 @@ CREATE TABLE `uploads` (
   `id` int NOT NULL,
   `global` int NOT NULL DEFAULT '0',
   `user_id` int UNSIGNED NOT NULL,
-  `path` text NOT NULL,
-  `filename` text NOT NULL,
-  `extension` text NOT NULL,
-  `mime_type` text NOT NULL,
-  `bytes` int NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  `path` text COLLATE utf8mb4_general_ci NOT NULL,
+  `filename` text COLLATE utf8mb4_general_ci NOT NULL,
+  `extension` text COLLATE utf8mb4_general_ci NOT NULL,
+  `mime_type` text COLLATE utf8mb4_general_ci NOT NULL,
+  `bytes` int UNSIGNED NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -268,26 +229,18 @@ CREATE TABLE `uploads` (
 
 CREATE TABLE `users` (
   `id` int UNSIGNED NOT NULL,
-  `username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `firstname` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `middlename` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `lastname` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `status_message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `username` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `status_message` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '0',
   `last_active` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` datetime DEFAULT NULL,
+  `firstname` text COLLATE utf8mb4_general_ci NOT NULL,
+  `middlename` text COLLATE utf8mb4_general_ci NOT NULL,
+  `lastname` text COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `username`, `firstname`, `middlename`, `lastname`, `status`, `status_message`, `active`, `last_active`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(2, 'esp32_admin', 'Admin', '', 'ESP32', NULL, NULL, 1, NULL, '2025-02-05 09:20:35', '2025-02-05 09:20:35', NULL),
-(21, '6572d1b3bc7cba77c72f', 'guest', '', '123', NULL, NULL, 0, NULL, '2025-09-10 12:27:50', '2025-09-10 12:27:50', NULL);
 
 -- --------------------------------------------------------
 
@@ -298,10 +251,10 @@ INSERT INTO `users` (`id`, `username`, `firstname`, `middlename`, `lastname`, `s
 CREATE TABLE `user_meta` (
   `id` int NOT NULL,
   `user_id` int UNSIGNED NOT NULL,
-  `name` text NOT NULL,
-  `value` text NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `value` text COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
@@ -358,7 +311,7 @@ ALTER TABLE `auth_token_logins`
 --
 ALTER TABLE `devices`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `mac` (`mac`(100));
+  ADD UNIQUE KEY `mac` (`mac`);
 
 --
 -- Indexes for table `device_groups`
@@ -371,7 +324,7 @@ ALTER TABLE `device_groups`
 --
 ALTER TABLE `device_meta`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `mac` (`mac`(100));
+  ADD UNIQUE KEY `mac` (`mac`);
 
 --
 -- Indexes for table `migrations`
@@ -384,7 +337,7 @@ ALTER TABLE `migrations`
 --
 ALTER TABLE `protocol_27`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `mac` (`mac`(100));
+  ADD UNIQUE KEY `mac` (`mac`);
 
 --
 -- Indexes for table `settings`
@@ -397,7 +350,7 @@ ALTER TABLE `settings`
 --
 ALTER TABLE `uploads`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `uploads_user_id_foreign` (`user_id`);
+  ADD UNIQUE KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `users`
@@ -411,7 +364,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_meta`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_id` (`user_id`,`name`(200));
+  ADD UNIQUE KEY `user_id_name` (`user_id`,`name`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -421,13 +374,13 @@ ALTER TABLE `user_meta`
 -- AUTO_INCREMENT for table `auth_groups_users`
 --
 ALTER TABLE `auth_groups_users`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `auth_identities`
 --
 ALTER TABLE `auth_identities`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `auth_logins`
@@ -457,13 +410,13 @@ ALTER TABLE `auth_token_logins`
 -- AUTO_INCREMENT for table `devices`
 --
 ALTER TABLE `devices`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `device_groups`
 --
 ALTER TABLE `device_groups`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `device_meta`
@@ -481,7 +434,59 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `protocol_27`
 --
 ALTER TABLE `protocol_27`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `settings`
+--
+ALTER TABLE `settings`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `uploads`
+--
+ALTER TABLE `uploads`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user_meta`
+--
+ALTER TABLE `user_meta`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `auth_groups_users`
+--
+ALTER TABLE `auth_groups_users`
+  ADD CONSTRAINT `auth_groups_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `auth_identities`
+--
+ALTER TABLE `auth_identities`
+  ADD CONSTRAINT `auth_identities_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `auth_permissions_users`
+--
+ALTER TABLE `auth_permissions_users`
+  ADD CONSTRAINT `auth_permissions_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `auth_remember_tokens`
+--
+ALTER TABLE `auth_remember_tokens`
+  ADD CONSTRAINT `auth_remember_tokens_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

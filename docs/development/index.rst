@@ -12,3 +12,4 @@ If you need to setup a a development environment
 	cloning
 	updating
 	github-packaging
+	migrations
