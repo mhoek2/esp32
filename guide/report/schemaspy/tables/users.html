@@ -73,7 +73,7 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>users</h1><p><span id="recordNumber">2</span> rows</p><br />
+                    <h1>users</h1><p><span id="recordNumber">0</span> rows</p><br />
                 </section>
                 <!-- Main content -->
                 <section class="content">
@@ -113,10 +113,30 @@
                                     <td>INT UNSIGNED</td>
                                     <td>10</td>
                                     <td title=''></td>
-                                    <td title=''></td>
+                                    <td title='Automatically updated by the database'>√</td>
                                     <td>null</td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="auth_groups_users.user_id references users.id via auth_groups_users_user_id_foreign"><a href='auth_groups_users.html'>auth_groups_users</a><span class='relatedKey'>.user_id</span></td>
+                                                <td class="constraint detail">auth_groups_users_user_id_foreign</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="auth_identities.user_id references users.id via auth_identities_user_id_foreign"><a href='auth_identities.html'>auth_identities</a><span class='relatedKey'>.user_id</span></td>
+                                                <td class="constraint detail">auth_identities_user_id_foreign</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="auth_permissions_users.user_id references users.id via auth_permissions_users_user_id_foreign"><a href='auth_permissions_users.html'>auth_permissions_users</a><span class='relatedKey'>.user_id</span></td>
+                                                <td class="constraint detail">auth_permissions_users_user_id_foreign</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="auth_remember_tokens.user_id references users.id via auth_remember_tokens_user_id_foreign"><a href='auth_remember_tokens.html'>auth_remember_tokens</a><span class='relatedKey'>.user_id</span></td>
+                                                <td class="constraint detail">auth_remember_tokens_user_id_foreign</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
                                         </table>
                                     </td>
                                     <td>
@@ -130,57 +150,6 @@
                                     <td>VARCHAR</td>
                                     <td>30</td>
                                     <td title='nullable'>√</td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="firstname">firstname</span></td>
-                                    <td>TEXT</td>
-                                    <td>65535</td>
-                                    <td title=''></td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="middlename">middlename</span></td>
-                                    <td>TEXT</td>
-                                    <td>65535</td>
-                                    <td title=''></td>
-                                    <td title=''></td>
-                                    <td>null</td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table border='0' cellspacing='0' cellpadding='0'>
-                                        </table>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><span id="lastname">lastname</span></td>
-                                    <td>TEXT</td>
-                                    <td>65535</td>
-                                    <td title=''></td>
                                     <td title=''></td>
                                     <td>null</td>
                                     <td>
@@ -312,6 +281,57 @@
                                     </td>
                                     <td></td>
                                 </tr>
+                                <tr>
+                                    <td><span id="firstname">firstname</span></td>
+                                    <td>TEXT</td>
+                                    <td>65535</td>
+                                    <td title=''></td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="middlename">middlename</span></td>
+                                    <td>TEXT</td>
+                                    <td>65535</td>
+                                    <td title=''></td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="lastname">lastname</span></td>
+                                    <td>TEXT</td>
+                                    <td>65535</td>
+                                    <td title=''></td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -376,7 +396,11 @@
                                 <div class="tab-content no-padding">
                                     <div class="chart tab-pane active" id="oneDegreeImg-chart" style="position: relative; overflow-x:auto;">
                                         <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
-<area shape="rect" id="node1" href="users.html" target="_top" title="users" alt="" coords="5,5,333,427">
+<area shape="rect" id="node1" href="auth_groups_users.html" target="_top" title="auth_groups_users" alt="" coords="401,5,653,152">
+<area shape="rect" id="node2" href="users.html" target="_top" title="users" alt="" coords="5,308,333,729">
+<area shape="rect" id="node3" href="auth_identities.html" target="_top" title="auth_identities" alt="" coords="417,169,636,375">
+<area shape="rect" id="node4" href="auth_permissions_users.html" target="_top" title="auth_permissions_users" alt="" coords="377,392,676,539">
+<area shape="rect" id="node5" href="auth_remember_tokens.html" target="_top" title="auth_remember_tokens" alt="" coords="379,556,674,732">
 </map>
                                         <a name='diagram'><img id="oneDegreeImg" src="../diagrams/tables/users.1degree.png" usemap="#oneDegreeRelationshipsDiagram" class="diagram" border="0" align="left"></a>
                                     </div>

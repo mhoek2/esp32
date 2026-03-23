@@ -1,4 +1,3 @@
-users
 user_meta
 uploads
 settings
@@ -8,8 +7,9 @@ devices
 device_meta
 device_groups
 auth_token_logins
+auth_logins
 auth_remember_tokens
 auth_permissions_users
-auth_logins
 auth_identities
 auth_groups_users
+users

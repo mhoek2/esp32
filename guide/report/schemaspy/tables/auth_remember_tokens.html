@@ -160,7 +160,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td class='indexedColumn' title='Indexed'><i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'></i><span id="user_id">user_id</span></td>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="user_id">user_id</span></td>
                                     <td>INT UNSIGNED</td>
                                     <td>10</td>
                                     <td title=''></td>
@@ -172,6 +172,11 @@
                                     </td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="auth_remember_tokens.user_id references users.id via auth_remember_tokens_user_id_foreign"><a href='users.html'>users</a><span class='relatedKey'>.id</span></td>
+                                                <td class="constraint detail">auth_remember_tokens_user_id_foreign</td>
+                                                <td class="constraint detail"><span title='Cascade on delete:&#10;Deletion of parent deletes child'>C</span></td>
+                                            </tr>
                                         </table>
                                     </td>
                                     <td></td>
@@ -293,13 +298,25 @@
                                 <h5>Close relationships within degrees of separation</h5>
                                 <ul class="nav nav-tabs pull-left ui-sortable-handle">
                                     <li class="active"><a href="#oneDegreeImg-chart" data-toggle="tab" aria-expanded="true">One</a></li>
+                                    <li class=""><a href="#twodegreesDegreeImg-chart" data-toggle="tab" aria-expanded="true">Two degrees</a></li>
                                 </ul>
                                 <div class="tab-content no-padding">
                                     <div class="chart tab-pane active" id="oneDegreeImg-chart" style="position: relative; overflow-x:auto;">
                                         <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
-<area shape="rect" id="node1" href="auth_remember_tokens.html" target="_top" title="auth_remember_tokens" alt="" coords="5,5,400,280">
+<area shape="rect" id="node1" href="auth_remember_tokens.html" target="_top" title="auth_remember_tokens" alt="" coords="243,5,637,280">
+<area shape="rect" id="node2" href="users.html" target="_top" title="users" alt="" coords="5,96,199,243">
 </map>
                                         <a name='diagram'><img id="oneDegreeImg" src="../diagrams/tables/auth_remember_tokens.1degree.png" usemap="#oneDegreeRelationshipsDiagram" class="diagram" border="0" align="left"></a>
+                                    </div>
+                                    <div class="chart tab-pane " id="twodegreesDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        <map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
+<area shape="rect" id="node1" href="auth_groups_users.html" target="_top" title="auth_groups_users" alt="" coords="314,5,566,93">
+<area shape="rect" id="node2" href="users.html" target="_top" title="users" alt="" coords="5,161,199,308">
+<area shape="rect" id="node3" href="auth_identities.html" target="_top" title="auth_identities" alt="" coords="331,111,549,199">
+<area shape="rect" id="node4" href="auth_permissions_users.html" target="_top" title="auth_permissions_users" alt="" coords="291,216,589,304">
+<area shape="rect" id="node5" href="auth_remember_tokens.html" target="_top" title="auth_remember_tokens" alt="" coords="243,321,637,596">
+</map>
+                                        <a name='diagram'><img id="twodegreesDegreeImg" src="../diagrams/tables/auth_remember_tokens.2degrees.png" usemap="#twoDegreesRelationshipsDiagram" class="diagram" border="0" align="left"></a>
                                     </div>
                                 </div>
                             </div>

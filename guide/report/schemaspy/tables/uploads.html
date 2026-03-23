@@ -113,7 +113,7 @@
                                     <td>INT</td>
                                     <td>10</td>
                                     <td title=''></td>
-                                    <td title=''></td>
+                                    <td title='Automatically updated by the database'>√</td>
                                     <td>null</td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
@@ -229,7 +229,7 @@
                                 </tr>
                                 <tr>
                                     <td><span id="bytes">bytes</span></td>
-                                    <td>INT</td>
+                                    <td>INT UNSIGNED</td>
                                     <td>10</td>
                                     <td title=''></td>
                                     <td title=''></td>
@@ -248,7 +248,7 @@
                                     <td><span id="created_at">created_at</span></td>
                                     <td>DATETIME</td>
                                     <td>19</td>
-                                    <td title=''></td>
+                                    <td title='nullable'>√</td>
                                     <td title=''></td>
                                     <td>CURRENT_TIMESTAMP</td>
                                     <td>
@@ -298,8 +298,8 @@
                                     <td>id</td>
                                 </tr>
                                 <tr>
-                                    <td title='Indexed'>uploads_user_id_foreign</td>
-                                    <td>Performance</td>
+                                    <td class='uniqueKey' title='Unique Key'><i class='icon ion-key iconkey'></i> user_id</td>
+                                    <td>Must be unique</td>
                                     <td><span title='Ascending'>Asc</span></td>
                                     <td>user_id</td>
                                 </tr>

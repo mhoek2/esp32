@@ -99,6 +99,10 @@
                 <a href="guide/development/github-packaging.html#github-packaging" class="">Github Packaging</a>
                 
             </li>
+                    <li>
+                <a href="guide/development/migrations.html#database-migrations" class="">Database Migrations</a>
+                
+            </li>
             </ul>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -158,6 +162,10 @@
     <ul class="phpdocumentor-list">
                     <li>
                 <a href="namespaces/app-controllers.html" class="">Controllers</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/app-database.html" class="">Database</a>
                 
             </li>
                     <li>
@@ -239,19 +247,6 @@
     </article>
 </div>
 
-            <section class="section " id="import-database">
-            <h2>Import Database</h2>
-
-            
-    
-<ol type="1">
-    <li>Create a Mysql database and import <code>sql/esp32.sql</code>
- (Tip: use PhpMyAdmin)</li>
-
-</ol>
-
-    </section>
-
             <section class="section " id="adjust-the-env-configuration">
             <h2>Adjust the .env configuration</h2>
 
@@ -272,7 +267,7 @@
                         <dt>Ensure database connection variables uncommented and correctly set in <code>.env</code>
 </dt>
         
-        <dd><pre><code class="language-php">database.default.hostname = db
+        <dd><pre><code class="language-php">database.default.hostname = localhost &lt;- Set this
 database.default.database = esp32_db
 database.default.username = esp32_user
 database.default.password = esp32_pass
@@ -329,6 +324,30 @@ public array $default = [
     &#039;password&#039;     =&gt; &#039;your-password&#039;,
     &#039;database&#039;     =&gt; &#039;your-database-name&#039;,
     &#039;DBDriver&#039;     =&gt; &#039;MySQLi&#039;,</code></pre>
+</dd>
+            </dl>
+</li>
+
+</ol>
+
+    </section>
+
+            <section class="section " id="setup-database">
+            <h2>Setup Database</h2>
+
+            
+    
+<ol>
+    <li><dl>
+                        <dt>Run the migration to create the database tables. See <a href="guide/development/migrations.html#migrations">Database Migrations</a> for more info. or Run:</dt>
+        
+        <dd><pre><code class="language-bash"># phpmyadmin: http://localhost/phpmyadmin
+
+# using dedicated app (hostname = localhost)
+php spark migrate --all
+
+# setup demo user (admin@esp32.io:admin) and devices
+docker exec -it esp32_app php spark db:seed DemoSeeder</code></pre>
 </dd>
             </dl>
 </li>

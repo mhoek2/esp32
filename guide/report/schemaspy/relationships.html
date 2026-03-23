@@ -77,10 +77,43 @@
                 </section>
                 <!-- Main content -->
                 <section class="content">
-                    <div class="alert alert-danger alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h4><i class="icon fa fa-ban"></i> Missed Relationships!</h4>
-                        <p>No relationships were detected in the schema.</p>
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-code-fork"></i>
+                            <h3 class="box-title">Diagrams</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="nav-tabs-custom">
+                                <!-- Tabs within a box -->
+                                <h5>By default only columns that are primary keys, foreign keys or indexes are shown.</h5>
+                                <ul class="nav nav-tabs pull-left ui-sortable-handle">
+                                    <li class="active"><a href="#compactDegreeImg-chart" data-toggle="tab" aria-expanded="true">Compact</a></li>
+                                    <li class=""><a href="#largeDegreeImg-chart" data-toggle="tab" aria-expanded="true">Large</a></li>
+                                </ul>
+                                <div class="tab-content no-padding">
+                                    <div class="chart tab-pane active" id="compactDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        <map id="compactRelationshipsDiagram" name="compactRelationshipsDiagram">
+<area shape="rect" id="node1" href="tables/auth_remember_tokens.html" target="_top" title="auth_remember_tokens" alt="" coords="245,5,539,181">
+<area shape="rect" id="node5" href="tables/users.html" target="_top" title="users" alt="" coords="5,311,199,457">
+<area shape="rect" id="node2" href="tables/auth_permissions_users.html" target="_top" title="auth_permissions_users" alt="" coords="243,199,541,345">
+<area shape="rect" id="node3" href="tables/auth_identities.html" target="_top" title="auth_identities" alt="" coords="283,363,501,568">
+<area shape="rect" id="node4" href="tables/auth_groups_users.html" target="_top" title="auth_groups_users" alt="" coords="266,585,518,732">
+</map>
+                                        <a name='diagram'><img id="compactDegreeImg" src="diagrams/summary/relationships.real.compact.png" usemap="#compactRelationshipsDiagram" class="diagram" border="0" align="left"></a>
+                                    </div>
+                                    <div class="chart tab-pane " id="largeDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        <map id="largeRelationshipsDiagram" name="largeRelationshipsDiagram">
+<area shape="rect" id="node1" href="tables/auth_remember_tokens.html" target="_top" title="auth_remember_tokens" alt="" coords="245,5,539,275">
+<area shape="rect" id="node5" href="tables/users.html" target="_top" title="users" alt="" coords="5,421,199,837">
+<area shape="rect" id="node2" href="tables/auth_permissions_users.html" target="_top" title="auth_permissions_users" alt="" coords="243,292,541,473">
+<area shape="rect" id="node3" href="tables/auth_identities.html" target="_top" title="auth_identities" alt="" coords="283,491,501,907">
+<area shape="rect" id="node4" href="tables/auth_groups_users.html" target="_top" title="auth_groups_users" alt="" coords="266,924,518,1105">
+</map>
+                                        <a name='diagram'><img id="largeDegreeImg" src="diagrams/summary/relationships.real.large.png" usemap="#largeRelationshipsDiagram" class="diagram" border="0" align="left"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
                     </div>
                 </section>
             </div>

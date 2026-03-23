@@ -99,6 +99,10 @@
                 <a href="guide/development/github-packaging.html#github-packaging" class="">Github Packaging</a>
                 
             </li>
+                    <li>
+                <a href="guide/development/migrations.html#database-migrations" class="">Database Migrations</a>
+                
+            </li>
             </ul>
 
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -158,6 +162,10 @@
     <ul class="phpdocumentor-list">
                     <li>
                 <a href="namespaces/app-controllers.html" class="">Controllers</a>
+                
+            </li>
+                    <li>
+                <a href="namespaces/app-database.html" class="">Database</a>
                 
             </li>
                     <li>
@@ -250,6 +258,20 @@ cd esp32</code></pre>
             </dl>
 </li>
 
+    <li><dl>
+                        <dt>Setup Database</dt>
+        
+        <dd><pre><code class="language-bash"># phpmyadmin: http://localhost/phpmyadmin
+
+# wait for database to be active and run:
+docker exec -it esp32_app php spark migrate --all
+
+# setup demo user (admin@esp32.io:admin) and devices
+docker exec -it esp32_app php spark db:seed DemoSeeder</code></pre>
+</dd>
+            </dl>
+</li>
+
     <li>Dashboard is now accessable using the url set in .env</li>
 
 </ol>
@@ -275,7 +297,10 @@ docker compose down
 docker volume rm esp32_appdata
 
 # pull latest &amp; compose
-docker compose up -d --pull always</code></pre>
+docker compose up -d --pull always
+
+# update database if required
+docker exec -it esp32_app php spark migrate</code></pre>
 </dd>
             </dl>
 </li>
