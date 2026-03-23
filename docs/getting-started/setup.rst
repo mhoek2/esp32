@@ -15,8 +15,16 @@ Setup Docker Package
 
         docker compose up -d --pull always
 
+#. Setup Database
+    .. code-block:: bash
+        # phpmyadmin: http://localhost/phpmyadmin
+        
         # wait for database to be active and run:
         docker exec -it esp32_app php spark migrate --all
+
+        # setup demo user (admin@esp32.io:admin) and devices
+        docker exec -it esp32_app php spark db:seed DemoSeeder
+
 
 #. Dashboard is now accessable using the url set in .env
 

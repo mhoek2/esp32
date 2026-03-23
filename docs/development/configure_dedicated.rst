@@ -68,9 +68,13 @@ Setup Database
 
 #. Run the migration to create the database tables. See :ref:`Database Migrations <migrations>` for more info. or Run:
     .. code-block:: bash
+        # phpmyadmin: http://localhost/phpmyadmin
 
         # using dedicated app (hostname = localhost)
         php spark migrate --all
+
+        # setup demo user (admin@esp32.io:admin) and devices
+        docker exec -it esp32_app php spark db:seed DemoSeeder
 
 Verify
 ------
