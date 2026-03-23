@@ -58,11 +58,11 @@ class AddDevicesTable extends Migration
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey(['mac']);
 
-        $this->forge->createTable('devices');
+        $this->forge->createTable('devices', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('devices');
+        $this->forge->dropTable('devices', true);
     }
 }

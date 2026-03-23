@@ -60,11 +60,11 @@ class AddUploadsTable extends Migration
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey(['user_id', 'name']);
 
-        $this->forge->createTable('uploads');
+        $this->forge->createTable('uploads', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('uploads');
+        $this->forge->dropTable('uploads', true);
     }
 }

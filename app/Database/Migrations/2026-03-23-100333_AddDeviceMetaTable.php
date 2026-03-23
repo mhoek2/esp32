@@ -25,11 +25,11 @@ class AddDeviceMetaTable extends Migration
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey(['mac']);
 
-        $this->forge->createTable('device_meta');
+        $this->forge->createTable('device_meta', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('device_meta');
+        $this->forge->dropTable('device_meta', true);
     }
 }

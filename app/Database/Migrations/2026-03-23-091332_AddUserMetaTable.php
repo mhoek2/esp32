@@ -41,11 +41,11 @@ class AddUserMetaTable extends Migration
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey(['user_id', 'name']);
 
-        $this->forge->createTable('user_meta');
+        $this->forge->createTable('user_meta', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('user_meta');
+        $this->forge->dropTable('user_meta', true);
     }
 }

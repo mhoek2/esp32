@@ -36,3 +36,6 @@ Updating
 
         # pull latest & compose
         docker compose up -d --pull always
+        
+        # update database if required
+        docker exec -it esp32_app php spark migrate

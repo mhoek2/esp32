@@ -31,11 +31,11 @@ class AddProtocol27Table extends Migration
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey(['mac']);
 
-        $this->forge->createTable('protocol_27');
+        $this->forge->createTable('protocol_27', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('protocol_27');
+        $this->forge->dropTable('protocol_27', true);
     }
 }

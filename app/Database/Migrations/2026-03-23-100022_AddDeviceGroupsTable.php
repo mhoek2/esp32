@@ -30,11 +30,11 @@ class AddDeviceGroupsTable extends Migration
  
         $this->forge->addKey('id', true);
 
-        $this->forge->createTable('device_groups');
+        $this->forge->createTable('device_groups', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('device_groups');
+        $this->forge->dropTable('device_groups', true);
     }
 }
