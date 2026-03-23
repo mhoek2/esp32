@@ -37,7 +37,7 @@ services:
       - "3306:3306"
     volumes:
       - dbdata:/var/lib/mysql
-      - ./sql/esp32.sql:/docker-entrypoint-initdb.d/init.sql
+      #- ./sql/esp32.sql:/docker-entrypoint-initdb.d/init.sql
 
   phpmyadmin:
     image: phpmyadmin:latest

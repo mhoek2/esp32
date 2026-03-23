@@ -14,6 +14,10 @@ Setup Docker Package
     .. code-block:: bash
 
         docker compose up -d --pull always
+
+        # wait for database to be active and run:
+        docker exec -it esp32_app php spark migrate --all
+
 #. Dashboard is now accessable using the url set in .env
 
 Updating

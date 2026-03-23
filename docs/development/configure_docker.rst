@@ -37,6 +37,15 @@ Setup domain
         database.default.DBPrefix =
         database.default.port = 3306
 
+Setup Database
+---------------
+
+#. Run the migration to create the database tables. See :ref:`Database Migrations <migrations>` for more info. or Run:
+    .. code-block:: bash
+    
+        # using docker app container, prefix commands with docker exec -it esp32_app
+        docker exec -it esp32_app php spark migrate --all
+
 Access Rights
 ------
 

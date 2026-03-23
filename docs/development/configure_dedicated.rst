@@ -8,10 +8,6 @@ Some composer modules might have changed been updated, so we want to verify a fe
 .. tip::
     Hosting environment requires ``PHP>8.2`` and ``ext-intl`` extension enabled.
 
-Import Database
----------------
-
-#. Create a Mysql database and import ``sql/esp32.sql`` (Tip: use PhpMyAdmin)
 
 Adjust the .env configuration
 -----------------------------
@@ -24,7 +20,7 @@ Adjust the .env configuration
 #. Ensure database connection variables uncommented and correctly set in ``.env``
     .. code-block:: php
 
-        database.default.hostname = db
+        database.default.hostname = localhost <- Set this
         database.default.database = esp32_db
         database.default.username = esp32_user
         database.default.password = esp32_pass
@@ -66,6 +62,15 @@ When not using the .env file:
             'password'     => 'your-password',
             'database'     => 'your-database-name',
             'DBDriver'     => 'MySQLi',
+
+Setup Database
+---------------
+
+#. Run the migration to create the database tables. See :ref:`Database Migrations <migrations>` for more info. or Run:
+    .. code-block:: bash
+
+        # using dedicated app (hostname = localhost)
+        php spark migrate --all
 
 Verify
 ------
