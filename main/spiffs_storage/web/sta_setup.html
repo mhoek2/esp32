@@ -21,7 +21,7 @@
 			<!--<div id="getAPs">Get APs</div>-->
 
 			<div class="steps">
-				<div class="step active" id="active_step">Setup WiFi</div>
+				<div class="step active" id="step_setup_wifi">Setup WiFi</div>
 				<div class="step content">
 					<form id="wifi_sta_config" method="POST" action="xhr">
 						<input name="mode" value="set_wifi_ap" type="hidden">
@@ -36,7 +36,8 @@
 						<div id="response"></div>
 					</form>
 				</div>
-				<div class="step pending">Configure Server</div>
+				<div class="step pending" id="step_connect_wifi">Connecting to WiFi</div>
+				<div class="step pending" id="step_configure_server">Configure Server</div>
 				<div class="step pending" id="last_step">Done</div>
 			</div>
 
@@ -50,6 +51,7 @@
 		</div>
 	</div>
 
+	<script src="/global.js" defer></script>
 	<script>
 		/*
 		document.getElementById("getAPs").addEventListener("click", async (e) => {
@@ -114,13 +116,11 @@
 
 			const btn_submit = document.getElementById("btn_set_sta_config");
 			const response_dom = document.getElementById("response");
-			const step_indicator = document.getElementById("active_step");
 
 			try {
 				btn_submit.disabled = true;
 				btn_submit.textContent = "Connecting...";
-				step_indicator.classList.remove("active");
-				step_indicator.classList.add("working");
+				set_ui_step( "step_setup_wifi", "working");
 
 				const response = await fetch( form.action, {
 					method: form.method,
@@ -149,8 +149,7 @@
 				response_dom.innerText = result.status.message;
 
 				// change step indicator to done
-				step_indicator.classList.remove("working");
-				step_indicator.classList.add("done");
+				set_ui_step( "step_setup_wifi", "done");
 
 				// start refresh timer
 				start_refresh_timer();

@@ -12,6 +12,8 @@
 
 static const char *TAG = "webserver";
 
+#define MAX_URI_HANLDERS 16
+
 #define MAX_SSID_LENGTH     32
 #define MAX_PASS_LENGTH     64
 
@@ -226,9 +228,11 @@ static esp_err_t root_get_handler( httpd_req_t *req )
 }
 
 // assets
-static esp_err_t style_css_get_handler(httpd_req_t *req)
+static esp_err_t load_asset( httpd_req_t *req, const char *path, const char *type )
 {
-    FILE *asset_file = fopen("/spiffs/web/style.css", "r");
+    FILE *asset_file = fopen(path, "r");
+
+    ESP_LOGI(TAG, "Request config");
 
     if ( !asset_file ) 
     {
@@ -236,7 +240,7 @@ static esp_err_t style_css_get_handler(httpd_req_t *req)
         return ESP_FAIL;
     }
 
-    httpd_resp_set_type(req, "text/css");
+    httpd_resp_set_type(req, type);
 
     char buffer[1024];
     size_t read_bytes;
@@ -249,6 +253,16 @@ static esp_err_t style_css_get_handler(httpd_req_t *req)
     httpd_resp_send_chunk( req, NULL, 0 );
 
     return ESP_OK;
+}
+
+static esp_err_t style_css_get_handler(httpd_req_t *req)
+{
+    return load_asset( req, "/spiffs/web/style.css", "text/css" );
+}
+
+static esp_err_t global_js_get_handler(httpd_req_t *req)
+{
+    return load_asset( req, "/spiffs/web/global.js", "application/javascript" );
 }
 
 // xhr requests
@@ -305,6 +319,11 @@ static esp_err_t xhr_set_server_ip( httpd_req_t *req, char *buffer )
 
     if (httpd_query_key_value(buffer, "server_ip", server_ip, sizeof(server_ip)) == ESP_OK) {}
     example_uri_decode(server_ip_decoded, server_ip, strnlen(server_ip, 32));
+
+    // todo:
+    // test the connection
+    ESP_LOGI(TAG, "Test server: %s", server_ip_decoded);
+    // ..
 
     config_set_server_adress( server_ip_decoded );
     config_set_server_initialized();
@@ -388,6 +407,26 @@ static esp_err_t get_config_handler( httpd_req_t *req )
     heap_caps_free(json_config);
         
     ESP_LOGI(TAG, "Request config");
+
+    return ESP_OK;
+}
+
+static esp_err_t status_handler( httpd_req_t *req )
+{
+    static const char *false_true[] = {"false", "true"};
+
+    char *response = heap_caps_malloc( 1024, MALLOC_CAP_8BIT );
+    //config_t *config = get_config();
+
+    snprintf( response, 1024, "{\"wifi_sta_connected\": %s }", 
+        false_true[get_wifi_enabled( WIFI_TYPE_STA )] 
+    );
+
+    httpd_resp_set_type(req,"application/json");
+    httpd_resp_send(req, response, strlen(response)); 
+    heap_caps_free(response);
+        
+    ESP_LOGI(TAG, "Request status");
 
     return ESP_OK;
 }
@@ -497,7 +536,7 @@ static esp_err_t find_ap_handler( httpd_req_t *req )
 }
 
 static uint16_t     num_uri_handlers;
-static httpd_uri_t  uri_handlers[7];
+static httpd_uri_t  uri_handlers[MAX_URI_HANLDERS];
 
 #define ADD_URI_HANDLER( _method, _uri, _handler ) \
     uri_handlers[num_uri_handlers++] = (httpd_uri_t){ \
@@ -518,9 +557,11 @@ static void define_endpoints( void )
     ADD_URI_HANDLER( HTTP_GET,      "/find_ap",         find_ap_handler )
     ADD_URI_HANDLER( HTTP_GET,      "/reboot_device",   reboot_device_handler )
     ADD_URI_HANDLER( HTTP_GET,      "/disable_ap",      disable_ap_handler )
+    ADD_URI_HANDLER( HTTP_GET,      "/status",          status_handler )
 
     // assets
     ADD_URI_HANDLER( HTTP_GET,      "/style.css",       style_css_get_handler )
+    ADD_URI_HANDLER( HTTP_GET,      "/global.js",       global_js_get_handler )
 
 }
 
@@ -528,6 +569,8 @@ httpd_handle_t init_webserver( void )
 {
     uint16_t i;
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
+    config.max_uri_handlers = MAX_URI_HANLDERS;
+    
     httpd_handle_t server = NULL;
 
     define_endpoints();

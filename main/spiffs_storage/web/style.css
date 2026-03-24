@@ -190,11 +190,14 @@ body {
 }
     /* content */
     .step.content {
-        display: inline-block;
+        display: none;
         width: 100%;
     }
     .step.content::before {
         background: transparent;
+    }
+    .step.active + .step.content {
+        display: inline-block;
     }
 
     /* done */
@@ -310,3 +313,35 @@ body {
         display: block;
     	animation: animate_refresh_timer 15s linear forwards;
     }
+
+    /* status bar */
+    .status_bar {
+        display:flex;
+        flex-direction: row-reverse;
+        gap:10px;
+        position:absolute;
+        top:0;
+        width: 100%;
+        padding: 1em;
+    }
+
+    .status_bar > div {
+        display:flex;
+        flex-direction: row;
+        align-items: center;
+        background: #f1f1f1;
+        border-radius: 5px;
+        padding: 0.2em .5em;
+    }
+        .status_bar > div .icon {
+            width:20px;
+            line-height:20px;
+            text-align: center;
+        }
+        .status_bar > div .icon svg {
+            width: 1.2em;
+            display:block;
+        }
+        .status_bar > div .status {
+            line-height:20px;
+        }

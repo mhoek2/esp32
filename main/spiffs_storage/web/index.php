@@ -15,20 +15,88 @@ class httpd_uri_t {
     }
 }
 
+class wifi_state_t {
+    public $time_limit; 
+    public $enabled_time; 
+    public $enabled; 
+
+    public function __construct($_time_limit, $_enabled_time, $_enabled) {
+        $this->time_limit   = $_time_limit;
+        $this->enabled_time = $_enabled_time;
+        $this->enabled      = $_enabled;
+    }
+}
+
+class Wifi {
+    public const WIFI_TYPE_STA = 0;
+    public const WIFI_TYPE_AP  = 1;
+    public const WIFI_TYPES_MAX = 2;
+
+    private array $wifi_state = [];
+
+    public function __construct( $state ) 
+    {
+        $this->wifi_state = [
+            self::WIFI_TYPE_STA => new wifi_state_t(
+                0,      // time_limit
+                0,      // enabled_time
+                $state[self::WIFI_TYPE_STA],   // enabled
+            ),
+            self::WIFI_TYPE_AP => new wifi_state_t(
+                0,      // time_limit
+                0,      // enabled_time
+                $state[self::WIFI_TYPE_AP],   // enabled
+            )
+        ];
+    }
+
+    public function get_wifi_states()
+    {
+        return $this->wifi_state;
+    }
+
+    public function get_wifi_enabled( int $type )
+    {
+        if ( $type >= self::WIFI_TYPES_MAX )
+            return false;
+
+        return $this->wifi_state[$type]->enabled;
+    }
+}
+
 class PHPSim 
 {
-    private $step = 0;
+    //
+    // config
+    //
+    private $step = 1;
     private $steps = [
         "sta_setup.html",
         "server_setup.html",
         "overview.html",
     ];
+    private $wifi_sta_enabled = true;
+    private $wifi_ap_enabled = false;
+    //
+    // config end
+    //
+
+    private Wifi $wifi;
+    private $wifi_state;
 
     private $uri_handlers = [];
 
     public function __construct() 
     {
         $this->define_endpoints();
+
+        $this->wifi = new Wifi(
+            [
+                Wifi::WIFI_TYPE_STA => $this->wifi_sta_enabled,
+                Wifi::WIFI_TYPE_AP  => $this->wifi_ap_enabled
+            ]
+        );
+        //var_dump($this->wifi->get_wifi_enabled($this->wifi::WIFI_TYPE_STA));
     }
 
     public function root_get_handler() 
@@ -106,6 +174,17 @@ class PHPSim
         }
     }
 
+    public function status_handler()
+    {
+        $false_true = ["false", "true"];
+        $response = sprintf("{\"wifi_sta_connected\": %s}",
+            $false_true[$this->wifi->get_wifi_enabled($this->wifi::WIFI_TYPE_STA)]
+        );
+
+        $this->httpd_resp_set_type("application/json");
+        $this->httpd_resp_send( $response );
+    }
+
     public function get_factory_reset_handler() 
     {
         $response = "{\"data\":{}, \"status\":{\"flag\":\"success\", \"message\":\"Device is reset\"}}";
@@ -146,6 +225,7 @@ class PHPSim
         $this->ADD_URI_HANDLER( "_GET", "/factory_reset",  "get_factory_reset_handler" );
         $this->ADD_URI_HANDLER( "_GET", "/reboot_device",  "reboot_device_handler" );
         $this->ADD_URI_HANDLER( "_GET", "/disable_ap",     "disable_ap_handler" );
+        $this->ADD_URI_HANDLER( "_GET", "/status",         "status_handler" );
     }
 
     public function handle_request( $request_uri ) 
