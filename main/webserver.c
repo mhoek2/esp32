@@ -230,7 +230,7 @@ static esp_err_t root_get_handler( httpd_req_t *req )
 // assets
 static esp_err_t load_asset( httpd_req_t *req, const char *path, const char *type )
 {
-    FILE *asset_file = fopen(path, "r");
+    FILE *asset_file = fopen(path, "rb");
 
     ESP_LOGI(TAG, "Request config");
 
@@ -257,7 +257,7 @@ static esp_err_t load_asset( httpd_req_t *req, const char *path, const char *typ
 
 static esp_err_t style_css_get_handler(httpd_req_t *req)
 {
-    return load_asset( req, "/spiffs/web/style.css", "text/css" );
+    return load_asset( req, "/spiffs/web/style.css", "text/css; charset=utf-8" );
 }
 
 static esp_err_t global_js_get_handler(httpd_req_t *req)
