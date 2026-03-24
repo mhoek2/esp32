@@ -9,6 +9,7 @@ typedef struct {
     int64_t     time_limit;
     int64_t     enabled_time;
     bool        enabled;
+    bool        connected;
 } wifi_state_t;
 
 typedef enum {
@@ -26,6 +27,7 @@ wifi_ap_list_t  *get_scan_ap_data( void );
 // shared
 int64_t get_wifi_enabled_time( wifi_mode_type_t type );
 void    reset_wifi_enabled_time( wifi_mode_type_t type );
+bool    get_wifi_sta_connected( void );
 bool    get_wifi_enabled( wifi_mode_type_t type );
 bool    wifi_timer_hit( wifi_mode_type_t type );
 

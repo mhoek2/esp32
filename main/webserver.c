@@ -419,7 +419,7 @@ static esp_err_t status_handler( httpd_req_t *req )
     //config_t *config = get_config();
 
     snprintf( response, 1024, "{\"wifi_sta_connected\": %s }", 
-        false_true[get_wifi_enabled( WIFI_TYPE_STA )] 
+        false_true[get_wifi_sta_connected() ] 
     );
 
     httpd_resp_set_type(req,"application/json");

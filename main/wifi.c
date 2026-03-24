@@ -44,6 +44,11 @@ void reset_wifi_enabled_time( wifi_mode_type_t type )
     ESP_LOGW( TAG, "Reset timer for WiFi type [%s]", wifi_type_str[type] );
 }
 
+bool get_wifi_sta_connected( void )
+{
+    return wifi_state[WIFI_TYPE_STA].connected;
+}
+
 bool get_wifi_enabled( wifi_mode_type_t type )
 {
     if ( type >= WIFI_TYPES_MAX )
@@ -127,11 +132,15 @@ static void event_handler(void* arg, esp_event_base_t event_base,
                 webclient_update_windowstate();
                 //webclient_update_sleep();
 
+                wifi_state[WIFI_TYPE_STA].connected = true;
+
                 break;
             }
             case WIFI_EVENT_STA_DISCONNECTED: {
                 wifi_event_sta_disconnected_t* event = (wifi_event_sta_disconnected_t*) event_data;
                 ESP_LOGI(TAG, "STA disconnected, reason=%d", event->reason);
+
+                wifi_state[WIFI_TYPE_STA].connected = false;
 
                 // reconnect when STA is not in sleep mode
                 if ( !wifi_timer_hit( WIFI_TYPE_STA ) )

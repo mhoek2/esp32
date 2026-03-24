@@ -67,6 +67,20 @@ static esp_err_t http_event_handler( esp_http_client_event_t *event )
 
 static esp_err_t http_send_post( http_request_ctx_t *ctx )
 {
+    // validate wifi sta connection:
+    if ( !get_wifi_sta_connected() )
+    {
+        ESP_LOGE( TAG, "Cannot send request: Not connected to network" );
+       
+        // retry if ptr is set
+        if ( ctx && ctx->do_retry )
+        {
+            ESP_LOGE( TAG, "Retry .." );
+            ctx->do_retry();
+        }
+        return ESP_FAIL;
+    }
+    
     esp_http_client_config_t http_cfg = {
         .url            = ctx->url,
         .method         = HTTP_METHOD_POST,
