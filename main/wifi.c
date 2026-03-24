@@ -91,7 +91,7 @@ static void wifi_connect( void *arg )
 
 void queue_wifi_connect( void )
 {
-    esp_timer_start_once( wifi_connect_timer, 5000 * 1000 );
+    esp_timer_start_once( wifi_connect_timer, 10000 * 1000 );
 }
 
 void init_wifi_connnect_timer( void )
