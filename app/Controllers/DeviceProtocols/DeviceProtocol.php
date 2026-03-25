@@ -28,20 +28,21 @@ class DeviceProtocol extends Controller
         $this->deviceModel->update( $this->device_id, [
             'sleep' => 1
         ]);
+
+        $this->add_event( 'receive', ['sleep' => 1] );
     }
     public function awake()
     {
         $this->deviceModel->update( $this->device_id, [
             'sleep' => 0
         ]);
+
+        $this->add_event( 'receive', ['sleep' => 0] );
     }
 
     public function add_event( string $type, array $data ) 
     {
-        if ( !$this->deviceEventsModel->validate_event_type( $type ) )
-            return false;
-
-        $this->deviceEventsModel->add(
+        return $this->deviceEventsModel->add(
             $this->device_mac,
             $type,
             $data

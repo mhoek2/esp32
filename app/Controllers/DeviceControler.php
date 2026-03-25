@@ -37,50 +37,6 @@ class DeviceControler extends BaseController
 		]);
 	}
 
-	public function set_sta_sleep()
-	{
-		// encode the received payload
-		$json = file_get_contents('php://input');
-		$data = json_decode($json, true);
-		$rows = [];
-
-		if ( json_last_error() === JSON_ERROR_NONE )
-		{
-			$valid_data = false;
-			$keys = array_keys($data);
-			
-			// check if received data is valid
-			if ( in_array("mac", $keys) )
-			{
-				$valid_data = true;
-
-				$rows = $this->deviceModel->where([
-					'mac' => $data['mac']
-				])->find();
-			}
-
-			// device is valid
-			if ( $valid_data && !empty($rows) )
-			{
-				$state = $data['state'];
-
-				$this->deviceModel->where('mac', $data['mac'])
-					->set('sleep', $state)
-					->update();
-
-				return $this->response->setJSON([
-					"recv_state" 	=> $state,
-					"valid_data" 	=> $valid_data,
-					'status'		=> true,
-				]);
-			}
-		}
-
-		return $this->response->setJSON([
-			'status'	=> false,
-		]);
-	}
-	
     private function validate_device_input()
     {
         $json = file_get_contents('php://input');
@@ -121,6 +77,38 @@ class DeviceControler extends BaseController
         ];
     }
 
+	public function set_sta_sleep()
+	{
+        try {
+            $input = $this->validate_device_input();
+
+            $protocol = $input['protocol'];
+            $data     = $input['data'];
+            $device   = $input['device'];
+
+            $sleep = (int)$data['state'];
+
+            if ( $sleep !== (int)$device['sleep'])
+            {
+                if ( $sleep === 0 )
+                    $protocol->awake(); 
+                else
+                    $protocol->sleep();
+            }
+            
+            return $this->response->setJSON([
+                "recv_state" 	=> $sleep,
+                'status'		=> true,
+            ]);
+        }
+        catch ( Exception $e ) {
+            return $this->response->setJSON([
+                'status'	=> false,
+                'error'     => $e->getMessage()
+            ]);
+        }
+	}
+	
 	public function receive()
 	{
         try {

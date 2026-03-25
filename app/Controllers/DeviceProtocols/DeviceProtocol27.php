@@ -25,7 +25,7 @@ class DeviceProtocol27 extends DeviceProtocol
         if ( !isset($data['state']) )
             throw new Exception("Missing JSON state");
 
-        $state = $data['state'];
+        $state = (int)$data['state'];
 
         $this->protocolModel->replace([ 
             'mac' 		=> $this->device_mac, 
@@ -33,7 +33,7 @@ class DeviceProtocol27 extends DeviceProtocol
             ]
         );
 
-        $this->add_event( 'receive', $data );
+        $this->add_event( 'receive', ['state' => $state] );
 
         // JSON encoded in dispatcher
         return [
