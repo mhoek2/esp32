@@ -4,6 +4,8 @@ namespace App\Controllers\DeviceProtocols;
 use App\Controllers\DeviceProtocols\DeviceProtocol;
 use Exception;
 
+use App\Models\DeviceEvents;
+
 // Protocols
 use App\Models\Protocol27;
 
@@ -30,6 +32,8 @@ class DeviceProtocol27 extends DeviceProtocol
             'state' 	=> $state
             ]
         );
+
+        $this->add_event( 'receive', $data );
 
         // JSON encoded in dispatcher
         return [
