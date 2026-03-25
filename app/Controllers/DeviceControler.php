@@ -2,24 +2,32 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use Exception;
 
 use App\Models\Devices;
 
-// Protocols
-use App\Models\Protocol27;
+// Protocol Controllers
+use App\Controllers\DeviceProtocols\DeviceProtocol27;
 
 class DeviceControler extends BaseController
 {
+    protected $deviceModel;
+    protected $devices;
+
+	protected $protocol_map;
+
     public function __construct() {
 		$this->deviceModel = new Devices();
-		$this->protocol_27 = new Protocol27();
 
 		$this->devices = service('device_info');
+
+		$this->protocol_map = [
+			27 => DeviceProtocol27::class,
+		];
     }	
 	
 	public function get_stats()
 	{
-
 		$devices = $this->devices->getDevices();
 		$this->devices->load_devices_stats( $devices );
 
@@ -73,106 +81,112 @@ class DeviceControler extends BaseController
 		]);
 	}
 	
+    private function validate_device_input()
+    {
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $device = null;
+
+        if ( json_last_error() !== JSON_ERROR_NONE )
+            throw new Exception("Invalid JSON");
+
+        $keys = array_keys($data);
+        if ( !in_array("mac", $keys) || !in_array("protocol", $keys) )
+            throw new Exception("Missing JSON data");
+
+        $device = $this->deviceModel->where([
+            'mac' => $data['mac']
+        ])->first();
+
+        if ( empty($device) )
+            throw new Exception("Invalid device");
+
+        $device_id = (int)$device['id'];
+        $protocol_id = (int)$data['protocol'];
+        //$protocol_id = (int)$device['protocol'];
+
+        if ( !isset($this->protocol_map[$protocol_id]) )
+            throw new Exception("Invalid protocol");
+
+        $protocol_class = $this->protocol_map[$protocol_id];
+
+        $protocol = new $protocol_class( 
+            $device
+        );
+
+        return [
+            'data'      => $data,
+            'device'    => $device,
+            'protocol'  => $protocol,
+        ];
+    }
+
 	public function receive()
 	{
-		// encode the received payload
-		$json = file_get_contents('php://input');
-		$data = json_decode($json, true);
-		$rows = [];
-		
-		if ( json_last_error() === JSON_ERROR_NONE )
-		{
-			$valid_data = false;
-			$keys = array_keys($data);
-			
-			// check if received data is valid
-			if ( in_array("mac", $keys) && in_array("protocol", $keys) )
-			{
-				$valid_data = true;
+        try {
+            $input = $this->validate_device_input();
 
-				$rows = $this->deviceModel->where([
-					'mac' => $data['mac']
-				])->find();
-			}
-			
-			// device is valid
-			if ( $valid_data && !empty($rows) )
-			{
-				// device is not sleeping anymore
-				$this->deviceModel->where('mac', $data['mac'])
-					->set('sleep', 0)
-					->update();
+            $protocol = $input['protocol'];
+            $data     = $input['data'];
 
-				// swtich by protocol later..
-				// if protocol == 27
-				// in_array("state", $keys)
-				$state = $data['state'];
-					
-				$rows = $this->protocol_27->replace([ 
-					'mac' 		=> $data['mac'], 
-					'state' 	=> $state
-					]
-				);
+            // awake
+            $protocol->awake();
 
-				return $this->response->setJSON([
-					"recv_state" 	=> $state,
-					"valid_data" 	=> $valid_data,
-					'status'		=> true,
-				]);
-				// endif
-			}
-		}
-		
-		return $this->response->setJSON([
-			'status'	=> false,
-		]);
+            // dispatch to protocol
+            $dispatch = $protocol->receive( $data );
+            
+            return $this->response->setJSON(
+                 $dispatch
+            );
+        }
+        catch ( Exception $e ) {
+            return $this->response->setJSON([
+                'status'	=> false,
+                'error'     => $e->getMessage()
+            ]);
+        }
 	}
 	
     public function register()
     {
-		// encode the received payload
-		$json = file_get_contents('php://input');
-		$data = json_decode($json, true);
-		$rows = [];
-		
-		if ( json_last_error() === JSON_ERROR_NONE )
-		{
-			$valid_data = false;
-			$keys = array_keys($data);
-			
-			// check if received data is valid
-			if ( in_array("mac", $keys) && in_array("protocol", $keys) )
-			{
-				$valid_data = true;
+        try {
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+            $device = null;
 
-				$rows = $this->deviceModel->where([
-					'mac' => $data['mac']
-				])->find();
-			}
-			
-			// if data is valid, and device was not registered yet
-			// register the device
-			if ( $valid_data && empty($rows) )
-			{
-				$rows = $this->deviceModel->insert([ 
-					'mac' 		=> $data['mac'], 
-					'name' 		=> "New Device", 
-					'protocol' 	=> $data['protocol']
-					]
-				);
-			}
-			
-			// return registered state
+            if ( json_last_error() !== JSON_ERROR_NONE )
+                throw new Exception("Invalid JSON");
+
+            $keys = array_keys($data);
+            if ( !in_array("mac", $keys) || !in_array("protocol", $keys) )
+                throw new Exception("Missing JSON data");
+            
+            $device = $this->deviceModel->where([
+                'mac' => $data['mac']
+            ])->first();
+
+            // register only if device does not exist
+            if ( !$device )
+            {
+                $device = $this->deviceModel->insert([ 
+                    'mac' 		=> $data['mac'], 
+                    'name' 		=> "New Device", 
+                    'protocol' 	=> $data['protocol']
+                    ]
+                );
+            }
+
 			return $this->response->setJSON([
-				"registered" 	=> !empty($rows),
-				"valid_data" 	=> $valid_data,
+				"registered" 	=> !empty($device),
 				'status'		=> true,
 			]);
-		}
-		
-		return $this->response->setJSON([
-			'status'	=> false,
-		]);
+        }
+        catch ( Exception $e ) {
+            return $this->response->setJSON([
+                'status'	=> false,
+                'error'     => $e->getMessage()
+            ]);
+        }
     }
 }
 ?>

@@ -19,6 +19,9 @@ use App\Models\Protocol27;
  */
 class DeviceService
 {
+    protected $deviceModel;
+    protected $protocol_27;
+
 	/**
 	 * This method initializes the `User` object, retrieves the user's information, and ensures the user is valid. 
 	 * If the user is not valid, the process is halted with an error message. 
