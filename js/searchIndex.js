@@ -451,6 +451,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/App-Controllers-DeviceControler.html#method_set_sta_sleep"
         },                {
+            "fqsen": "\\App\\Controllers\\DeviceControler\u003A\u003Avalidate_device_input\u0028\u0029",
+            "name": "validate_device_input",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceControler.html#method_validate_device_input"
+        },                {
             "fqsen": "\\App\\Controllers\\DeviceControler\u003A\u003Areceive\u0028\u0029",
             "name": "receive",
             "summary": "",
@@ -460,6 +465,76 @@ Search.appendIndex(
             "name": "register",
             "summary": "",
             "url": "classes/App-Controllers-DeviceControler.html#method_register"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceControler\u003A\u003A\u0024deviceModel",
+            "name": "deviceModel",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceControler.html#property_deviceModel"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceControler\u003A\u003A\u0024devices",
+            "name": "devices",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceControler.html#property_devices"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceControler\u003A\u003A\u0024protocol_map",
+            "name": "protocol_map",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceControler.html#property_protocol_map"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols\\DeviceProtocol",
+            "name": "DeviceProtocol",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceProtocols-DeviceProtocol.html"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols\\DeviceProtocol\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceProtocols-DeviceProtocol.html#method___construct"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols\\DeviceProtocol\u003A\u003Asleep\u0028\u0029",
+            "name": "sleep",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceProtocols-DeviceProtocol.html#method_sleep"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols\\DeviceProtocol\u003A\u003Aawake\u0028\u0029",
+            "name": "awake",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceProtocols-DeviceProtocol.html#method_awake"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols\\DeviceProtocol\u003A\u003A\u0024device_id",
+            "name": "device_id",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceProtocols-DeviceProtocol.html#property_device_id"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols\\DeviceProtocol\u003A\u003A\u0024device_mac",
+            "name": "device_mac",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceProtocols-DeviceProtocol.html#property_device_mac"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols\\DeviceProtocol\u003A\u003A\u0024deviceModel",
+            "name": "deviceModel",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceProtocols-DeviceProtocol.html#property_deviceModel"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols\\DeviceProtocol27",
+            "name": "DeviceProtocol27",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceProtocols-DeviceProtocol27.html"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols\\DeviceProtocol27\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceProtocols-DeviceProtocol27.html#method___construct"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols\\DeviceProtocol27\u003A\u003Areceive\u0028\u0029",
+            "name": "receive",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceProtocols-DeviceProtocol27.html#method_receive"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols\\DeviceProtocol27\u003A\u003A\u0024protocolModel",
+            "name": "protocolModel",
+            "summary": "",
+            "url": "classes/App-Controllers-DeviceProtocols-DeviceProtocol27.html#property_protocolModel"
         },                {
             "fqsen": "\\App\\Controllers\\Front\\BaseController",
             "name": "BaseController",
@@ -1141,6 +1216,16 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/App-Services-DeviceService.html#method_getDevices"
         },                {
+            "fqsen": "\\App\\Services\\DeviceService\u003A\u003A\u0024deviceModel",
+            "name": "deviceModel",
+            "summary": "",
+            "url": "classes/App-Services-DeviceService.html#property_deviceModel"
+        },                {
+            "fqsen": "\\App\\Services\\DeviceService\u003A\u003A\u0024protocol_27",
+            "name": "protocol_27",
+            "summary": "",
+            "url": "classes/App-Services-DeviceService.html#property_protocol_27"
+        },                {
             "fqsen": "\\App\\Services\\FloorplanService",
             "name": "FloorplanService",
             "summary": "Provides\u0020service\u0020to\u0020set\u0020up\u0020the\u0020floorplan",
@@ -1420,6 +1505,11 @@ Search.appendIndex(
             "name": "App",
             "summary": "",
             "url": "namespaces/app.html"
+        },                {
+            "fqsen": "\\App\\Controllers\\DeviceProtocols",
+            "name": "DeviceProtocols",
+            "summary": "",
+            "url": "namespaces/app-controllers-deviceprotocols.html"
         },                {
             "fqsen": "\\App\\Controllers\\Front",
             "name": "Front",
