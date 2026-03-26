@@ -20,7 +20,7 @@ class MapDashboardModule extends DashboardModule
 	protected $deviceGroupsModel;
 
     public function __construct() {
-		$this->device = service('device_info');
+		$this->devices = service('device_info');
 		$this->deviceGroupsModel = new DeviceGroups();
     }
 	
