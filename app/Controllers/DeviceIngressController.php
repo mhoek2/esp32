@@ -9,7 +9,7 @@ use App\Models\Devices;
 // Protocol Controllers
 use App\Controllers\DeviceProtocols\DeviceProtocol27;
 
-class DeviceControler extends BaseController
+class DeviceIngressController extends BaseController
 {
     protected $deviceModel;
     protected $devices;
