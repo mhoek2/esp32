@@ -10,7 +10,7 @@ use App\Libraries\Device\Protocols\DeviceProtocol27;
 
 class Device
 {
-    protected $raw; // raw data from database
+    public $raw; // raw data from database
     public $id;
     public $mac;
     public $protocol;
@@ -20,7 +20,7 @@ class Device
 
     protected $protocol_map;
 
-    public function __construct( $mac, $protocol_id = null ) 
+    public function __construct( $id_or_mac = null, $protocol_id = null ) 
     {
         $this->deviceModel = new Devices();
         $this->deviceEventsModel = new DeviceEvents();
@@ -29,14 +29,17 @@ class Device
 			27 => DeviceProtocol27::class,
 		];
 
+        if ( empty($id_or_mac) )
+            throw new Exception("Undefined device ID or MAC");
+
         // setup instance
-        $this->raw = $this->deviceModel->where([
-            'mac' => $mac
-        ])->first();
+        $raw = $this->deviceModel->getDevices( $id_or_mac );
 
         // device not found!
-        if ( empty($this->raw) )
+        if ( empty($raw) )
             throw new Exception("Invalid device");
+        
+        $this->raw = $raw[0];
 
         // populate instance data
         $this->id = (int)$this->raw['id'];
@@ -64,6 +67,11 @@ class Device
         }
 
         $this->protocol = null;
+    }
+
+    public function get_events()
+    {
+        return $this->deviceEventsModel->getByMac( $this->mac );
     }
 
     public function sleep()

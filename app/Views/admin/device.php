@@ -33,7 +33,6 @@ $action_button = 'Opslaan';
 
 <section class="main">
     <div class="content">
-
 		<form action="<?=$action?>" method="post" id="device_form">
 			<div class="container">
 				<div class="form-group">
@@ -64,6 +63,26 @@ $action_button = 'Opslaan';
 
 			<div id="form_response_container" class="request-response"></div>
 		</form>
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th width="200">Name</th>
+                    <th width="50">Event</th>
+                    <th width="50">Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach( $device_events as $id => $event):?>
+                    <tr>
+                        <td><?=$event['type']?></td>
+                        <td><?=$event['json']?></td>
+                        <td><?=$event['created_at']?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 </section>
 

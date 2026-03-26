@@ -14,7 +14,12 @@ class DeviceEvents extends Model
         'type' => 'required|in_list[sta_sleep,sta_awake,receive]',
     ];
 
-    function add( string $mac, string $type, array $data ) 
+    public function getByMac( string $mac )
+    {
+        return $this->where('mac', $mac)->findAll();
+    }
+
+    public function add( string $mac, string $type, array $data ) 
     {
         $insert = [
             'mac'  => $mac,
