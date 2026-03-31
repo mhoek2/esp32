@@ -10,4 +10,6 @@ Allowing to track when a physical window is in a open or closed state.
 
 Connected devices are listed in the management dashboard, displaying the ```Activity state``` and ```Protocol status```
 
-![](https://mhoek2.github.io/assets/illustrations/esp32.png)
+| Dashboard | Firmware |
+|-------|----------------|
+| ![](https://mhoek2.github.io/assets/illustrations/esp32.png) | ![](https://mhoek2.github.io/assets/illustrations/esp32-firmware.png) |
