@@ -6,24 +6,17 @@ use Exception;
 
 use App\Models\Devices;
 
-// Protocol Controllers
-use App\Controllers\DeviceProtocols\DeviceProtocol27;
+use App\Libraries\Device\Device;
 
-class DeviceControler extends BaseController
+class DeviceIngressController extends BaseController
 {
     protected $deviceModel;
     protected $devices;
-
-	protected $protocol_map;
 
     public function __construct() {
 		$this->deviceModel = new Devices();
 
 		$this->devices = service('device_info');
-
-		$this->protocol_map = [
-			27 => DeviceProtocol27::class,
-		];
     }	
 	
 	public function get_stats()
@@ -37,50 +30,6 @@ class DeviceControler extends BaseController
 		]);
 	}
 
-	public function set_sta_sleep()
-	{
-		// encode the received payload
-		$json = file_get_contents('php://input');
-		$data = json_decode($json, true);
-		$rows = [];
-
-		if ( json_last_error() === JSON_ERROR_NONE )
-		{
-			$valid_data = false;
-			$keys = array_keys($data);
-			
-			// check if received data is valid
-			if ( in_array("mac", $keys) )
-			{
-				$valid_data = true;
-
-				$rows = $this->deviceModel->where([
-					'mac' => $data['mac']
-				])->find();
-			}
-
-			// device is valid
-			if ( $valid_data && !empty($rows) )
-			{
-				$state = $data['state'];
-
-				$this->deviceModel->where('mac', $data['mac'])
-					->set('sleep', $state)
-					->update();
-
-				return $this->response->setJSON([
-					"recv_state" 	=> $state,
-					"valid_data" 	=> $valid_data,
-					'status'		=> true,
-				]);
-			}
-		}
-
-		return $this->response->setJSON([
-			'status'	=> false,
-		]);
-	}
-	
     private function validate_device_input()
     {
         $json = file_get_contents('php://input');
@@ -94,46 +43,59 @@ class DeviceControler extends BaseController
         if ( !in_array("mac", $keys) || !in_array("protocol", $keys) )
             throw new Exception("Missing JSON data");
 
-        $device = $this->deviceModel->where([
-            'mac' => $data['mac']
-        ])->first();
+        $device = new Device( $data['mac'], (int)$data['protocol'] );
 
-        if ( empty($device) )
-            throw new Exception("Invalid device");
-
-        $device_id = (int)$device['id'];
-        $protocol_id = (int)$data['protocol'];
-        //$protocol_id = (int)$device['protocol'];
-
-        if ( !isset($this->protocol_map[$protocol_id]) )
+        if ( !$device->protocol )
             throw new Exception("Invalid protocol");
 
-        $protocol_class = $this->protocol_map[$protocol_id];
-
-        $protocol = new $protocol_class( 
-            $device
-        );
-
         return [
-            'data'      => $data,
-            'device'    => $device,
-            'protocol'  => $protocol,
+            'data'          => $data,
+            'device'        => $device,
+            'protocol_id'   => (int)$data['protocol']
         ];
     }
 
+	public function set_sta_sleep()
+	{
+        try {
+            $input  = $this->validate_device_input();
+            $device = &$input['device'];
+            $data   = &$input['data'];
+            // $protocol_id   = $input['protocol_id'];
+
+            $sleep = (int)$data['state'];
+
+            if ( $sleep === 0 )
+                $device->awake(); 
+            else
+                $device->sleep();
+            
+            return $this->response->setJSON([
+                "recv_state" 	=> $sleep,
+                'status'		=> true,
+            ]);
+        }
+        catch ( Exception $e ) {
+            return $this->response->setJSON([
+                'status'	=> false,
+                'error'     => $e->getMessage()
+            ]);
+        }
+	}
+	
 	public function receive()
 	{
         try {
-            $input = $this->validate_device_input();
-
-            $protocol = $input['protocol'];
-            $data     = $input['data'];
+            $input  = $this->validate_device_input();
+            $device = &$input['device'];
+            $data   = &$input['data'];
+            // $protocol_id   = $input['protocol_id'];
 
             // awake
-            $protocol->awake();
+            $device->awake();
 
             // dispatch to protocol
-            $dispatch = $protocol->receive( $data );
+            $dispatch = $device->protocol->receive( $data );
             
             return $this->response->setJSON(
                  $dispatch

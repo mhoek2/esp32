@@ -19,11 +19,10 @@ $routes->get(	'download/(:any)',		'DownloadController::index/$1', 		['as' => 'fr
 
 $routes->get(	'/hw_info',				'HardwareInfo::index',					['as' => 'hw_info', 'filter' => \App\Filters\AuthFilterSession::class]);
 
-$routes->get(	'/get_device_stats',	'DeviceControler::get_stats',			['as' => 'get_device_stats', 'filter' => \App\Filters\AuthFilterSession::class]);
-
-$routes->post(	'/register_device',		'DeviceControler::register',			['as' => 'register_device']);
-$routes->post(	'/receive_device',		'DeviceControler::receive',				['as' => 'receive_device']);
-$routes->post(	'/set_sta_sleep',		'DeviceControler::set_sta_sleep',		['as' => 'set_sta_sleep']);
+$routes->get(	'/get_device_stats',	'DeviceIngressController::get_stats',			['as' => 'get_device_stats', 'filter' => \App\Filters\AuthFilterSession::class]);
+$routes->post(	'/register_device',		'DeviceIngressController::register',			['as' => 'register_device']);
+$routes->post(	'/receive_device',		'DeviceIngressController::receive',				['as' => 'receive_device']);
+$routes->post(	'/set_sta_sleep',		'DeviceIngressController::set_sta_sleep',		['as' => 'set_sta_sleep']);
 
 /**
  * admin

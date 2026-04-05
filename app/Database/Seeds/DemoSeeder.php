@@ -19,6 +19,22 @@ class DemoSeeder extends Seeder
         return implode(':', array_map(fn($b) => sprintf('%02X', $b), $mac));
     }
 
+    private function createSensorEvent( $mac) 
+    {
+        $types = ["sta_sleep", "sta_awake", "receive"];
+        $data = [
+            "mac"   => $mac,
+            "type"  => $types[rand(0, (count($types) -1))],
+            "json"  => json_encode([
+                "demo_data" => rand(0, 1)
+            ])
+        ];
+
+        $this->db->table('device_events')->insert(
+            $data
+        );
+    }
+
     private function createSensor( $config )
     {
         $_mac = $this->generateFakeMac();
@@ -32,6 +48,9 @@ class DemoSeeder extends Seeder
         $this->db->table('protocol_' . $config['device']['protocol'])->insert(
             $config['protocol']
         );
+
+        for ( $i = 0; $i < 25; $i++ )
+            $this->createSensorEvent( $_mac );
     }
 
     public function run()

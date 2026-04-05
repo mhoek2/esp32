@@ -7,6 +7,8 @@ use CodeIgniter\I18n\Time;
 use App\Models\Devices;
 use App\Models\DeviceGroups;
 
+use App\Libraries\Device\Device;
+
 class DeviceController extends BaseController
 {
 	protected $deviceModel;
@@ -106,15 +108,19 @@ class DeviceController extends BaseController
 	
    public function index( int $device_id ): string
     {
-		$device = $this->deviceModel->getDevices($device_id);
-	   
+        // use Device lib here too?
+	    $device = new Device( $device_id );
+		//$device = $this->deviceModel->getDevices($device_id);
+
 	   	if ( empty($device)){
 			die("No device with this id");
 		}
-	   
-	   	$this->data['device'] = $device[0];
-		$this->data['device_groups'] = $this->deviceGroupsModel->findAll();
-
+        
+        $this->data['device'] = $device->raw;
+        $this->data['device_events'] = $device->get_events();
+        //$this->data['device'] = $device[0];
+        $this->data['device_groups'] = $this->deviceGroupsModel->findAll();
+            
 		load_header( $this->data );
 		load_footer( $this->data );
 		
