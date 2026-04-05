@@ -63,8 +63,12 @@ $action_button = 'Opslaan';
 
 			<div id="form_response_container" class="request-response"></div>
 		</form>
+    </div>
+</section>
 
-
+<section class="main">
+    <div class="content">
+		<h2>Device events</h2>
         <table>
             <thead>
                 <tr>
@@ -81,6 +85,14 @@ $action_button = 'Opslaan';
                         <td><?=$event['created_at']?></td>
                     </tr>
                 <?php endforeach; ?>
+
+				<?php if ( count($device_events) == 0 ) { ?>
+                    <tr>
+                        <td>No event data for this device</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+				<?php } ?>
             </tbody>
         </table>
     </div>
