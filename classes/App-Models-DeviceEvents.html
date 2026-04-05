@@ -172,6 +172,10 @@
                 
             </li>
                     <li>
+                <a href="namespaces/app-libraries.html" class="">Libraries</a>
+                
+            </li>
+                    <li>
                 <a href="namespaces/app-models.html" class="">Models</a>
                 
             </li>
@@ -229,15 +233,15 @@
                                 <section>
                                         <ul class="phpdocumentor-breadcrumbs">
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/app.html">App</a></li>
-            <li class="phpdocumentor-breadcrumb"><a href="namespaces/app-controllers.html">Controllers</a></li>
+            <li class="phpdocumentor-breadcrumb"><a href="namespaces/app-models.html">Models</a></li>
     </ul>
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    DeviceControler
+    DeviceEvents
 
         <span class="phpdocumentor-element__extends">
-        extends <a href="classes/App-Controllers-BaseController.html"><abbr title="\App\Controllers\BaseController">BaseController</abbr></a>
+        extends <abbr title="\CodeIgniter\Model">Model</abbr>
     </span>
     
             <div class="phpdocumentor-element__package">
@@ -256,21 +260,14 @@
 </div>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/DeviceControler.php"><a href="files/app-controllers-devicecontroler.html"><abbr title="app/Controllers/DeviceControler.php">DeviceControler.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceEvents.php"><a href="files/app-models-deviceevents.html"><abbr title="app/Models/DeviceEvents.php">DeviceEvents.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">12</span>
+    <span class="phpdocumentor-element-found-in__line">7</span>
 
     </aside>
 
-            <p class="phpdocumentor-summary">Class BaseController</p>
+        
 
-
-    <section class="phpdocumentor-description"><p>BaseController provides a convenient place for loading components
-and performing functions that are needed by all your controllers.
-Extend this class in any new controllers:
-class Home extends BaseController</p>
-<p>For security be sure to declare any new methods as protected or private.</p>
-</section>
 
 
 
@@ -278,7 +275,7 @@ class Home extends BaseController</p>
     
 <h3 id="toc">
     Table of Contents
-    <a href="classes/App-Controllers-DeviceControler.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/App-Models-DeviceEvents.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h3>
 
@@ -292,90 +289,50 @@ class Home extends BaseController</p>
 
 <h4 id="toc-properties">
     Properties
-    <a href="classes/App-Controllers-DeviceControler.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/App-Models-DeviceEvents.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/App-Controllers-DeviceControler.html#property_deviceModel">$deviceModel</a>
+    <a class="" href="classes/App-Models-DeviceEvents.html#property_allowedFields">$allowedFields</a>
     <span>
                         &nbsp;: mixed            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/App-Controllers-DeviceControler.html#property_devices">$devices</a>
+    <a class="" href="classes/App-Models-DeviceEvents.html#property_primaryKey">$primaryKey</a>
     <span>
                         &nbsp;: mixed            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/App-Controllers-BaseController.html#property_helpers">$helpers</a>
-    <span>
-                        &nbsp;: array&lt;int, string&gt;            </span>
-</dt>
-<dd>An array of helpers to be loaded automatically upon
-class instantiation. These helpers will be available
-to all other controllers that extend BaseController.</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/App-Controllers-DeviceControler.html#property_protocol_map">$protocol_map</a>
+    <a class="" href="classes/App-Models-DeviceEvents.html#property_table">$table</a>
     <span>
                         &nbsp;: mixed            </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
-    <a class="" href="classes/App-Controllers-BaseController.html#property_request">$request</a>
+    <a class="" href="classes/App-Models-DeviceEvents.html#property_validationRules">$validationRules</a>
     <span>
-                        &nbsp;: <abbr title="\CodeIgniter\HTTP\CLIRequest">CLIRequest</abbr>|<abbr title="\CodeIgniter\HTTP\IncomingRequest">IncomingRequest</abbr>            </span>
+                        &nbsp;: mixed            </span>
 </dt>
-<dd>Instance of the main Request object.</dd>
 
     </dl>
 
 <h4 id="toc-methods">
     Methods
-    <a href="classes/App-Controllers-DeviceControler.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/App-Models-DeviceEvents.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
 
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/App-Controllers-DeviceControler.html#method___construct">__construct()</a>
+    <a class="" href="classes/App-Models-DeviceEvents.html#method_add">add()</a>
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/App-Controllers-DeviceControler.html#method_get_stats">get_stats()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/App-Controllers-BaseController.html#method_initController">initController()</a>
-    <span>
-                                &nbsp;: void    </span>
-</dt>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/App-Controllers-DeviceControler.html#method_receive">receive()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/App-Controllers-DeviceControler.html#method_register">register()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a class="" href="classes/App-Controllers-DeviceControler.html#method_set_sta_sleep">set_sta_sleep()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a class="" href="classes/App-Controllers-DeviceControler.html#method_validate_device_input">validate_device_input()</a>
+    <a class="" href="classes/App-Models-DeviceEvents.html#method_getByMac">getByMac()</a>
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
@@ -390,7 +347,7 @@ to all other controllers that extend BaseController.</dd>
     <section class="phpdocumentor-properties">
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
-            <a href="classes/App-Controllers-DeviceControler.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/App-Models-DeviceEvents.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
@@ -400,17 +357,17 @@ to all other controllers that extend BaseController.</dd>
             -protected
                                                                     "
 >
-    <h4 class="phpdocumentor-element__name" id="property_deviceModel">
-        $deviceModel
-        <a href="classes/App-Controllers-DeviceControler.html#property_deviceModel" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="property_allowedFields">
+        $allowedFields
+        <a href="classes/App-Models-DeviceEvents.html#property_allowedFields" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
                                             </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/DeviceControler.php"><a href="files/app-controllers-devicecontroler.html"><abbr title="app/Controllers/DeviceControler.php">DeviceControler.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceEvents.php"><a href="files/app-models-deviceevents.html"><abbr title="app/Models/DeviceEvents.php">DeviceEvents.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">14</span>
+    <span class="phpdocumentor-element-found-in__line">11</span>
 
     </aside>
 
@@ -419,8 +376,8 @@ to all other controllers that extend BaseController.</dd>
     <code class="phpdocumentor-code phpdocumentor-signature ">
         <span class="phpdocumentor-signature__visibility">protected</span>
             <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$deviceModel</span>
-    </code>
+    <span class="phpdocumentor-signature__name">$allowedFields</span>
+     = <span class="phpdocumentor-signature__default-value">[&#039;id&#039;, &#039;mac&#039;, &#039;type&#039;, &#039;json&#039;, &#039;created_at&#039;]</span></code>
 
     
     
@@ -437,17 +394,17 @@ to all other controllers that extend BaseController.</dd>
             -protected
                                                                     "
 >
-    <h4 class="phpdocumentor-element__name" id="property_devices">
-        $devices
-        <a href="classes/App-Controllers-DeviceControler.html#property_devices" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="property_primaryKey">
+        $primaryKey
+        <a href="classes/App-Models-DeviceEvents.html#property_primaryKey" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
                                             </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/DeviceControler.php"><a href="files/app-controllers-devicecontroler.html"><abbr title="app/Controllers/DeviceControler.php">DeviceControler.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceEvents.php"><a href="files/app-models-deviceevents.html"><abbr title="app/Models/DeviceEvents.php">DeviceEvents.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">15</span>
+    <span class="phpdocumentor-element-found-in__line">10</span>
 
     </aside>
 
@@ -456,8 +413,8 @@ to all other controllers that extend BaseController.</dd>
     <code class="phpdocumentor-code phpdocumentor-signature ">
         <span class="phpdocumentor-signature__visibility">protected</span>
             <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$devices</span>
-    </code>
+    <span class="phpdocumentor-signature__name">$primaryKey</span>
+     = <span class="phpdocumentor-signature__default-value">&#039;id&#039;</span></code>
 
     
     
@@ -474,57 +431,17 @@ to all other controllers that extend BaseController.</dd>
             -protected
                                                                     "
 >
-    <h4 class="phpdocumentor-element__name" id="property_helpers">
-        $helpers
-        <a href="classes/App-Controllers-BaseController.html#property_helpers" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="property_table">
+        $table
+        <a href="classes/App-Models-DeviceEvents.html#property_table" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
                                             </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/BaseController.php"><a href="files/app-controllers-basecontroller.html"><abbr title="app/Controllers/BaseController.php">BaseController.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceEvents.php"><a href="files/app-models-deviceevents.html"><abbr title="app/Models/DeviceEvents.php">DeviceEvents.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">38</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">An array of helpers to be loaded automatically upon
-class instantiation. These helpers will be available
-to all other controllers that extend BaseController.</p>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-        <span class="phpdocumentor-signature__visibility">protected</span>
-            <span class="phpdocumentor-signature__type">array&lt;int, string&gt;</span>
-    <span class="phpdocumentor-signature__name">$helpers</span>
-     = <span class="phpdocumentor-signature__default-value">[]</span></code>
-
-    
-    
-    
-
-        
-        
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -protected
-                                                                    "
->
-    <h4 class="phpdocumentor-element__name" id="property_protocol_map">
-        $protocol_map
-        <a href="classes/App-Controllers-DeviceControler.html#property_protocol_map" class="headerlink"><i class="fas fa-link"></i></a>
-
-        <span class="phpdocumentor-element__modifiers">
-                                            </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/DeviceControler.php"><a href="files/app-controllers-devicecontroler.html"><abbr title="app/Controllers/DeviceControler.php">DeviceControler.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">17</span>
+    <span class="phpdocumentor-element-found-in__line">9</span>
 
     </aside>
 
@@ -533,8 +450,8 @@ to all other controllers that extend BaseController.</p>
     <code class="phpdocumentor-code phpdocumentor-signature ">
         <span class="phpdocumentor-signature__visibility">protected</span>
             <span class="phpdocumentor-signature__type">mixed</span>
-    <span class="phpdocumentor-signature__name">$protocol_map</span>
-    </code>
+    <span class="phpdocumentor-signature__name">$table</span>
+     = <span class="phpdocumentor-signature__default-value">&#039;device_events&#039;</span></code>
 
     
     
@@ -551,28 +468,27 @@ to all other controllers that extend BaseController.</p>
             -protected
                                                                     "
 >
-    <h4 class="phpdocumentor-element__name" id="property_request">
-        $request
-        <a href="classes/App-Controllers-BaseController.html#property_request" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="property_validationRules">
+        $validationRules
+        <a href="classes/App-Models-DeviceEvents.html#property_validationRules" class="headerlink"><i class="fas fa-link"></i></a>
 
         <span class="phpdocumentor-element__modifiers">
                                             </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/BaseController.php"><a href="files/app-controllers-basecontroller.html"><abbr title="app/Controllers/BaseController.php">BaseController.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceEvents.php"><a href="files/app-models-deviceevents.html"><abbr title="app/Models/DeviceEvents.php">DeviceEvents.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">29</span>
+    <span class="phpdocumentor-element-found-in__line">13</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Instance of the main Request object.</p>
-
+    
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
         <span class="phpdocumentor-signature__visibility">protected</span>
-            <span class="phpdocumentor-signature__type"><abbr title="\CodeIgniter\HTTP\CLIRequest">CLIRequest</abbr>|<abbr title="\CodeIgniter\HTTP\IncomingRequest">IncomingRequest</abbr></span>
-    <span class="phpdocumentor-signature__name">$request</span>
-    </code>
+            <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">$validationRules</span>
+     = <span class="phpdocumentor-signature__default-value">[&#039;type&#039; =&gt; &#039;required|in_list[sta_sleep,sta_awake,receive]&#039;]</span></code>
 
     
     
@@ -587,7 +503,7 @@ to all other controllers that extend BaseController.</p>
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/App-Controllers-DeviceControler.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/App-Models-DeviceEvents.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
                     <article
@@ -596,90 +512,22 @@ to all other controllers that extend BaseController.</p>
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method___construct">
-        __construct()
-        <a href="classes/App-Controllers-DeviceControler.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_add">
+        add()
+        <a href="classes/App-Models-DeviceEvents.html#method_add" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/DeviceControler.php"><a href="files/app-controllers-devicecontroler.html"><abbr title="app/Controllers/DeviceControler.php">DeviceControler.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceEvents.php"><a href="files/app-models-deviceevents.html"><abbr title="app/Models/DeviceEvents.php">DeviceEvents.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">19</span>
+    <span class="phpdocumentor-element-found-in__line">22</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-    
-    
-
-        
-    
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_get_stats">
-        get_stats()
-        <a href="classes/App-Controllers-DeviceControler.html#method_get_stats" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/DeviceControler.php"><a href="files/app-controllers-devicecontroler.html"><abbr title="app/Controllers/DeviceControler.php">DeviceControler.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">29</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">get_stats</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-    
-    
-
-        
-    
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_initController">
-        initController()
-        <a href="classes/App-Controllers-BaseController.html#method_initController" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/BaseController.php"><a href="files/app-controllers-basecontroller.html"><abbr title="app/Controllers/BaseController.php">BaseController.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">49</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">initController</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type"><abbr title="\CodeIgniter\HTTP\RequestInterface">RequestInterface</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$request</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__type"><abbr title="\CodeIgniter\HTTP\ResponseInterface">ResponseInterface</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$response</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__type"><abbr title="\Psr\Log\LoggerInterface">LoggerInterface</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$logger</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+                    <span class="phpdocumentor-signature__name">add</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$mac</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$type</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$data</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -688,22 +536,22 @@ to all other controllers that extend BaseController.</p>
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-argument-list__argument__name">$request</span>
-                : <span class="phpdocumentor-argument-list__argument__type"><abbr title="\CodeIgniter\HTTP\RequestInterface">RequestInterface</abbr></span>
+                <span class="phpdocumentor-argument-list__argument__name">$mac</span>
+                : <span class="phpdocumentor-argument-list__argument__type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-argument-list__argument__name">$response</span>
-                : <span class="phpdocumentor-argument-list__argument__type"><abbr title="\CodeIgniter\HTTP\ResponseInterface">ResponseInterface</abbr></span>
+                <span class="phpdocumentor-argument-list__argument__name">$type</span>
+                : <span class="phpdocumentor-argument-list__argument__type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-argument-list__argument__name">$logger</span>
-                : <span class="phpdocumentor-argument-list__argument__type"><abbr title="\Psr\Log\LoggerInterface">LoggerInterface</abbr></span>
+                <span class="phpdocumentor-argument-list__argument__name">$data</span>
+                : <span class="phpdocumentor-argument-list__argument__type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 
@@ -722,130 +570,38 @@ to all other controllers that extend BaseController.</p>
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="method_receive">
-        receive()
-        <a href="classes/App-Controllers-DeviceControler.html#method_receive" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="method_getByMac">
+        getByMac()
+        <a href="classes/App-Models-DeviceEvents.html#method_getByMac" class="headerlink"><i class="fas fa-link"></i></a>
 
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/DeviceControler.php"><a href="files/app-controllers-devicecontroler.html"><abbr title="app/Controllers/DeviceControler.php">DeviceControler.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="app/Models/DeviceEvents.php"><a href="files/app-models-deviceevents.html"><abbr title="app/Models/DeviceEvents.php">DeviceEvents.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">124</span>
+    <span class="phpdocumentor-element-found-in__line">17</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">receive</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                    <span class="phpdocumentor-signature__name">getByMac</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$mac</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
     
     
-    
-    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-argument-list__argument__name">$mac</span>
+                : <span class="phpdocumentor-argument-list__argument__type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
 
-        
-    
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_register">
-        register()
-        <a href="classes/App-Controllers-DeviceControler.html#method_register" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/DeviceControler.php"><a href="files/app-controllers-devicecontroler.html"><abbr title="app/Controllers/DeviceControler.php">DeviceControler.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">150</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">register</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-    
-    
-
-        
-    
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_set_sta_sleep">
-        set_sta_sleep()
-        <a href="classes/App-Controllers-DeviceControler.html#method_set_sta_sleep" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/DeviceControler.php"><a href="files/app-controllers-devicecontroler.html"><abbr title="app/Controllers/DeviceControler.php">DeviceControler.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">40</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">set_sta_sleep</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-    
-    
-
-        
-    
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_validate_device_input">
-        validate_device_input()
-        <a href="classes/App-Controllers-DeviceControler.html#method_validate_device_input" class="headerlink"><i class="fas fa-link"></i></a>
-
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="app/Controllers/DeviceControler.php"><a href="files/app-controllers-devicecontroler.html"><abbr title="app/Controllers/DeviceControler.php">DeviceControler.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">84</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                    <span class="phpdocumentor-signature__name">validate_device_input</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    <div class="phpdocumentor-label-line">
-        </div>
-    
-    
-    
     
 
         
@@ -858,7 +614,7 @@ to all other controllers that extend BaseController.</p>
     <div class="phpdocumentor-modal-bg" data-exit-button></div>
     <div class="phpdocumentor-modal-container">
         <div class="phpdocumentor-modal-content">
-            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/app/Controllers/DeviceControler.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
+            <pre style="max-height: 500px; overflow-y: scroll" data-src="files/app/Models/DeviceEvents.php.txt" class="language-php line-numbers linkable-line-numbers"></pre>
         </div>
         <button data-exit-button class="phpdocumentor-modal__close">&times;</button>
     </div>
@@ -959,32 +715,26 @@ to all other controllers that extend BaseController.</p>
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                                            <li><a href="classes/App-Controllers-DeviceControler.html#toc-properties">Properties</a></li>
-                                                            <li><a href="classes/App-Controllers-DeviceControler.html#toc-methods">Methods</a></li>
+                                                            <li><a href="classes/App-Models-DeviceEvents.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/App-Models-DeviceEvents.html#toc-methods">Methods</a></li>
                                     </ul>
             </li>
             
                             <li class="phpdocumentor-on-this-page-section__title">Properties</li>
                 <li>
                     <ul class="phpdocumentor-list -clean">
-                                                    <li class=""><a href="classes/App-Controllers-DeviceControler.html#property_deviceModel">$deviceModel</a></li>
-                                                    <li class=""><a href="classes/App-Controllers-DeviceControler.html#property_devices">$devices</a></li>
-                                                    <li class=""><a href="classes/App-Controllers-BaseController.html#property_helpers">$helpers</a></li>
-                                                    <li class=""><a href="classes/App-Controllers-DeviceControler.html#property_protocol_map">$protocol_map</a></li>
-                                                    <li class=""><a href="classes/App-Controllers-BaseController.html#property_request">$request</a></li>
+                                                    <li class=""><a href="classes/App-Models-DeviceEvents.html#property_allowedFields">$allowedFields</a></li>
+                                                    <li class=""><a href="classes/App-Models-DeviceEvents.html#property_primaryKey">$primaryKey</a></li>
+                                                    <li class=""><a href="classes/App-Models-DeviceEvents.html#property_table">$table</a></li>
+                                                    <li class=""><a href="classes/App-Models-DeviceEvents.html#property_validationRules">$validationRules</a></li>
                                             </ul>
                 </li>
             
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                            <li class=""><a href="classes/App-Controllers-DeviceControler.html#method___construct">__construct()</a></li>
-                                            <li class=""><a href="classes/App-Controllers-DeviceControler.html#method_get_stats">get_stats()</a></li>
-                                            <li class=""><a href="classes/App-Controllers-BaseController.html#method_initController">initController()</a></li>
-                                            <li class=""><a href="classes/App-Controllers-DeviceControler.html#method_receive">receive()</a></li>
-                                            <li class=""><a href="classes/App-Controllers-DeviceControler.html#method_register">register()</a></li>
-                                            <li class=""><a href="classes/App-Controllers-DeviceControler.html#method_set_sta_sleep">set_sta_sleep()</a></li>
-                                            <li class=""><a href="classes/App-Controllers-DeviceControler.html#method_validate_device_input">validate_device_input()</a></li>
+                                            <li class=""><a href="classes/App-Models-DeviceEvents.html#method_add">add()</a></li>
+                                            <li class=""><a href="classes/App-Models-DeviceEvents.html#method_getByMac">getByMac()</a></li>
                                     </ul>
             </li>
                     </ul>
@@ -1004,7 +754,7 @@ to all other controllers that extend BaseController.</p>
     </section>
 </section>
         </div>
-        <a href="classes/App-Controllers-DeviceControler.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/App-Models-DeviceEvents.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
